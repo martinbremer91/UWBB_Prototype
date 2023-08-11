@@ -1,0 +1,54 @@
+{
+    "name": "DefaultMovement",
+    "maps": [
+        {
+            "name": "FreeMovement",
+            "id": "1c06ef7f-e538-43e2-a293-f9160d65d458",
+            "actions": [
+                {
+                    "name": "XZ Movement",
+                    "type": "Value",
+                    "id": "73cf6aaa-7931-48db-a037-6b0fbd8551d1",
+                    "expectedControlType": "Vector2",
+                    "processors": "StickDeadzone(min=0.15,max=0.9)",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Y Movement and Rotation",
+                    "type": "Value",
+                    "id": "d995fb88-d497-447b-b3ef-f71dbc626228",
+                    "expectedControlType": "Vector2",
+                    "processors": "StickDeadzone(min=0.15,max=0.9)",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "4a00971e-4552-4afb-aa15-f3c4d267e49c",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "XZ Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8476cd04-57d5-47a7-b8d0-63fabdc759bf",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Y Movement and Rotation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
