@@ -44,6 +44,15 @@ public partial class @DefaultMovement: IInputActionCollection2, IDisposable
                     ""processors"": ""StickDeadzone(min=0.15,max=0.9)"",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""SnapToHorizon"",
+                    ""type"": ""Button"",
+                    ""id"": ""a4dcadb0-e04f-46f1-a764-3fa0cc17174c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -68,6 +77,17 @@ public partial class @DefaultMovement: IInputActionCollection2, IDisposable
                     ""action"": ""Y Movement and Rotation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b4f8f615-2afc-44a9-8234-3c047c4047e7"",
+                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SnapToHorizon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -78,6 +98,7 @@ public partial class @DefaultMovement: IInputActionCollection2, IDisposable
         m_FreeMovement = asset.FindActionMap("FreeMovement", throwIfNotFound: true);
         m_FreeMovement_XZMovement = m_FreeMovement.FindAction("XZ Movement", throwIfNotFound: true);
         m_FreeMovement_YMovementandRotation = m_FreeMovement.FindAction("Y Movement and Rotation", throwIfNotFound: true);
+        m_FreeMovement_SnapToHorizon = m_FreeMovement.FindAction("SnapToHorizon", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -141,12 +162,14 @@ public partial class @DefaultMovement: IInputActionCollection2, IDisposable
     private List<IFreeMovementActions> m_FreeMovementActionsCallbackInterfaces = new List<IFreeMovementActions>();
     private readonly InputAction m_FreeMovement_XZMovement;
     private readonly InputAction m_FreeMovement_YMovementandRotation;
+    private readonly InputAction m_FreeMovement_SnapToHorizon;
     public struct FreeMovementActions
     {
         private @DefaultMovement m_Wrapper;
         public FreeMovementActions(@DefaultMovement wrapper) { m_Wrapper = wrapper; }
         public InputAction @XZMovement => m_Wrapper.m_FreeMovement_XZMovement;
         public InputAction @YMovementandRotation => m_Wrapper.m_FreeMovement_YMovementandRotation;
+        public InputAction @SnapToHorizon => m_Wrapper.m_FreeMovement_SnapToHorizon;
         public InputActionMap Get() { return m_Wrapper.m_FreeMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -162,6 +185,9 @@ public partial class @DefaultMovement: IInputActionCollection2, IDisposable
             @YMovementandRotation.started += instance.OnYMovementandRotation;
             @YMovementandRotation.performed += instance.OnYMovementandRotation;
             @YMovementandRotation.canceled += instance.OnYMovementandRotation;
+            @SnapToHorizon.started += instance.OnSnapToHorizon;
+            @SnapToHorizon.performed += instance.OnSnapToHorizon;
+            @SnapToHorizon.canceled += instance.OnSnapToHorizon;
         }
 
         private void UnregisterCallbacks(IFreeMovementActions instance)
@@ -172,6 +198,9 @@ public partial class @DefaultMovement: IInputActionCollection2, IDisposable
             @YMovementandRotation.started -= instance.OnYMovementandRotation;
             @YMovementandRotation.performed -= instance.OnYMovementandRotation;
             @YMovementandRotation.canceled -= instance.OnYMovementandRotation;
+            @SnapToHorizon.started -= instance.OnSnapToHorizon;
+            @SnapToHorizon.performed -= instance.OnSnapToHorizon;
+            @SnapToHorizon.canceled -= instance.OnSnapToHorizon;
         }
 
         public void RemoveCallbacks(IFreeMovementActions instance)
@@ -193,5 +222,6 @@ public partial class @DefaultMovement: IInputActionCollection2, IDisposable
     {
         void OnXZMovement(InputAction.CallbackContext context);
         void OnYMovementandRotation(InputAction.CallbackContext context);
+        void OnSnapToHorizon(InputAction.CallbackContext context);
     }
 }

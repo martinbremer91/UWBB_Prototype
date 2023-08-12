@@ -727,6 +727,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputController: {fileID: 2081087996}
+  playerMovement: {fileID: 2081087991}
   player: {fileID: 2081087995}
   rotationSpeed: 180
 --- !u!1 &1080843265
@@ -740,6 +741,7 @@ GameObject:
   - component: {fileID: 1080843266}
   - component: {fileID: 1080843268}
   - component: {fileID: 1080843267}
+  - component: {fileID: 1080843269}
   m_Layer: 0
   m_Name: Character Model
   m_TagString: Untagged
@@ -814,6 +816,29 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1080843265}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!136 &1080843269
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1080843265}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2081087990
 GameObject:
   m_ObjectHideFlags: 0
@@ -823,7 +848,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2081087995}
-  - component: {fileID: 2081087992}
   - component: {fileID: 2081087991}
   - component: {fileID: 2081087996}
   m_Layer: 0
@@ -849,29 +873,7 @@ MonoBehaviour:
   camController: {fileID: 963194229}
   playerModel: {fileID: 1080843266}
   speed: 10
---- !u!136 &2081087992
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2081087990}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  movementStyle: 1
 --- !u!4 &2081087995
 Transform:
   m_ObjectHideFlags: 0

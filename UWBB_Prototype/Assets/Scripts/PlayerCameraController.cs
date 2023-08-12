@@ -1,8 +1,10 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerCameraController : MonoBehaviour
 {
     [SerializeField] private MovementInputController inputController;
+    [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private Transform player;
     private Transform camHolder;
 
@@ -10,20 +12,47 @@ public class PlayerCameraController : MonoBehaviour
 
     private void Awake() => camHolder = transform.parent;
 
-    private void Update()
+    private void LateUpdate()
     {
-        // HandleYInput(inputController.inputState.yInput);
+        if (playerMovement.movementStyle is MovementStyle.LockedToCamPlane)
+        {
+            if (inputController.inputState.snapCommand)
+            {
+                SnapCamToHorizonPlane();
+                inputController.inputState.snapCommand = false;
+            } else
+                HandleCamInput(inputController.inputState.yInput);
+        }
     }
 
-    private void HandleYInput(Vector2 input)
+    private void HandleCamInput(Vector2 input)
     {
-        camHolder.Rotate(new Vector3(0, input.x, 0) * (rotationSpeed * Time.deltaTime), Space.Self);
+        transform.RotateAround(player.position, Vector3.up, input.x * (rotationSpeed * Time.deltaTime));
+
+        if (Keyboard.current.spaceKey.wasPressedThisFrame)
+            Debug.Log(GetAngleToHorizonPlane());
+        
+        if (Mathf.Abs(input.y) >= .75f && Mathf.Abs(GetAngleToHorizonPlane() - Mathf.Sign(input.y) * 10) < 80)
+            transform.RotateAround(player.position, transform.right, input.y * (rotationSpeed * Time.deltaTime));
     }
 
     public Vector3 GetVectorInRelationToCamRotation(Vector2 vector)
     {
         var tf = transform;
         return tf.right * vector.x + tf.forward * vector.y;
+    }
+
+    private void SnapCamToHorizonPlane()
+    {
+        float angleToHorizonPlane = GetAngleToHorizonPlane();
+        transform.RotateAround(player.position, transform.right, angleToHorizonPlane);
+        playerMovement.playerModel.LookAt(player.position + transform.forward);
+    }
+
+    private float GetAngleToHorizonPlane()
+    {
+        float angleToHorizonPlane = Vector3.Angle(transform.forward, new Vector3(transform.forward.x, 0, transform.forward.z));
+        return transform.forward.y < 0 ? -angleToHorizonPlane : angleToHorizonPlane;
     }
 
 #if UNITY_EDITOR

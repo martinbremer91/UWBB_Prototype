@@ -17,14 +17,19 @@ public class MovementInputController : MonoBehaviour
 
         freeMovement.YMovementandRotation.performed += context => HandleYInput(context.ReadValue<Vector2>());
         freeMovement.YMovementandRotation.canceled += context => HandleYInput(context.ReadValue<Vector2>());
+
+        freeMovement.SnapToHorizon.performed += _ => SnapToHorizon();
     }
     
     private void HandleXZInput(Vector2 input) => inputState.xzInput = input;
     private void HandleYInput(Vector2 input) => inputState.yInput = input;
+    private void SnapToHorizon() => inputState.snapCommand = true;
 }
 
 public struct InputState
 {
     public Vector2 xzInput;
     public Vector2 yInput;
+
+    public bool snapCommand;
 }

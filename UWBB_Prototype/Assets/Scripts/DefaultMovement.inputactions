@@ -22,6 +22,15 @@
                     "processors": "StickDeadzone(min=0.15,max=0.9)",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "SnapToHorizon",
+                    "type": "Button",
+                    "id": "a4dcadb0-e04f-46f1-a764-3fa0cc17174c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -44,6 +53,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Y Movement and Rotation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b4f8f615-2afc-44a9-8234-3c047c4047e7",
+                    "path": "<Gamepad>/rightStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SnapToHorizon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
