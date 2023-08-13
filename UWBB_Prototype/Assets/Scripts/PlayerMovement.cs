@@ -4,6 +4,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private MovementInputController inputController;
     [SerializeField] private PlayerCameraController camController;
+    [SerializeField] private PlayerLockOnController lockOnController;
     public Transform playerModel;
     
     public float speed = 5;
@@ -12,24 +13,25 @@ public class PlayerMovement : MonoBehaviour
     
     private void Update()
     {
-        if (movementStyle is MovementStyle.DedicatedVertical)
+        if (lockOnController.lockedOn)
+            HandleXZLockedMovement(inputController.inputState.xzInput);
+        else if (movementStyle is MovementStyle.DedicatedVertical)
         {
-            HandleXZMovement(inputController.inputState.xzInput);
+            HandleXZFreeMovement(inputController.inputState.xzInput);
             HandleYMovementAndRotation(inputController.inputState.yInput);
         } else if (movementStyle is MovementStyle.LockedToCamPlane)
         {
             HandleXZMovement_Locked(inputController.inputState.xzInput);
-            HandleYMovementAndRotation_Locked(inputController.inputState.yInput);
         }
     }
 
     #region DedicatedVertical
 
-    private void HandleXZMovement(Vector2 input)
+    private void HandleXZFreeMovement(Vector2 input)
     {
         Vector3 movementVector = camController.GetVectorInRelationToCamRotation(input);
         transform.Translate(movementVector * (speed * Time.deltaTime), Space.World);
-        playerModel.LookAt(transform.position + movementVector);
+        SetModelLookAtTarget(transform.position + movementVector);
     }
 
     private void HandleYMovementAndRotation(Vector2 input)
@@ -46,15 +48,27 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector3 movementVector = camController.GetVectorInRelationToCamRotation(input);
         transform.Translate(movementVector * (speed * Time.deltaTime), Space.World);
-        playerModel.LookAt(transform.position + movementVector);
-    }
-
-    private void HandleYMovementAndRotation_Locked(Vector2 input)
-    {
-        // playerModel.Rotate(new Vector3(0, input.x, 0) * (180 * Time.deltaTime), Space.Self);
+        SetModelLookAtTarget(transform.position + movementVector);
     }
 
     #endregion
+
+    #region LockedOnMovement
+    
+    // TODO: figure out how to convert speed to angles here
+    private void HandleXZLockedMovement(Vector2 input)
+    {
+        transform.RotateAround(lockOnController.target.position, Vector3.up, -input.x * 60 * Time.deltaTime);
+        
+        Vector3 movementVector = camController.transform.forward * input.y;
+        transform.Translate(movementVector * (speed * Time.deltaTime), Space.World);
+
+        SetModelLookAtTarget(lockOnController.target.position);
+    }
+
+    #endregion
+
+    private void SetModelLookAtTarget(Vector3 target) => playerModel.LookAt(target);
 }
 
 public enum MovementStyle

@@ -53,6 +53,15 @@ public partial class @DefaultMovement: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LockOnToggle"",
+                    ""type"": ""Button"",
+                    ""id"": ""543e3563-54da-414a-bf80-8599f4202354"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -81,11 +90,22 @@ public partial class @DefaultMovement: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""b4f8f615-2afc-44a9-8234-3c047c4047e7"",
-                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""path"": ""<Gamepad>/leftStickPress"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""SnapToHorizon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""075736a5-07c7-4445-85a6-2d01d7b461b2"",
+                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LockOnToggle"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -99,6 +119,7 @@ public partial class @DefaultMovement: IInputActionCollection2, IDisposable
         m_FreeMovement_XZMovement = m_FreeMovement.FindAction("XZ Movement", throwIfNotFound: true);
         m_FreeMovement_YMovementandRotation = m_FreeMovement.FindAction("Y Movement and Rotation", throwIfNotFound: true);
         m_FreeMovement_SnapToHorizon = m_FreeMovement.FindAction("SnapToHorizon", throwIfNotFound: true);
+        m_FreeMovement_LockOnToggle = m_FreeMovement.FindAction("LockOnToggle", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -163,6 +184,7 @@ public partial class @DefaultMovement: IInputActionCollection2, IDisposable
     private readonly InputAction m_FreeMovement_XZMovement;
     private readonly InputAction m_FreeMovement_YMovementandRotation;
     private readonly InputAction m_FreeMovement_SnapToHorizon;
+    private readonly InputAction m_FreeMovement_LockOnToggle;
     public struct FreeMovementActions
     {
         private @DefaultMovement m_Wrapper;
@@ -170,6 +192,7 @@ public partial class @DefaultMovement: IInputActionCollection2, IDisposable
         public InputAction @XZMovement => m_Wrapper.m_FreeMovement_XZMovement;
         public InputAction @YMovementandRotation => m_Wrapper.m_FreeMovement_YMovementandRotation;
         public InputAction @SnapToHorizon => m_Wrapper.m_FreeMovement_SnapToHorizon;
+        public InputAction @LockOnToggle => m_Wrapper.m_FreeMovement_LockOnToggle;
         public InputActionMap Get() { return m_Wrapper.m_FreeMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -188,6 +211,9 @@ public partial class @DefaultMovement: IInputActionCollection2, IDisposable
             @SnapToHorizon.started += instance.OnSnapToHorizon;
             @SnapToHorizon.performed += instance.OnSnapToHorizon;
             @SnapToHorizon.canceled += instance.OnSnapToHorizon;
+            @LockOnToggle.started += instance.OnLockOnToggle;
+            @LockOnToggle.performed += instance.OnLockOnToggle;
+            @LockOnToggle.canceled += instance.OnLockOnToggle;
         }
 
         private void UnregisterCallbacks(IFreeMovementActions instance)
@@ -201,6 +227,9 @@ public partial class @DefaultMovement: IInputActionCollection2, IDisposable
             @SnapToHorizon.started -= instance.OnSnapToHorizon;
             @SnapToHorizon.performed -= instance.OnSnapToHorizon;
             @SnapToHorizon.canceled -= instance.OnSnapToHorizon;
+            @LockOnToggle.started -= instance.OnLockOnToggle;
+            @LockOnToggle.performed -= instance.OnLockOnToggle;
+            @LockOnToggle.canceled -= instance.OnLockOnToggle;
         }
 
         public void RemoveCallbacks(IFreeMovementActions instance)
@@ -223,5 +252,6 @@ public partial class @DefaultMovement: IInputActionCollection2, IDisposable
         void OnXZMovement(InputAction.CallbackContext context);
         void OnYMovementandRotation(InputAction.CallbackContext context);
         void OnSnapToHorizon(InputAction.CallbackContext context);
+        void OnLockOnToggle(InputAction.CallbackContext context);
     }
 }

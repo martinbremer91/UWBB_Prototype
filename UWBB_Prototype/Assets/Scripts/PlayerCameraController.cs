@@ -1,16 +1,21 @@
+using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerCameraController : MonoBehaviour
 {
     [SerializeField] private MovementInputController inputController;
+    [SerializeField] private PlayerLockOnController lockOnController;
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private Transform player;
     private Transform camHolder;
 
     [SerializeField] private float rotationSpeed = 180;
 
-    private void Awake() => camHolder = transform.parent;
+    private void Awake()
+    {
+        camHolder = transform.parent;
+        lockOnController.onLockOn += OnLockOn;
+    }
 
     private void LateUpdate()
     {
@@ -20,8 +25,10 @@ public class PlayerCameraController : MonoBehaviour
             {
                 SnapCamToHorizonPlane();
                 inputController.inputState.snapCommand = false;
-            } else
+            } else if (!lockOnController.lockedOn)
                 HandleCamInput(inputController.inputState.yInput);
+            else
+                HandleLockedOn();
         }
     }
 
@@ -29,10 +36,7 @@ public class PlayerCameraController : MonoBehaviour
     {
         transform.RotateAround(player.position, Vector3.up, input.x * (rotationSpeed * Time.deltaTime));
 
-        if (Keyboard.current.spaceKey.wasPressedThisFrame)
-            Debug.Log(GetAngleToHorizonPlane());
-        
-        if (Mathf.Abs(input.y) >= .75f && Mathf.Abs(GetAngleToHorizonPlane() - Mathf.Sign(input.y) * 10) < 80)
+        if (Mathf.Abs(input.y) >= .75f && Mathf.Abs(GetAngleToHorizonPlane() - Mathf.Sign(input.y) * 10) < 88)
             transform.RotateAround(player.position, transform.right, input.y * (rotationSpeed * Time.deltaTime));
     }
 
@@ -53,6 +57,21 @@ public class PlayerCameraController : MonoBehaviour
     {
         float angleToHorizonPlane = Vector3.Angle(transform.forward, new Vector3(transform.forward.x, 0, transform.forward.z));
         return transform.forward.y < 0 ? -angleToHorizonPlane : angleToHorizonPlane;
+    }
+
+    private void OnLockOn()
+    {
+        Vector3 targetPlayerDirection = (player.position - lockOnController.target.position).normalized;
+        float distanceToPlayer = (player.position - transform.position).magnitude;
+        transform.position = player.position + targetPlayerDirection * distanceToPlayer;
+        HandleLockedOn();
+    }
+
+    private void HandleLockedOn() => transform.LookAt(lockOnController.target.position);
+
+    private void OnDestroy()
+    {
+        lockOnController.onLockOn -= OnLockOn;
     }
 
 #if UNITY_EDITOR
