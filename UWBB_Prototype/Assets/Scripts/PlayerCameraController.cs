@@ -27,8 +27,6 @@ public class PlayerCameraController : MonoBehaviour
                 inputController.inputState.snapCommand = false;
             } else if (!lockOnController.lockedOn)
                 HandleCamInput(inputController.inputState.yInput);
-            else
-                HandleLockedOn();
         }
     }
 
@@ -50,9 +48,10 @@ public class PlayerCameraController : MonoBehaviour
     {
         float angleToHorizonPlane = GetAngleToHorizonPlane();
         transform.RotateAround(player.position, transform.right, angleToHorizonPlane);
-        playerMovement.playerModel.LookAt(player.position + transform.forward);
+        playerMovement.SnapPlayerToHorizonPlane();
     }
 
+    // TODO: remove duplicated code (this function is also in the movement controller)
     private float GetAngleToHorizonPlane()
     {
         float angleToHorizonPlane = Vector3.Angle(transform.forward, new Vector3(transform.forward.x, 0, transform.forward.z));
