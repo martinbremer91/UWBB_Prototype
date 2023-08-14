@@ -24,6 +24,7 @@ namespace ECS_Test_Scripts.AuthoringAndMono
             {
                 fieldDimensions = authoring.fieldDimensions,
                 numberOfObjectsToSpawn = authoring.numberOfObjectsToSpawn,
+                prefab = GetEntity(authoring.prefab, TransformUsageFlags.None)
             });
             AddComponent(entity, new SpawnerRandom
             {

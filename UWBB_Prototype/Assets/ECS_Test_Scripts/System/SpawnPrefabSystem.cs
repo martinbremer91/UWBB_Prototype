@@ -19,9 +19,10 @@ namespace ECS_Test_Scripts.System
         public void OnUpdate(ref SystemState state)
         {
             state.Enabled = false;
+            
             var spawnerEntity = SystemAPI.GetSingletonEntity<SpawnerProperties>();
             var spawner = SystemAPI.GetAspect<SpawnerAspect>(spawnerEntity);
-
+            
             var ecb = new EntityCommandBuffer(Allocator.Temp);
             
             for (int i = 0; i < spawner.numberOfPrefabsToSpawn; i++)
