@@ -1,4 +1,4 @@
-using System;
+using DefaultNamespace;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -7,8 +7,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private PlayerCameraController camController;
     [SerializeField] private PlayerLockOnController lockOnController;
     public Transform playerModel;
-    
-    public float speed = 5;
+
+    [SerializeField] private CharacterControllerConfigs configs;
 
     public MovementStyle movementStyle;
 
@@ -36,14 +36,14 @@ public class PlayerMovement : MonoBehaviour
     private void HandleXZFreeMovement(Vector2 input)
     {
         Vector3 movementVector = camController.GetVectorInRelationToCamRotation(input);
-        transform.Translate(movementVector * (speed * Time.deltaTime), Space.World);
+        transform.Translate(movementVector * (configs.speed * Time.deltaTime), Space.World);
         SetModelLookAtTarget(transform.position + movementVector);
     }
 
     private void HandleYMovementAndRotation(Vector2 input)
     {
-        transform.Rotate(new Vector3(0, input.x, 0) * (180 * Time.deltaTime));
-        transform.Translate(new Vector3(0, input.y, 0) * (speed * Time.deltaTime));
+        transform.Rotate(new Vector3(0, input.x, 0) * (GetLockOnRotationSpeed() * Time.deltaTime));
+        transform.Translate(new Vector3(0, input.y, 0) * (configs.speed * Time.deltaTime));
         SetModelLookAtTarget(lockOnController.target.position);
     }
     
@@ -54,7 +54,7 @@ public class PlayerMovement : MonoBehaviour
     private void HandleXZMovement_Locked(Vector2 input)
     {
         Vector3 movementVector = camController.GetVectorInRelationToCamRotation(input);
-        transform.Translate(movementVector * (speed * Time.deltaTime), Space.World);
+        transform.Translate(movementVector * (configs.speed * Time.deltaTime), Space.World);
         SetModelLookAtTarget(transform.position + movementVector);
     }
 
@@ -65,19 +65,16 @@ public class PlayerMovement : MonoBehaviour
     // TODO: figure out how to convert speed to angles here
     private void HandleXZLockedOnMovement(Vector2 input)
     {
-        transform.RotateAround(lockOnController.target.position, Vector3.up, -input.x * 60 * Time.deltaTime);
+        transform.RotateAround(lockOnController.target.position, Vector3.up, -input.x * GetLockOnRotationSpeed() * Time.deltaTime);
         
         Vector3 movementVector = camController.transform.forward * input.y;
-        transform.Translate(movementVector * (speed * Time.deltaTime), Space.World);
+        transform.Translate(movementVector * (configs.speed * Time.deltaTime), Space.World);
     }
 
     private void HandleYLockedOnMovement(Vector2 input)
     {
-        bool test = Mathf.Abs(GetAngleToHorizonPlane() - Mathf.Sign(input.y) * 10) < 88;
-        DebugPanel.SetDebugPanelText(Mathf.Abs(GetAngleToHorizonPlane()) + ": " + test);
-        
-        if (Mathf.Abs(GetAngleToHorizonPlane() - Mathf.Sign(input.y) * 10) < 88)
-            transform.RotateAround(lockOnController.target.position, camController.transform.right, input.y * 60 * Time.deltaTime);
+        if (Mathf.Abs(GetAngleToHorizonPlane() - Mathf.Sign(input.y) * configs.minAngleToYRotationDeadZone) < configs.yRotationDeadZoneAngle)
+            transform.RotateAround(lockOnController.target.position, camController.transform.right, input.y * GetLockOnRotationSpeed() * Time.deltaTime);
         else
             HandleXZLockedOnMovement(new Vector2(input.y, 0));
     }
@@ -94,6 +91,14 @@ public class PlayerMovement : MonoBehaviour
     }
     
     public void SnapPlayerToHorizonPlane() => playerModel.LookAt(transform.position + transform.forward);
+
+    private float GetLockOnRotationSpeed()
+    {
+        Vector3 center = lockOnController.target.position;
+        float circumference = (center - transform.position).magnitude * Mathf.PI * 2;
+        
+        return (configs.speed / circumference) * 360;
+    }
 
     private void OnLockOn()
     {
