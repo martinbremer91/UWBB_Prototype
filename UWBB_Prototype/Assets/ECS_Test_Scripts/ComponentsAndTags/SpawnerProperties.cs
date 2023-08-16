@@ -9,5 +9,12 @@ namespace ECS_Test_Scripts.ComponentsAndTags
         public float2 fieldDimensions;
         public int numberOfObjectsToSpawn;
         public Entity prefab;
+        public Entity walkerPrefab;
+        public float walkerSpawnRate;
+    }
+
+    public struct WalkerSpawnTimer : IComponentData
+    {
+        public float value;
     }
 }

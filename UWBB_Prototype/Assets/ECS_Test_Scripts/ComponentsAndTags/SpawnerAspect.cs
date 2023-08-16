@@ -1,4 +1,5 @@
-﻿using Unity.Entities;
+﻿using Unity.Collections;
+using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 
@@ -14,6 +15,8 @@ namespace ECS_Test_Scripts.ComponentsAndTags
         
         private readonly RefRO<SpawnerProperties> spawnerProperties;
         private readonly RefRW<SpawnerRandom> spawnerRandom;
+        private readonly RefRW<PrefabSpawnPoints> prefabSpawnPoints;
+        private readonly RefRW<WalkerSpawnTimer> walkerSpawnTimerRW;
 
         public int numberOfPrefabsToSpawn => spawnerProperties.ValueRO.numberOfObjectsToSpawn;
         public Entity prefabToSpawn => spawnerProperties.ValueRO.prefab;
@@ -38,7 +41,7 @@ namespace ECS_Test_Scripts.ComponentsAndTags
 
             return randomPosition;
         }
-        private const float BRAIN_SAFETY_RADIUS_SQ = 100;
+        private const float BRAIN_SAFETY_RADIUS_SQ = 250;
         
         private float3 MinCorner => Transform.Position - HalfDimensions;
         private float3 MaxCorner => Transform.Position + HalfDimensions;
@@ -57,17 +60,17 @@ namespace ECS_Test_Scripts.ComponentsAndTags
             return spawnerRandom.ValueRW.value.NextFloat2();
         }
 
-        // public float ZombieSpawnTimer
-        // {
-        //     get => _zombieSpawnTimer.ValueRO.Value;
-        //     set => _zombieSpawnTimer.ValueRW.Value = value;
-        // }
+        public float walkerSpawnTimer
+        {
+            get => walkerSpawnTimerRW.ValueRO.value;
+            set => walkerSpawnTimerRW.ValueRW.value = value;
+        }
 
-        // public bool TimeToSpawnZombie => ZombieSpawnTimer <= 0f;
-        //
-        // public float ZombieSpawnRate => _graveyardProperties.ValueRO.ZombieSpawnRate;
-        //
-        // public Entity ZombiePrefab => _graveyardProperties.ValueRO.ZombiePrefab;
+        public bool timeToSpawnWalker => walkerSpawnTimer <= 0f;
+        
+        public float walkerSpawnRate => spawnerProperties.ValueRO.walkerSpawnRate;
+        
+        public Entity walkerPrefab => spawnerProperties.ValueRO.walkerPrefab;
 
         // public LocalTransform GetZombieSpawnPoint()
         // {

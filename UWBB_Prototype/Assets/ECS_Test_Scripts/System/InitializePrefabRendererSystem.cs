@@ -1,4 +1,4 @@
-﻿using ECS_Test_Scripts.AuthoringAndMono;
+using ECS_Test_Scripts.AuthoringAndMono;
 using ECS_Test_Scripts.ComponentsAndTags;
 using Unity.Burst;
 using Unity.Collections;
@@ -27,14 +27,6 @@ namespace ECS_Test_Scripts.System
         {
             state.Enabled = false;
             var ecb = new EntityCommandBuffer(Allocator.Temp);
-            
-            var spawner = SystemAPI.GetAspect<SpawnerAspect>(SystemAPI.GetSingletonEntity<SpawnerProperties>());
-            
-            foreach (var prefabRenderer in SystemAPI.Query<RefRW<PrefabRenderer>>())
-            {
-                ecb.AddComponent(prefabRenderer.ValueRW.Value,
-                    new PrefabOffset { Value = spawner.GetRandomOffset() });
-            }
             ecb.Playback(state.EntityManager);
         }
     }

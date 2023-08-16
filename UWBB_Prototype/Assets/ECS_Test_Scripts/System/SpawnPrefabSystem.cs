@@ -2,6 +2,7 @@
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Mathematics;
 
 namespace ECS_Test_Scripts.System
 {
@@ -25,13 +26,26 @@ namespace ECS_Test_Scripts.System
             
             var ecb = new EntityCommandBuffer(Allocator.Temp);
             
+            var prefabOffset = new float3(0f, -2f, 1f);
+            
+            var builder = new BlobBuilder(Allocator.Temp);
+            ref var spawnPoints = ref builder.ConstructRoot<PrefabSpawnPointsBlob>();
+            var arrayBuilder = builder.Allocate(ref spawnPoints.Value, spawner.numberOfPrefabsToSpawn);
+
             for (int i = 0; i < spawner.numberOfPrefabsToSpawn; i++)
             {
                 var instantiatedEntity = ecb.Instantiate(spawner.prefabToSpawn);
                 var randomTransform = spawner.GetRandomPrefabTransform();
                 ecb.SetComponent(instantiatedEntity, randomTransform);
+                
+                var newPrefabSpawnPoint = randomTransform.Position + prefabOffset;
+                arrayBuilder[i] = newPrefabSpawnPoint;
             }
 
+            var blobAsset = builder.CreateBlobAssetReference<PrefabSpawnPointsBlob>(Allocator.Persistent);
+            ecb.SetComponent(spawnerEntity, new PrefabSpawnPoints {Value = blobAsset});
+            builder.Dispose();
+            
             ecb.Playback(state.EntityManager);
             ecb.Dispose();
         }

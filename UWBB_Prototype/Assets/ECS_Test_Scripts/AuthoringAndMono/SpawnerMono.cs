@@ -13,6 +13,9 @@ namespace ECS_Test_Scripts.AuthoringAndMono
         public int numberOfObjectsToSpawn;
         public  GameObject prefab;
         public uint randomSeed;
+
+        public GameObject walkerPrefab;
+        public float walkerSpawnRate;
     }
 
     public class SpawnerBaker : Baker<SpawnerMono>
@@ -25,12 +28,16 @@ namespace ECS_Test_Scripts.AuthoringAndMono
             {
                 fieldDimensions = authoring.fieldDimensions,
                 numberOfObjectsToSpawn = authoring.numberOfObjectsToSpawn,
-                prefab = GetEntity(authoring.prefab, TransformUsageFlags.Dynamic)
+                prefab = GetEntity(authoring.prefab, TransformUsageFlags.Dynamic),
+                walkerPrefab = GetEntity(authoring.walkerPrefab, TransformUsageFlags.Dynamic),
+                walkerSpawnRate = authoring.walkerSpawnRate
             });
             AddComponent(entity, new SpawnerRandom
             {
                 value = Random.CreateFromIndex(authoring.randomSeed)
             });
+            AddComponent<PrefabSpawnPoints>();
+            AddComponent<WalkerSpawnTimer>();
         }
     }
 }

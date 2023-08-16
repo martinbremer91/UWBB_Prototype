@@ -168,11 +168,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fieldDimensions:
-    x: 100
-    y: 100
-  numberOfObjectsToSpawn: 250
+    x: 300
+    y: 300
+  numberOfObjectsToSpawn: 5000
   prefab: {fileID: 6125046265773791364, guid: 23956f6391d27ea4aa6db29e5f3a632a, type: 3}
   randomSeed: 100
+  walkerPrefab: {fileID: 4088546663915624991, guid: 37f40a37ac8bde34ead0ba644342848c, type: 3}
+  walkerSpawnRate: 3
 --- !u!1 &1811096710
 GameObject:
   m_ObjectHideFlags: 0
