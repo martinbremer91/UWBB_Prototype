@@ -1,6 +1,7 @@
 ﻿using ECS_Test_Scripts.ComponentsAndTags;
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.Transforms;
 using UnityEngine;
 using Random = Unity.Mathematics.Random;
 
@@ -18,13 +19,13 @@ namespace ECS_Test_Scripts.AuthoringAndMono
     {
         public override void Bake(SpawnerMono authoring)
         {
-            Entity entity = GetEntity(TransformUsageFlags.None);
+            Entity entity = GetEntity(TransformUsageFlags.Dynamic);
             
             AddComponent(entity, new SpawnerProperties
             {
                 fieldDimensions = authoring.fieldDimensions,
                 numberOfObjectsToSpawn = authoring.numberOfObjectsToSpawn,
-                prefab = GetEntity(authoring.prefab, TransformUsageFlags.None)
+                prefab = GetEntity(authoring.prefab, TransformUsageFlags.Dynamic)
             });
             AddComponent(entity, new SpawnerRandom
             {

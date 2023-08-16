@@ -27,10 +27,13 @@ namespace ECS_Test_Scripts.System
             
             for (int i = 0; i < spawner.numberOfPrefabsToSpawn; i++)
             {
-                ecb.Instantiate(spawner.prefabToSpawn);
+                var instantiatedEntity = ecb.Instantiate(spawner.prefabToSpawn);
+                var randomTransform = spawner.GetRandomPrefabTransform();
+                ecb.SetComponent(instantiatedEntity, randomTransform);
             }
-            
+
             ecb.Playback(state.EntityManager);
+            ecb.Dispose();
         }
     }
 }
