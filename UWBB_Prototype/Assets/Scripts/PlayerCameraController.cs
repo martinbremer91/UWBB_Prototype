@@ -62,26 +62,4 @@ public class PlayerCameraController : MonoBehaviour
     {
         lockOnController.onLockOn -= OnLockOn;
     }
-
-#if UNITY_EDITOR
-    private void OnDrawGizmos()
-    {
-        Vector2 inputVector = inputController.inputState.characterPlaneInput;
-        
-        var playerPosition = player.position;
-        var tf = transform;
-        
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(playerPosition - tf.right + Vector3.down, playerPosition + tf.right + Vector3.down);
-        
-        Gizmos.color = Color.blue;
-        Gizmos.DrawLine(playerPosition - tf.forward + Vector3.down, playerPosition + tf.forward + Vector3.down);
-        
-        if (inputVector.magnitude == 0)
-            return;
-        
-        Gizmos.color = Color.magenta;
-        Gizmos.DrawLine(playerPosition, playerPosition + tf.right * inputVector.x + tf.forward * inputVector.y);
-    }
-#endif
 }
