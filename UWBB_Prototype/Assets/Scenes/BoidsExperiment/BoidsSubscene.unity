@@ -168,8 +168,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boidPrefab: {fileID: 9104260936287902875, guid: 796480de130f96f40a1352dbee5983db, type: 3}
-  numberOfBoids: 5000
-  spawnerVolume: {x: 100, y: 100, z: 100}
+  numberOfBoids: 50000
+  spawnerVolume: {x: 200, y: 200, z: 200}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

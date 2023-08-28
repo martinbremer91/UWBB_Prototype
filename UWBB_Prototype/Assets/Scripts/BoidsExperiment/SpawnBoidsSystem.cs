@@ -28,13 +28,12 @@ namespace BoidsExperiment
             uint seed = (uint)SystemAPI.Time.ElapsedTime;
             var random = Random.CreateFromIndex(seed);
 
-            foreach (var transform in SystemAPI.Query<RefRW<LocalTransform>>().WithAll<BoidSpeed>())
+            foreach (var (transform, direction) in SystemAPI.Query<RefRW<LocalTransform>, RefRW<BoidDirection>>().WithAll<BoidSpeed>())
             {
                 float3 offsetFromCenter = random.NextFloat3() * spawner.spawnerVolume;
                 transform.ValueRW.Position = spawner.center + offsetFromCenter;
 
-                float3 direction = random.NextFloat3(new float3(-1, -1, -1), new float3(1, 1, 1));
-                transform.ValueRW.Rotation = quaternion.LookRotation(direction, new float3(0, 1, 0));
+                direction.ValueRW.direction = random.NextFloat3(new float3(-1, -1, -1), new float3(1, 1, 1));
             }
         }
     }
