@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class PlayerCameraController : MonoBehaviour
@@ -7,27 +6,21 @@ public class PlayerCameraController : MonoBehaviour
     [SerializeField] private PlayerLockOnController lockOnController;
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private Transform player;
-    private Transform camHolder;
 
     [SerializeField] private float rotationSpeed = 180;
 
-    private void Awake()
-    {
-        camHolder = transform.parent;
-        lockOnController.onLockOn += OnLockOn;
-    }
+    private void Awake() => lockOnController.onLockOn += OnLockOn;
 
     private void LateUpdate()
     {
-        if (playerMovement.movementStyle is MovementStyle.LockedToCamPlane)
+        if (inputController.inputState.snapCommand)
         {
-            if (inputController.inputState.snapCommand)
-            {
-                SnapCamToHorizonPlane();
-                inputController.inputState.snapCommand = false;
-            } else if (!lockOnController.lockedOn)
-                HandleCamInput(inputController.inputState.yInput);
-        }
+            SnapCamToHorizonPlane();
+            inputController.inputState.snapCommand = false;
+        } else if (!lockOnController.lockedOn)
+            HandleCamInput(inputController.inputState.characterAxisInput);
+        else
+            OnLockOn();
     }
 
     private void HandleCamInput(Vector2 input)
@@ -50,8 +43,7 @@ public class PlayerCameraController : MonoBehaviour
         transform.RotateAround(player.position, transform.right, angleToHorizonPlane);
         playerMovement.SnapPlayerToHorizonPlane();
     }
-
-    // TODO: remove duplicated code (this function is also in the movement controller)
+    
     private float GetAngleToHorizonPlane()
     {
         float angleToHorizonPlane = Vector3.Angle(transform.forward, new Vector3(transform.forward.x, 0, transform.forward.z));
@@ -63,35 +55,11 @@ public class PlayerCameraController : MonoBehaviour
         Vector3 targetPlayerDirection = (player.position - lockOnController.target.position).normalized;
         float distanceToPlayer = (player.position - transform.position).magnitude;
         transform.position = player.position + targetPlayerDirection * distanceToPlayer;
-        HandleLockedOn();
+        transform.LookAt(lockOnController.target.position);
     }
-
-    private void HandleLockedOn() => transform.LookAt(lockOnController.target.position);
 
     private void OnDestroy()
     {
         lockOnController.onLockOn -= OnLockOn;
     }
-
-#if UNITY_EDITOR
-    private void OnDrawGizmos()
-    {
-        Vector2 inputVector = inputController.inputState.xzInput;
-        
-        var playerPosition = player.position;
-        var tf = transform;
-        
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(playerPosition - tf.right + Vector3.down, playerPosition + tf.right + Vector3.down);
-        
-        Gizmos.color = Color.blue;
-        Gizmos.DrawLine(playerPosition - tf.forward + Vector3.down, playerPosition + tf.forward + Vector3.down);
-        
-        if (inputVector.magnitude == 0)
-            return;
-        
-        Gizmos.color = Color.magenta;
-        Gizmos.DrawLine(playerPosition, playerPosition + tf.right * inputVector.x + tf.forward * inputVector.y);
-    }
-#endif
 }

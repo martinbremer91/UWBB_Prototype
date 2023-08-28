@@ -22,16 +22,16 @@ public class MovementInputController : MonoBehaviour
         freeMovement.LockOnToggle.performed += _ => ToggleLockOn();
     }
     
-    private void HandleXZInput(Vector2 input) => inputState.xzInput = input;
-    private void HandleYInput(Vector2 input) => inputState.yInput = input;
+    private void HandleXZInput(Vector2 input) => inputState.characterPlaneInput = input;
+    private void HandleYInput(Vector2 input) => inputState.characterAxisInput = input;
     private void SnapToHorizon() => inputState.snapCommand = true;
     private void ToggleLockOn() => inputState.lockOnToggleCommand = true;
 }
 
 public struct InputState
 {
-    public Vector2 xzInput;
-    public Vector2 yInput;
+    public Vector2 characterPlaneInput;
+    public Vector2 characterAxisInput;
 
     public bool snapCommand;
     public bool lockOnToggleCommand;
