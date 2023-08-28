@@ -6,6 +6,7 @@ using Unity.Transforms;
 namespace BoidsExperiment
 {
     [BurstCompile]
+    [UpdateInGroup(typeof(SimulationSystemGroup), OrderLast = true)]
     public partial struct RotateAndMoveBoidForwardSystem : ISystem
     {
         [BurstCompile]

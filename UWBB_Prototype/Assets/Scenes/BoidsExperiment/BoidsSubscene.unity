@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 659913467}
   - component: {fileID: 659913468}
+  - component: {fileID: 659913469}
   m_Layer: 0
   m_Name: BoidSpawner
   m_TagString: Untagged
@@ -169,7 +170,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boidPrefab: {fileID: 9104260936287902875, guid: 796480de130f96f40a1352dbee5983db, type: 3}
   numberOfBoids: 50000
-  spawnerVolume: {x: 200, y: 200, z: 200}
+--- !u!114 &659913469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 659913466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81452c9ac3c245ee82e69e77c30d70bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  partitionSize: 10
+  volume: {x: 200, y: 200, z: 200}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
