@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boidPrefab: {fileID: 9104260936287902875, guid: 796480de130f96f40a1352dbee5983db, type: 3}
-  numberOfBoids: 50000
+  numberOfBoids: 5000
 --- !u!114 &659913469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,8 +182,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81452c9ac3c245ee82e69e77c30d70bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  partitionSize: 10
-  volume: {x: 200, y: 200, z: 200}
+  partitionSize: 5
+  volume: {x: 100, y: 100, z: 100}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -2,7 +2,6 @@
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
-using UnityEngine;
 
 namespace BoidsExperiment
 {
@@ -15,16 +14,16 @@ namespace BoidsExperiment
         [BurstCompile]
         protected override void OnCreate()
         {
-            RequireForUpdate<BoidVolumeAndPartitions>();
+            RequireForUpdate<BoidVolume>();
             RequireForUpdate<BoidSpawner>();
         }
         
         [BurstCompile]
         protected override void OnStartRunning()
         {
-            var volumeAndPartitions = SystemAPI.GetSingleton<BoidVolumeAndPartitions>();
-            center = volumeAndPartitions.center;
-            volume = volumeAndPartitions.volume;
+            var boidVolume = SystemAPI.GetSingleton<BoidVolume>();
+            center = boidVolume.center;
+            volume = boidVolume.volume;
         }
         
         [BurstCompile]
