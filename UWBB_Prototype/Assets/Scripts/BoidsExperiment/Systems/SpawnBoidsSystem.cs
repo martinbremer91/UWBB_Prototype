@@ -8,6 +8,7 @@ using Random = Unity.Mathematics.Random;
 namespace BoidsExperiment
 {
     [BurstCompile]
+    [UpdateBefore(typeof(AssignHashFromBoidPositionSystem))]
     public partial struct SpawnBoidsSystem : ISystem
     {
         [BurstCompile]
@@ -37,7 +38,7 @@ namespace BoidsExperiment
                 float3 offsetFromCenter = (random.NextFloat3() - centerAlignmentOffset) * volume.volume;
                 transform.ValueRW.Position = volume.center + offsetFromCenter;
 
-                direction.ValueRW.direction = random.NextFloat3(new float3(-1, -1, -1), new float3(1, 1, 1));
+                direction.ValueRW.value = random.NextFloat3(new float3(-1, -1, -1), new float3(1, 1, 1));
             }
         }
     }

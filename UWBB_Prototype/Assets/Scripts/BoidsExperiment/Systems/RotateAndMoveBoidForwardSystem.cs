@@ -18,8 +18,7 @@ namespace BoidsExperiment
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            var rotateAndMoveJob = new RotateAndMoveBoidForwardJob {deltaTime = SystemAPI.Time.DeltaTime};
-            rotateAndMoveJob.ScheduleParallel();
+            new RotateAndMoveBoidForwardJob {deltaTime = SystemAPI.Time.DeltaTime}.ScheduleParallel();
         }
     }
 
@@ -31,7 +30,7 @@ namespace BoidsExperiment
         private void Execute(in BoidSpeed speed, in BoidDirection direction, ref LocalToWorld transform)
         {
             float3 translation = transform.Position + transform.Forward * speed.value * deltaTime;
-            quaternion rotation = quaternion.LookRotationSafe(direction.direction, new float3(0, 0, 1));
+            quaternion rotation = quaternion.LookRotationSafe(direction.value, new float3(0, 0, 1));
             
             transform = new LocalToWorld
             {

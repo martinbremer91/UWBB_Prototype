@@ -29,15 +29,15 @@ namespace BoidsExperiment
         [BurstCompile]
         protected override void OnUpdate()
         {
-            var restrictToVolumeJob = new RestrictBoidsToVolumeJob
+            new RestrictBoidsToVolumeJob
             {
                 volumeCenter = center,
                 boundsDimensions = new float3(volume.x * .5f + 1, volume.y * .5f + 1, volume.z * .5f +1),
-            };
-            restrictToVolumeJob.ScheduleParallel();
+            }.ScheduleParallel();
         }
     }
 
+    [BurstCompile]
     public partial struct RestrictBoidsToVolumeJob : IJobEntity
     {
         public float3 volumeCenter;
@@ -45,7 +45,7 @@ namespace BoidsExperiment
         
         private void Execute(in BoidDirection direction, ref LocalToWorld transform)
         {
-            float3 forwardPoint = transform.Position + direction.direction;
+            float3 forwardPoint = transform.Position + direction.value;
 
             bool outOfBounds =
                 math.abs(forwardPoint.x) > volumeCenter.x + boundsDimensions.x

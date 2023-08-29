@@ -1,21 +1,26 @@
+using BoidsExperiment;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 
 public class BoidAuthoring : MonoBehaviour
 {
-    public float speed = 1;
+    public BoidsConfigs configs;
+    
+    private float speed => configs.speed;
+    private float range => configs.range;
 
     public class Baker : Baker<BoidAuthoring>
     {
         public override void Bake(BoidAuthoring authoring)
         {
             Entity entity = GetEntity(TransformUsageFlags.Dynamic);
-            
-            AddComponent<BoidSpeed>(entity, new BoidSpeed {value =  authoring.speed});
-            AddComponent<BoidDirection>(entity, new BoidDirection
+
+            AddComponent(entity, new BoidPartitionHash { value = default });
+            AddComponent(entity, new BoidSpeed {value =  authoring.speed});
+            AddComponent(entity, new BoidDirection
             {
-                direction = new float3(0, 0, 1),
+                value = new float3(0, 0, 1),
                 avoidanceDir = new float3(0, 0, 1),
                 // alignmentDir = new float3(0, 0, 1),
                 // cohesionDir = new float3(0, 0, 1),
@@ -27,6 +32,11 @@ public class BoidAuthoring : MonoBehaviour
     } 
 }
 
+public struct BoidPartitionHash : IComponentData
+{
+    public uint value;
+}
+
 public struct BoidSpeed : IComponentData
 {
     public float value;
@@ -34,7 +44,7 @@ public struct BoidSpeed : IComponentData
 
 public struct BoidDirection : IComponentData
 {
-    public float3 direction;
+    public float3 value;
 
     public float3 avoidanceDir;
     // public float3 alignmentDir;

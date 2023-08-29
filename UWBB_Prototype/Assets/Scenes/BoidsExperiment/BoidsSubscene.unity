@@ -182,7 +182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81452c9ac3c245ee82e69e77c30d70bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  partitionSize: 5
+  configs: {fileID: 11400000, guid: 006bfdd036a0df34ea5e1771f5bd6baf, type: 2}
   volume: {x: 100, y: 100, z: 100}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
