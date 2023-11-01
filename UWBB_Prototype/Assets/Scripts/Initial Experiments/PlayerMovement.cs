@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     public Transform playerModel;
 
     [SerializeField] private CharacterControllerConfigs configs;
+    private DefaultCharacterControllerData controllerData => configs.defaultControllerData;
 
     private Vector3 horizonPlaneForward => transform.forward;
     private Vector3 characterPlaneForward => playerModel.forward;
@@ -28,7 +29,7 @@ public class PlayerMovement : MonoBehaviour
     private void HandleCharacterPlaneMovement(Vector2 input)
     {
         Vector3 movementVector = camController.GetVectorInRelationToCamRotation(input);
-        transform.Translate(movementVector * (configs.speed * Time.deltaTime), Space.World);
+        transform.Translate(movementVector * (controllerData.speed * Time.deltaTime), Space.World);
         
         if (!lockOnController.lockedOn)
             SetModelLookAtTarget(transform.position + movementVector);
@@ -36,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
     
     private void HandleYLockedOnMovement(Vector2 input)
     {
-        if (Mathf.Abs(GetAngleToHorizonPlane() - Mathf.Sign(input.y) * configs.minAngleToYRotationDeadZone) < configs.yRotationDeadZoneAngle)
+        if (Mathf.Abs(GetAngleToHorizonPlane() - Mathf.Sign(input.y) * controllerData.minAngleToYRotationDeadZone) < controllerData.yRotationDeadZoneAngle)
             transform.RotateAround(lockOnController.target.position, camController.transform.right, input.y * GetLockOnRotationSpeed() * Time.deltaTime);
         else
             HandleCharacterPlaneMovement(new Vector2(input.y, 0));
@@ -57,7 +58,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 center = lockOnController.target.position;
         float circumference = (center - transform.position).magnitude * Mathf.PI * 2;
     
-        return (configs.speed / circumference) * 360;
+        return (controllerData.speed / circumference) * 360;
     }
 
     private void OnLockOn()
