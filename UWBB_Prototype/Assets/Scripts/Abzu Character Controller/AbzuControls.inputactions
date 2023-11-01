@@ -2,7 +2,7 @@
     "name": "AbzuControls",
     "maps": [
         {
-            "name": "FreeMovment",
+            "name": "FreeMovement",
             "id": "98185b74-0d36-4c9c-9bf7-34044681d81a",
             "actions": [
                 {

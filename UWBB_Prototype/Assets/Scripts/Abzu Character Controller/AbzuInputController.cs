@@ -6,8 +6,7 @@ public class AbzuInputController : MonoBehaviour
 
     public AbzuInputState inputState = new();
 
-    private void Awake()
-    {
+    private void Awake() {
         controls = new();
         controls.Enable();
         AbzuControls.FreeMovementActions freeMovement = controls.FreeMovement;
@@ -27,10 +26,10 @@ public class AbzuInputController : MonoBehaviour
         // freeMovement.SnapToHorizon.performed += _ => SnapToHorizon();
         // freeMovement.LockOnToggle.performed += _ => ToggleLockOn();
     }
-    
+
     private void HandleMoveDirectionInput(Vector2 input) => inputState.moveDirectionInput = input;
     private void HandleCameraAngleInput(Vector2 input) => inputState.cameraAngleInput = input;
-    
+
     // private void SnapToHorizon() => inputState.snapCommand = true;
     // private void ToggleLockOn() => inputState.lockOnToggleCommand = true;
 }
