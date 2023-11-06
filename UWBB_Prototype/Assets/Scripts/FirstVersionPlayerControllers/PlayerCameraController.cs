@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerCameraController : MonoBehaviour
 {
-    [SerializeField] private MovementInputController inputController;
+    [SerializeField] private FirstVersionInputController inputController;
     [SerializeField] private PlayerLockOnController lockOnController;
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private Transform player;
@@ -13,12 +13,12 @@ public class PlayerCameraController : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (inputController.inputState.snapCommand)
+        if (inputController.FirstVersionInputState.snapCommand)
         {
             SnapCamToHorizonPlane();
-            inputController.inputState.snapCommand = false;
+            inputController.FirstVersionInputState.snapCommand = false;
         } else if (!lockOnController.lockedOn)
-            HandleCamInput(inputController.inputState.characterAxisInput);
+            HandleCamInput(inputController.FirstVersionInputState.characterAxisInput);
         else
             OnLockOn();
     }

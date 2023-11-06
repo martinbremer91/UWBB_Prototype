@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerLockOnController : MonoBehaviour
 {
-    [SerializeField] private MovementInputController inputController;
+    [SerializeField] private FirstVersionInputController inputController;
     
     public Transform target;
     [SerializeField] private Transform cameraTransform;
@@ -20,14 +20,14 @@ public class PlayerLockOnController : MonoBehaviour
 
     private void Update()
     {
-        if (inputController.inputState.lockOnToggleCommand)
+        if (inputController.FirstVersionInputState.lockOnToggleCommand)
         {
             if (lockedOn)
                 ReleaseLockOn();
             else
                 TryLockOn();
             
-            inputController.inputState.lockOnToggleCommand = false;
+            inputController.FirstVersionInputState.lockOnToggleCommand = false;
         }
     }
 

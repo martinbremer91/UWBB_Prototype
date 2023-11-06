@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private MovementInputController inputController;
+    [SerializeField] private FirstVersionInputController inputController;
     [SerializeField] private PlayerCameraController camController;
     [SerializeField] private PlayerLockOnController lockOnController;
     public Transform playerModel;
@@ -18,9 +18,9 @@ public class PlayerMovement : MonoBehaviour
     
     private void Update()
     {
-        InputState inputState = inputController.inputState;
-        HandleCharacterPlaneMovement(inputState.characterPlaneInput);
-        HandleYLockedOnMovement(inputState.characterAxisInput);
+        FirstVersionInputState firstVersionInputState = inputController.FirstVersionInputState;
+        HandleCharacterPlaneMovement(firstVersionInputState.characterPlaneInput);
+        HandleYLockedOnMovement(firstVersionInputState.characterAxisInput);
         
         if (lockOnController.lockedOn)
             SetModelLookAtTarget(lockOnController.target.position);

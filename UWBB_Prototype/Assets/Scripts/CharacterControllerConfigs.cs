@@ -1,5 +1,7 @@
-﻿using UnityEngine;
-using UnityEngine.Serialization;
+﻿using System;
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace DefaultNamespace
 {
@@ -12,7 +14,19 @@ namespace DefaultNamespace
         
         [Header("CONTROLLER PRESETS")]
         public DefaultCharacterControllerData defaultControllerData;
+
+        [NonSerialized] public FirstVersionInputController firstVersionInputController;
+        [NonSerialized] public AbzuInputController abzuInputController;
         
+        private void Awake()
+        {
+            firstVersionInputController = new();
+            firstVersionInputController.Init();
+
+            abzuInputController = new();
+            abzuInputController.Init();
+        }
+
         public enum MovementControllerType
         {
             Default,
@@ -25,7 +39,7 @@ namespace DefaultNamespace
         }
     }
 
-    [System.Serializable]
+    [Serializable]
     public class DefaultCharacterControllerData
     {
         [Header("Movement parameters")]
