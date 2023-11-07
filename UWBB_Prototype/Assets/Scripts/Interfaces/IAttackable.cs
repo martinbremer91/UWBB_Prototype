@@ -1,4 +1,4 @@
-﻿namespace DefaultNamespace
+﻿namespace UWBB.Interfaces
 {
     public interface IAttackable
     {

@@ -1,11 +1,11 @@
 ﻿using System;
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+using UWBB.CharacterController.Abzu;
+using UWBB.CharacterController.FirstVersion;
 
-namespace DefaultNamespace
+namespace UWBB.CharacterController
 {
-    [CreateAssetMenu(fileName = "CharacterControllerConfigs", menuName = "CharacterController", order = 0)]
+    [CreateAssetMenu(fileName = "CharacterControllerConfigs", menuName = "UWBB/CharacterController")]
     public class CharacterControllerConfigs : ScriptableObject
     {
         [Header("ACTIVE CONTROLLER SETTINGS")] 

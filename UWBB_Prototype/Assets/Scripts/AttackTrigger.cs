@@ -1,5 +1,5 @@
 using UnityEngine;
-using DefaultNamespace;
+using UWBB.Interfaces;
 
 public class AttackTrigger : MonoBehaviour
 {

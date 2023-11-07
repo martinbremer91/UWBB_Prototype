@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace DefaultNamespace.Abzu_Character_Controller
+namespace UWBB.CharacterController.Abzu
 {
     public class AbzuMovementController : MonoBehaviour
     {

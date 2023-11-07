@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 
-namespace DefaultNamespace.Abzu_Character_Controller
+namespace UWBB.CharacterController.Abzu
 {
     public class AbzuCameraController : MonoBehaviour
     {
-        [SerializeField] private AbzuInputController inputController;
+        private AbzuInputController inputController;
         [SerializeField] private Transform player;
 
         [SerializeField] private float rotationSpeed = 180;
@@ -21,8 +21,9 @@ namespace DefaultNamespace.Abzu_Character_Controller
 
         private float GetAngleToHorizonPlane()
         {
-            float angleToHorizonPlane = Vector3.Angle(transform.forward, new Vector3(transform.forward.x, 0, transform.forward.z));
-            return transform.forward.y < 0 ? -angleToHorizonPlane : angleToHorizonPlane;
+            var forward = transform.forward;
+            float angleToHorizonPlane = Vector3.Angle(forward, new Vector3(forward.x, 0, forward.z));
+            return forward.y < 0 ? -angleToHorizonPlane : angleToHorizonPlane;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace DefaultNamespace
+namespace UWBB.Interfaces
 {
     public interface IKnockbackable
     {
