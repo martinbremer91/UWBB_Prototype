@@ -3,7 +3,7 @@ using UWBB.Interfaces;
 
 namespace UWBB.CharacterController.FirstVersion
 {
-    public class FirstVersionInputController : IInputController<FirstVersionControls>
+    public class FirstVersionInputLogic : IInputLogic<FirstVersionControls>
     {
         public FirstVersionInputState FirstVersionInputState = new();
         public FirstVersionControls controls { get; set; }

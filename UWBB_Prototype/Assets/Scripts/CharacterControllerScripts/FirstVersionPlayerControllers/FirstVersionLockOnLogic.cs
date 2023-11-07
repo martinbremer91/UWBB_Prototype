@@ -1,11 +1,12 @@
 using System;
 using UnityEngine;
+using UWBB.Interfaces;
 
 namespace UWBB.CharacterController.FirstVersion
 {
-    public class FirstVersionLockOnController : MonoBehaviour
+    public class FirstVersionLockOnLogic : ILockOnLogic
     {
-        [SerializeField] private FirstVersionInputController inputController;
+        [SerializeField] private FirstVersionInputLogic inputController;
         
         public Transform target;
         [SerializeField] private Transform cameraTransform;

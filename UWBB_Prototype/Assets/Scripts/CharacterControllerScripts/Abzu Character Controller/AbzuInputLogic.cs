@@ -3,7 +3,7 @@ using UWBB.Interfaces;
 
 namespace UWBB.CharacterController.Abzu
 {
-    public class AbzuInputController : IInputController<AbzuControls>
+    public class AbzuInputLogic : IInputLogic<AbzuControls>
     {
         public AbzuControls controls { get; set; }
 
@@ -13,7 +13,7 @@ namespace UWBB.CharacterController.Abzu
         }
     }
 
-    public struct AbzuInputState
+    public struct AbzuInputState : IInputState
     {
         public Vector2 moveDirectionInput;
         public Vector2 cameraAngleInput;

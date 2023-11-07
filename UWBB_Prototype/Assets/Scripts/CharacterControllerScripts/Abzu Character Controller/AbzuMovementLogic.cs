@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
+using UWBB.Interfaces;
 
 namespace UWBB.CharacterController.Abzu
 {
-    public class AbzuMovementController : MonoBehaviour
+    public class AbzuMovementLogic : IMovementLogic
     {
-        [SerializeField] private AbzuInputController inputController;
-        [SerializeField] private AbzuCameraController camController;
+        [SerializeField] private AbzuInputLogic inputLogic;
+        [SerializeField] private AbzuCameraLogic camLogic;
 
         [SerializeField] private CharacterControllerConfigs configs;
 

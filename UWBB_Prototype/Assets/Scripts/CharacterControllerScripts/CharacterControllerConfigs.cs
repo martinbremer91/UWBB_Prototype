@@ -1,7 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using UWBB.CharacterController.Abzu;
-using UWBB.CharacterController.FirstVersion;
 
 namespace UWBB.CharacterController
 {
@@ -14,18 +12,6 @@ namespace UWBB.CharacterController
         
         [Header("CONTROLLER PRESETS")]
         public DefaultCharacterControllerData defaultControllerData;
-
-        [NonSerialized] public FirstVersionInputController firstVersionInputController;
-        [NonSerialized] public AbzuInputController abzuInputController;
-        
-        private void Awake()
-        {
-            firstVersionInputController = new();
-            firstVersionInputController.Init();
-
-            abzuInputController = new();
-            abzuInputController.Init();
-        }
 
         public enum MovementControllerType
         {

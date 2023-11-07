@@ -1,17 +1,11 @@
-using UnityEngine;
+using UWBB.Interfaces;
 
 namespace UWBB.CharacterController
 {
-    public class MovementController : MonoBehaviour
+    public class MovementController
     {
-        void Start()
-        {
-        
-        }
-
-        void Update()
-        {
-        
-        }
+        private IMovementLogic movementLogic;
+        private ICameraLogic cameraLogic;
+        private ILockOnLogic lockOnLogic;
     }
 }

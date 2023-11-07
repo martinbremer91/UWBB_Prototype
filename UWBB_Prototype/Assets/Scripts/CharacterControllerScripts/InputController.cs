@@ -1,8 +1,6 @@
-using UnityEngine;
-
 namespace UWBB.CharacterController
 {
-    public class InputController : MonoBehaviour
+    public class InputController
     {
         private void Awake() {
         

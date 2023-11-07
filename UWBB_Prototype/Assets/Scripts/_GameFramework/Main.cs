@@ -1,11 +1,10 @@
-using System;
 using UnityEngine;
 
 namespace UWBB.GameFramework
 {
     public class Main : MonoBehaviour
     {
-        [NonSerialized] public Main instance;
+        public static Main instance;
         public MainConfigs configs;
 
         private void Awake()
