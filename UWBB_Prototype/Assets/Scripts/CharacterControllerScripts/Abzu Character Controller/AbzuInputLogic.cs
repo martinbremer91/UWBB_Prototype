@@ -1,4 +1,3 @@
-using UnityEngine;
 using UWBB.Interfaces;
 
 namespace UWBB.CharacterController.Abzu
@@ -11,11 +10,5 @@ namespace UWBB.CharacterController.Abzu
         {
             controls = new AbzuControls();
         }
-    }
-
-    public struct AbzuInputState : IInputState
-    {
-        public Vector2 moveDirectionInput;
-        public Vector2 cameraAngleInput;
     }
 }

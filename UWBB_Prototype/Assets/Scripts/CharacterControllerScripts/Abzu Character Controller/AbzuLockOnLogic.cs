@@ -2,7 +2,7 @@
 
 namespace UWBB.CharacterController.Abzu
 {
-    public class AbzuCameraLogic : ICameraLogic
+    public class AbzuLockOnLogic : ILockOnLogic
     {
         
     }

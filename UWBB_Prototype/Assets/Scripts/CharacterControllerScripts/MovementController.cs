@@ -2,10 +2,10 @@ using UWBB.Interfaces;
 
 namespace UWBB.CharacterController
 {
-    public class MovementController
+    public class MovementController : IPlayerController
     {
-        private IMovementLogic movementLogic;
-        private ICameraLogic cameraLogic;
-        private ILockOnLogic lockOnLogic;
+        public IMovementLogic movementLogic { get; set; }
+        public ICameraLogic cameraLogic { get; set; }
+        public ILockOnLogic lockOnLogic { get; set; }
     }
 }

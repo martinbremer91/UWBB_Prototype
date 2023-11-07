@@ -7,21 +7,22 @@ namespace UWBB.CharacterController
     public class CharacterControllerConfigs : ScriptableObject
     {
         [Header("ACTIVE CONTROLLER SETTINGS")] 
-        public MovementControllerType activeMovementController;
-        public LockOnControllerType activeLockOnController;
+        public MovementLogicType activeMovementLogic;
+        public LockOnLogicType activeLockOnLogic;
         
         [Header("CONTROLLER PRESETS")]
         public DefaultCharacterControllerData defaultControllerData;
 
-        public enum MovementControllerType
+        public enum MovementLogicType
         {
             Default,
             Abzu
         }
 
-        public enum LockOnControllerType
+        public enum LockOnLogicType
         {
             Default,
+            Abzu
         }
     }
 

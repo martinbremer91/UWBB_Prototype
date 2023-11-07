@@ -6,16 +6,16 @@ namespace UWBB.CharacterController.FirstVersion
 {
     public class FirstVersionLockOnLogic : ILockOnLogic
     {
-        [SerializeField] private FirstVersionInputLogic inputController;
+        private FirstVersionInputLogic inputController;
         
         public Transform target;
-        [SerializeField] private Transform cameraTransform;
+        private Transform cameraTransform;
 
-        [HideInInspector] public bool lockedOn;
+        public bool lockedOn;
 
         [Tooltip("Tolerance of the angle between camera and target for lock on to work. Higher value => more tolerant. \n \n" +
                  "A value of 0 corresponds to a tolerance of 0°. \nA value of 1 corresponds to a tolerance of 180°.")]
-        [SerializeField, Range(.1f, 1)] private float lockOnAngleTolerance;
+        private float lockOnAngleTolerance;
 
         public Action onLockOn;
         

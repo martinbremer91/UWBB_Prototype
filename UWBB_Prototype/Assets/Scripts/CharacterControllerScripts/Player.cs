@@ -1,20 +1,19 @@
-﻿using MovementControllerType = UWBB.CharacterController.CharacterControllerConfigs.MovementControllerType;
-using LockOnControllerType = UWBB.CharacterController.CharacterControllerConfigs.LockOnControllerType;
-using UWBB.GameFramework;
+﻿using UWBB.GameFramework;
 using UnityEngine;
+using UWBB.Interfaces;
 
 namespace UWBB.CharacterController
 {
     public class Player : MonoBehaviour
     {
-        public MovementController movementController = new();
-        public CameraController cameraController = new();
-        public LockOnController lockOnController = new();
+        private readonly MovementController movementController = new();
+        private readonly CameraController cameraController = new();
+        private readonly LockOnController lockOnController = new();
 
         private CharacterControllerConfigs configs;
         
-        private MovementControllerType movementControllerType;
-        private LockOnControllerType lockOnControllerType;
+        private CharacterControllerConfigs.MovementLogicType movementLogicType;
+        private CharacterControllerConfigs.LockOnLogicType lockOnLogicType;
         
         public void Init() => configs = Main.instance.configs.ccConfigs;
 
@@ -25,23 +24,27 @@ namespace UWBB.CharacterController
 
         private void ResolveActiveControllerTypes()
         {
-            MovementControllerType activeMovement = configs.activeMovementController;
-            LockOnControllerType activeLockOn = configs.activeLockOnController;
+            CharacterControllerConfigs.MovementLogicType activeMovement = configs.activeMovementLogic;
+            CharacterControllerConfigs.LockOnLogicType activeLockOn = configs.activeLockOnLogic;
 
-            if (activeMovement != movementControllerType)
-                SetActiveMovementController(activeMovement);
-            if (activeLockOn != lockOnControllerType)
-                SetActiveLockOnController(activeLockOn);
+            if (activeMovement != movementLogicType)
+                SetActiveMovementLogic(activeMovement);
+            if (activeLockOn != lockOnLogicType)
+                SetActiveLockOnLogic(activeLockOn);
         }
 
-        private void SetActiveMovementController(MovementControllerType activeMovement)
+        private void SetActiveMovementLogic(CharacterControllerConfigs.MovementLogicType activeMovement)
         {
-            
+            (movementController as IPlayerController).SetActiveMovementLogic(activeMovement);
+            (cameraController as IPlayerController).SetActiveMovementLogic(activeMovement);
+            (lockOnController as IPlayerController).SetActiveMovementLogic(activeMovement);
         }
         
-        private void SetActiveLockOnController(LockOnControllerType activeLockOn)
+        private void SetActiveLockOnLogic(CharacterControllerConfigs.LockOnLogicType activeLockOn)
         {
-            
+            (movementController as IPlayerController).SetActiveLockOnLogic(activeLockOn);
+            (cameraController as IPlayerController).SetActiveLockOnLogic(activeLockOn);
+            (lockOnController as IPlayerController).SetActiveLockOnLogic(activeLockOn);
         }
     }
 }

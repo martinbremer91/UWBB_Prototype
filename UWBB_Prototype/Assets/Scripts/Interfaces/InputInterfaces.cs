@@ -11,6 +11,4 @@ namespace UWBB.Interfaces
     {
         public T controls { get; set; }
     }
-
-    public interface IInputState {}
 }

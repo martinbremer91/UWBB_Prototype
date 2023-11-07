@@ -6,11 +6,11 @@ namespace UWBB.CharacterController.FirstVersion
     public class FirstVersionCameraLogic : ICameraLogic
     {
         private FirstVersionInputLogic inputController;
-        [SerializeField] private FirstVersionLockOnLogic lockOnLogic;
-        [SerializeField] private FirstVersionMovementLogic firstVersionMovementLogic;
-        [SerializeField] private Transform player;
+        private FirstVersionLockOnLogic lockOnLogic;
+        private FirstVersionMovementLogic firstVersionMovementLogic;
+        private Transform player;
 
-        [SerializeField] private float rotationSpeed = 180;
+        private float rotationSpeed = 180;
 
         private void Awake() => lockOnLogic.onLockOn += OnLockOn;
 
