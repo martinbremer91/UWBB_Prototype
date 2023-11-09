@@ -3,7 +3,7 @@ using UWBB.Interfaces;
 
 namespace UWBB.CharacterController.FirstVersion
 {
-    public class FirstVersionMovementLogic : PlayerLogic<FirstVersionInputState>
+    public class FirstVersionMovementLogic : PlayerLogic<FirstVersionInputState, FirstVersionMovementData>
     {
         private FirstVersionInputLogic inputController;
         private FirstVersionCameraLogic camLogic;
@@ -18,19 +18,19 @@ namespace UWBB.CharacterController.FirstVersion
         
         private void Start() => lockOnLogic.onLockOn += OnLockOn;
         
-        public override void RunUpdateInternal(FirstVersionInputState inputState)
+        public override FirstVersionMovementData RunUpdateInternal(FirstVersionInputState inputState)
         {
             throw new System.NotImplementedException();
         }
         
         private void Update()
         {
-            FirstVersionInputState firstVersionInputState = inputController.FirstVersionInputState;
-            HandleCharacterPlaneMovement(firstVersionInputState.characterPlaneInput);
-            HandleYLockedOnMovement(firstVersionInputState.characterAxisInput);
-            
-            if (lockOnLogic.lockedOn)
-                SetModelLookAtTarget(lockOnLogic.target.position);
+            // FirstVersionInputState firstVersionInputState = inputController.FirstVersionInputState;
+            // HandleCharacterPlaneMovement(firstVersionInputState.characterPlaneInput);
+            // HandleYLockedOnMovement(firstVersionInputState.characterAxisInput);
+            //
+            // if (lockOnLogic.lockedOn)
+            //     SetModelLookAtTarget(lockOnLogic.target.position);
         }
 
         private void HandleCharacterPlaneMovement(Vector2 input)
@@ -77,4 +77,6 @@ namespace UWBB.CharacterController.FirstVersion
 
         private void OnDestroy() => lockOnLogic.onLockOn -= OnLockOn;
     }
+    
+    public struct FirstVersionMovementData : IMovementLogicData {}
 }

@@ -2,11 +2,13 @@
 
 namespace UWBB.CharacterController.Abzu
 {
-    public class AbzuLockOnLogic : PlayerLogic<AbzuInputState>, ILockOnLogic
+    public class AbzuLockOnLogic : PlayerLogic<AbzuInputState, AbzuLockOnData>
     {
-        public override void RunUpdateInternal(AbzuInputState inputState)
+        public override AbzuLockOnData RunUpdateInternal(AbzuInputState inputState)
         {
             throw new System.NotImplementedException();
         }
     }
+    
+    public struct AbzuLockOnData : ILockOnLogicData {}
 }

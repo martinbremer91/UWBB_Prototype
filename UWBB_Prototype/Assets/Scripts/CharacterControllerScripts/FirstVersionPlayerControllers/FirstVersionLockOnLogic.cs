@@ -4,7 +4,7 @@ using UWBB.Interfaces;
 
 namespace UWBB.CharacterController.FirstVersion
 {
-    public class FirstVersionLockOnLogic : PlayerLogic<FirstVersionInputState>
+    public class FirstVersionLockOnLogic : PlayerLogic<FirstVersionInputState, FirstVersionLockOnData>
     {
         private FirstVersionInputLogic inputController;
         
@@ -21,22 +21,22 @@ namespace UWBB.CharacterController.FirstVersion
         
         private float maxLockOnDotProduct => 1 - lockOnAngleTolerance;
         
-        public override void RunUpdateInternal(FirstVersionInputState inputState)
+        public override FirstVersionLockOnData RunUpdateInternal(FirstVersionInputState inputState)
         {
             throw new NotImplementedException();
         }
         
         private void Update()
         {
-            if (inputController.FirstVersionInputState.lockOnToggleCommand)
-            {
-                if (lockedOn)
-                    ReleaseLockOn();
-                else
-                    TryLockOn();
-                
-                inputController.FirstVersionInputState.lockOnToggleCommand = false;
-            }
+            // if (inputController.FirstVersionInputState.lockOnToggleCommand)
+            // {
+            //     if (lockedOn)
+            //         ReleaseLockOn();
+            //     else
+            //         TryLockOn();
+            //     
+            //     inputController.FirstVersionInputState.lockOnToggleCommand = false;
+            // }
         }
 
         private void ReleaseLockOn()
@@ -57,4 +57,6 @@ namespace UWBB.CharacterController.FirstVersion
                 onLockOn?.Invoke();
         }
     }
+    
+    public struct FirstVersionLockOnData : ILockOnLogicData {}
 }

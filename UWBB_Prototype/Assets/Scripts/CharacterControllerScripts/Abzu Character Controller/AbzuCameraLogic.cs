@@ -2,11 +2,13 @@
 
 namespace UWBB.CharacterController.Abzu
 {
-    public class AbzuCameraLogic : PlayerLogic<AbzuInputState>, ICameraLogic
+    public class AbzuCameraLogic : PlayerLogic<AbzuInputState, AbzuCameraData>
     {
-        public override void RunUpdateInternal(AbzuInputState inputState)
+        public override AbzuCameraData RunUpdateInternal(AbzuInputState inputState)
         {
             throw new System.NotImplementedException();
         }
     }
+    
+    public struct AbzuCameraData : ICameraLogicData {}
 }

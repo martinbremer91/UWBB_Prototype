@@ -3,17 +3,19 @@ using UWBB.Interfaces;
 
 namespace UWBB.CharacterController
 {
-    public abstract class PlayerLogic<T> : IPlayerLogic<T> where T : IInputState
+    public abstract class PlayerLogic<T, U> : IPlayerTypedLogic<T, U> 
+        where T : IInputState
+        where U : IPlayerLogicData
     {
-        public void RunUpdate(IInputState inputState)
+        public U RunUpdate(IInputState inputState)
         {
             if (inputState is not T typedInputState)
                 throw new Exception($"PlayerLogic {this}: input state type is incompatible with " +
                                     $"the active player logic type {typeof(T)}");
             
-            RunUpdateInternal(typedInputState);
+            return RunUpdateInternal(typedInputState);
         }
 
-        public abstract void RunUpdateInternal(T inputState);
+        public abstract U RunUpdateInternal(T inputState);
     }
 }

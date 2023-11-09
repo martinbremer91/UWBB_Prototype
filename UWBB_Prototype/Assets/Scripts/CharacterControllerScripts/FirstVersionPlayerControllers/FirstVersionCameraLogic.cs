@@ -3,7 +3,7 @@ using UWBB.Interfaces;
 
 namespace UWBB.CharacterController.FirstVersion
 {
-    public class FirstVersionCameraLogic : PlayerLogic<FirstVersionInputState>
+    public class FirstVersionCameraLogic : PlayerLogic<FirstVersionInputState, FirstVersionCameraData>
     {
         private FirstVersionInputLogic inputController;
         private FirstVersionLockOnLogic lockOnLogic;
@@ -14,21 +14,21 @@ namespace UWBB.CharacterController.FirstVersion
 
         private void Awake() => lockOnLogic.onLockOn += OnLockOn;
 
-        public override void RunUpdateInternal(FirstVersionInputState inputState)
+        public override FirstVersionCameraData RunUpdateInternal(FirstVersionInputState inputState)
         {
             throw new System.NotImplementedException();
         }
         
         private void LateUpdate()
         {
-            if (inputController.FirstVersionInputState.snapCommand)
-            {
-                SnapCamToHorizonPlane();
-                inputController.FirstVersionInputState.snapCommand = false;
-            } else if (!lockOnLogic.lockedOn)
-                HandleCamInput(inputController.FirstVersionInputState.characterAxisInput);
-            else
-                OnLockOn();
+            // if (inputController.FirstVersionInputState.snapCommand)
+            // {
+            //     SnapCamToHorizonPlane();
+            //     inputController.FirstVersionInputState.snapCommand = false;
+            // } else if (!lockOnLogic.lockedOn)
+            //     HandleCamInput(inputController.FirstVersionInputState.characterAxisInput);
+            // else
+            //     OnLockOn();
         }
 
         private void HandleCamInput(Vector2 input)
@@ -73,4 +73,6 @@ namespace UWBB.CharacterController.FirstVersion
             lockOnLogic.onLockOn -= OnLockOn;
         }
     }
+    
+    public struct FirstVersionCameraData : ICameraLogicData {}
 }

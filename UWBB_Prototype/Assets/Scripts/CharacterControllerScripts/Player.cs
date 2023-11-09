@@ -6,10 +6,10 @@ namespace UWBB.CharacterController
 {
     public class Player : MonoBehaviour
     {
-        private IInputLogic inputLogic;
-        private IMovementLogic movementLogic;
-        private ICameraLogic cameraLogic;
-        private ILockOnLogic lockOnLogic;
+        private PlayerLogic<IInputState, IInputState> inputLogic;
+        private PlayerLogic<IInputState, IMovementLogicData> movementLogic;
+        private PlayerLogic<IInputState, ICameraLogicData> cameraLogic;
+        private PlayerLogic<IInputState, ILockOnLogicData> lockOnLogic;
         
         private readonly MovementController movementController = new();
         private readonly CameraController cameraController = new();
@@ -24,7 +24,7 @@ namespace UWBB.CharacterController
 
         private void Update()
         {
-            
+            IInputState inputState = inputLogic.RunUpdate(null);
         }
 
         private void LateUpdate()

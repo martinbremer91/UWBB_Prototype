@@ -3,14 +3,13 @@ using UWBB.Interfaces;
 
 namespace UWBB.CharacterController.FirstVersion
 {
-    public class FirstVersionInputLogic : IInputLogic<FirstVersionControls>
+    public class FirstVersionInputLogic : PlayerLogic<FirstVersionInputState, FirstVersionInputState>
     {
-        public FirstVersionInputState FirstVersionInputState = new();
         public FirstVersionControls controls { get; set; }
-        
-        public void Init()
+
+        public override FirstVersionInputState RunUpdateInternal(FirstVersionInputState inputState)
         {
-            
+            throw new System.NotImplementedException();
         }
     }
 
