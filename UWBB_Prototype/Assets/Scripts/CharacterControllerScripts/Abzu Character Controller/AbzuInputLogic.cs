@@ -11,4 +11,9 @@ namespace UWBB.CharacterController.Abzu
             controls = new AbzuControls();
         }
     }
+
+    public struct AbzuInputState : IInputState<AbzuInputState>
+    {
+        
+    }
 }

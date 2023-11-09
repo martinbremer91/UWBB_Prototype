@@ -3,7 +3,7 @@ using UWBB.Interfaces;
 
 namespace UWBB.CharacterController.FirstVersion
 {
-    public class FirstVersionMovementLogic : IMovementLogic
+    public class FirstVersionMovementLogic : PlayerLogic<FirstVersionInputState>
     {
         private FirstVersionInputLogic inputController;
         private FirstVersionCameraLogic camLogic;
@@ -17,6 +17,11 @@ namespace UWBB.CharacterController.FirstVersion
         private Vector3 characterPlaneForward => playerModel.forward;
         
         private void Start() => lockOnLogic.onLockOn += OnLockOn;
+        
+        public override void RunUpdateInternal(FirstVersionInputState inputState)
+        {
+            throw new System.NotImplementedException();
+        }
         
         private void Update()
         {

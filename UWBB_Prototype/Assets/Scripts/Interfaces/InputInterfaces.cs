@@ -11,4 +11,7 @@ namespace UWBB.Interfaces
     {
         public T controls { get; set; }
     }
+    
+    public interface IInputState {}
+    public interface IInputState<T> : IInputState where T : struct {}
 }

@@ -6,6 +6,11 @@ namespace UWBB.CharacterController
 {
     public class Player : MonoBehaviour
     {
+        private IInputLogic inputLogic;
+        private IMovementLogic movementLogic;
+        private ICameraLogic cameraLogic;
+        private ILockOnLogic lockOnLogic;
+        
         private readonly MovementController movementController = new();
         private readonly CameraController cameraController = new();
         private readonly LockOnController lockOnController = new();
@@ -19,32 +24,12 @@ namespace UWBB.CharacterController
 
         private void Update()
         {
-            ResolveActiveControllerTypes();
+            
         }
 
-        private void ResolveActiveControllerTypes()
+        private void LateUpdate()
         {
-            CharacterControllerConfigs.MovementLogicType activeMovement = configs.activeMovementLogic;
-            CharacterControllerConfigs.LockOnLogicType activeLockOn = configs.activeLockOnLogic;
-
-            if (activeMovement != movementLogicType)
-                SetActiveMovementLogic(activeMovement);
-            if (activeLockOn != lockOnLogicType)
-                SetActiveLockOnLogic(activeLockOn);
-        }
-
-        private void SetActiveMovementLogic(CharacterControllerConfigs.MovementLogicType activeMovement)
-        {
-            (movementController as IPlayerController).SetActiveMovementLogic(activeMovement);
-            (cameraController as IPlayerController).SetActiveMovementLogic(activeMovement);
-            (lockOnController as IPlayerController).SetActiveMovementLogic(activeMovement);
-        }
-        
-        private void SetActiveLockOnLogic(CharacterControllerConfigs.LockOnLogicType activeLockOn)
-        {
-            (movementController as IPlayerController).SetActiveLockOnLogic(activeLockOn);
-            (cameraController as IPlayerController).SetActiveLockOnLogic(activeLockOn);
-            (lockOnController as IPlayerController).SetActiveLockOnLogic(activeLockOn);
+            // camera stuff goes here?
         }
     }
 }

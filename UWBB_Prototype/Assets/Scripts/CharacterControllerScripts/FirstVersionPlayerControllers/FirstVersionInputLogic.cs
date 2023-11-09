@@ -14,7 +14,7 @@ namespace UWBB.CharacterController.FirstVersion
         }
     }
 
-    public struct FirstVersionInputState
+    public struct FirstVersionInputState : IInputState<FirstVersionInputState>
     {
         public Vector2 characterPlaneInput;
         public Vector2 characterAxisInput;

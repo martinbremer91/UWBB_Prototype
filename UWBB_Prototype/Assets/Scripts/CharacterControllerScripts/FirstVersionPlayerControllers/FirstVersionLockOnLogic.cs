@@ -4,7 +4,7 @@ using UWBB.Interfaces;
 
 namespace UWBB.CharacterController.FirstVersion
 {
-    public class FirstVersionLockOnLogic : ILockOnLogic
+    public class FirstVersionLockOnLogic : PlayerLogic<FirstVersionInputState>
     {
         private FirstVersionInputLogic inputController;
         
@@ -20,7 +20,12 @@ namespace UWBB.CharacterController.FirstVersion
         public Action onLockOn;
         
         private float maxLockOnDotProduct => 1 - lockOnAngleTolerance;
-
+        
+        public override void RunUpdateInternal(FirstVersionInputState inputState)
+        {
+            throw new NotImplementedException();
+        }
+        
         private void Update()
         {
             if (inputController.FirstVersionInputState.lockOnToggleCommand)

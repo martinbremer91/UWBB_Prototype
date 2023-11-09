@@ -1,6 +1,6 @@
 ﻿namespace UWBB.Interfaces
 {
-    public class ICameraLogic
+    public interface ICameraLogic
     {
         
     }

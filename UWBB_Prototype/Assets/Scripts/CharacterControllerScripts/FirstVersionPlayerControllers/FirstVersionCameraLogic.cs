@@ -3,17 +3,22 @@ using UWBB.Interfaces;
 
 namespace UWBB.CharacterController.FirstVersion
 {
-    public class FirstVersionCameraLogic : ICameraLogic
+    public class FirstVersionCameraLogic : PlayerLogic<FirstVersionInputState>
     {
         private FirstVersionInputLogic inputController;
         private FirstVersionLockOnLogic lockOnLogic;
         private FirstVersionMovementLogic firstVersionMovementLogic;
         private Transform player;
 
-        private float rotationSpeed = 180;
+        // private float rotationSpeed = 180;
 
         private void Awake() => lockOnLogic.onLockOn += OnLockOn;
 
+        public override void RunUpdateInternal(FirstVersionInputState inputState)
+        {
+            throw new System.NotImplementedException();
+        }
+        
         private void LateUpdate()
         {
             if (inputController.FirstVersionInputState.snapCommand)
