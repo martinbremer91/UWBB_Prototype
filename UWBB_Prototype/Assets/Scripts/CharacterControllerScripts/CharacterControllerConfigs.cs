@@ -1,29 +1,32 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace UWBB.CharacterController
 {
     [CreateAssetMenu(fileName = "CharacterControllerConfigs", menuName = "UWBB/CharacterController")]
     public class CharacterControllerConfigs : ScriptableObject
     {
-        [Header("ACTIVE CONTROLLER SETTINGS")] 
-        public MovementLogicType activeMovementLogic;
-        public LockOnLogicType activeLockOnLogic;
+        [FormerlySerializedAs("activeMovementLogic")] [Header("ACTIVE CONTROLLER SETTINGS")] 
+        public MovementLogicType activeMovementType;
+        [FormerlySerializedAs("activeLockOnLogic")] public LockOnLogicType activeLockOnType;
         
         [Header("CONTROLLER PRESETS")]
         public DefaultCharacterControllerData defaultControllerData;
+    }
 
-        public enum MovementLogicType
-        {
-            Default,
-            Abzu
-        }
+    public enum MovementLogicType
+    {
+        None,
+        FirstVersion,
+        Abzu
+    }
 
-        public enum LockOnLogicType
-        {
-            Default,
-            Abzu
-        }
+    public enum LockOnLogicType
+    {
+        None,
+        FirstVersion,
+        Abzu
     }
 
     [Serializable]

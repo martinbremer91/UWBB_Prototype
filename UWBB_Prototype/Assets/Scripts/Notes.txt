@@ -1,4 +1,9 @@
-﻿CHARACTER CONTROLLER SYSTEM
+﻿CURRENT:
+- Removed player logic refs from Player class
+- Need to find another way to instantiate and run the player logic classes according to active movement and lock on types (RunLogicCommand event in Player?)
+
+
+CHARACTER CONTROLLER SYSTEM
 - Create a CharacterController mono-behavior, a CameraController mono-behavior, and a LockOnController mono-behavior
     - all three mono-behaviors have references to the scene components they need...
     - ... and to the CharacterControllerConfigs asset
@@ -9,7 +14,6 @@
     - the mono-behaviors then get the necessary values from the c# classes...
     - ... and pass them on to further systems that apply the appropriate changes to the scene
         - these further systems must remain flexible enough to take in values from NPC AI
-
 
 PHYSICS SYSTEM
 - Look into Rigidbody.AddForce() and the difference between ForceModes

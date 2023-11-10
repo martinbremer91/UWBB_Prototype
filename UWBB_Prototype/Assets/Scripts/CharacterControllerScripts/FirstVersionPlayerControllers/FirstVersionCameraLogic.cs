@@ -3,7 +3,9 @@ using UWBB.Interfaces;
 
 namespace UWBB.CharacterController.FirstVersion
 {
-    public class FirstVersionCameraLogic : PlayerLogic<FirstVersionInputState, FirstVersionCameraData>
+    public class FirstVersionCameraLogic : 
+        IPlayerLogic<IInputState, ICameraLogicData>,
+        IPlayerLogic<FirstVersionInputState, FirstVersionCameraData>
     {
         private FirstVersionInputLogic inputController;
         private FirstVersionLockOnLogic lockOnLogic;
@@ -14,9 +16,13 @@ namespace UWBB.CharacterController.FirstVersion
 
         private void Awake() => lockOnLogic.onLockOn += OnLockOn;
 
-        public override FirstVersionCameraData RunUpdateInternal(FirstVersionInputState inputState)
+        public ICameraLogicData RunUpdate(IInputState inputState) 
+            => RunUpdate((FirstVersionInputState)inputState);
+
+        public FirstVersionCameraData RunUpdate(FirstVersionInputState inputState)
         {
-            throw new System.NotImplementedException();
+            Debug.Log("FirstVersionCamera RunUpdate");
+            return default;
         }
         
         private void LateUpdate()

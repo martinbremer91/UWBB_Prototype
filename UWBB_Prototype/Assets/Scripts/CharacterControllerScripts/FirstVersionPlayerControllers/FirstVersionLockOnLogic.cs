@@ -4,7 +4,9 @@ using UWBB.Interfaces;
 
 namespace UWBB.CharacterController.FirstVersion
 {
-    public class FirstVersionLockOnLogic : PlayerLogic<FirstVersionInputState, FirstVersionLockOnData>
+    public class FirstVersionLockOnLogic : 
+        IPlayerLogic<IInputState, ILockOnLogicData>,
+        IPlayerLogic<FirstVersionInputState, FirstVersionLockOnData>
     {
         private FirstVersionInputLogic inputController;
         
@@ -21,9 +23,13 @@ namespace UWBB.CharacterController.FirstVersion
         
         private float maxLockOnDotProduct => 1 - lockOnAngleTolerance;
         
-        public override FirstVersionLockOnData RunUpdateInternal(FirstVersionInputState inputState)
+        public ILockOnLogicData RunUpdate(IInputState inputState)
+            => RunUpdate((FirstVersionInputState)inputState);
+
+        public FirstVersionLockOnData RunUpdate(FirstVersionInputState inputState)
         {
-            throw new NotImplementedException();
+            Debug.Log("FirstVersionLockOn RunUpdate");
+            return default;
         }
         
         private void Update()

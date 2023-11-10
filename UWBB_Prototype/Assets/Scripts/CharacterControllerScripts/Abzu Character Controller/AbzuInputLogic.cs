@@ -1,28 +1,28 @@
+using UnityEngine;
 using UWBB.Interfaces;
 
 namespace UWBB.CharacterController.Abzu
 {
-    public class AbzuInputLogic : PlayerLogic<AbzuInputState, AbzuInputState>, IInputLogic
+    public class AbzuInputLogic : 
+        IInputLogic<IInputState>,
+        IInputLogic<AbzuInputState>
     {
-        public AbzuControls controls { get; set; }
+        private readonly AbzuControls controls = new();
 
-        public void Init()
-        {
-            controls = new AbzuControls();
-        }
+        public void Init() => controls.Enable();
+        public void Deinit() => controls.Disable();
 
-        public IInputState GetInputState()
-        {
-            throw new System.NotImplementedException();
-        }
+        IInputState IInputLogic<IInputState>.GetInputState()
+            => (this as IInputLogic<AbzuInputState>).GetInputState();
 
-        public override AbzuInputState RunUpdateInternal(AbzuInputState inputState)
+        AbzuInputState IInputLogic<AbzuInputState>.GetInputState()
         {
-            throw new System.NotImplementedException();
+            Debug.Log("AbzuInput GetInputState");
+            return default;
         }
     }
 
-    public struct AbzuInputState : IInputState<AbzuInputState>
+    public struct AbzuInputState : IInputState
     {
         
     }

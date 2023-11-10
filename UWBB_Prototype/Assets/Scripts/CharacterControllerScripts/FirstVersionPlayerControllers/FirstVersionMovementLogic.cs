@@ -3,7 +3,9 @@ using UWBB.Interfaces;
 
 namespace UWBB.CharacterController.FirstVersion
 {
-    public class FirstVersionMovementLogic : PlayerLogic<FirstVersionInputState, FirstVersionMovementData>
+    public class FirstVersionMovementLogic : 
+        IPlayerLogic<IInputState, IMovementLogicData>,
+        IPlayerLogic<FirstVersionInputState, FirstVersionMovementData>
     {
         private FirstVersionInputLogic inputController;
         private FirstVersionCameraLogic camLogic;
@@ -18,9 +20,13 @@ namespace UWBB.CharacterController.FirstVersion
         
         private void Start() => lockOnLogic.onLockOn += OnLockOn;
         
-        public override FirstVersionMovementData RunUpdateInternal(FirstVersionInputState inputState)
+        public IMovementLogicData RunUpdate(IInputState inputState)
+            => RunUpdate((FirstVersionInputState)inputState);
+        
+        public FirstVersionMovementData RunUpdate(FirstVersionInputState inputState)
         {
-            throw new System.NotImplementedException();
+            Debug.Log("FirstVersionMovement RunUpdate");
+            return default;
         }
         
         private void Update()

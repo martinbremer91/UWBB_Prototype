@@ -1,12 +1,19 @@
-﻿using UWBB.Interfaces;
+﻿using UnityEngine;
+using UWBB.Interfaces;
 
 namespace UWBB.CharacterController.Abzu
 {
-    public class AbzuCameraLogic : PlayerLogic<AbzuInputState, AbzuCameraData>
+    public class AbzuCameraLogic : 
+        IPlayerLogic<IInputState, ICameraLogicData>,
+        IPlayerLogic<AbzuInputState, AbzuCameraData>
     {
-        public override AbzuCameraData RunUpdateInternal(AbzuInputState inputState)
+        public ICameraLogicData RunUpdate(IInputState inputState) 
+            => RunUpdate((AbzuInputState)inputState);
+        
+        public AbzuCameraData RunUpdate(AbzuInputState inputState)
         {
-            throw new System.NotImplementedException();
+            Debug.Log("AbzuCamera RunUpdate");
+            return default;
         }
     }
     

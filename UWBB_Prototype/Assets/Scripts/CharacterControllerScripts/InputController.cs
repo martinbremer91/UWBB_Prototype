@@ -4,8 +4,6 @@ namespace UWBB.CharacterController
 {
     public class InputController
     {
-        public IInputLogic inputLogic;
-        
         private void Awake() {
         
             /*

@@ -1,12 +1,19 @@
-﻿using UWBB.Interfaces;
+﻿using UnityEngine;
+using UWBB.Interfaces;
 
 namespace UWBB.CharacterController.Abzu
 {
-    public class AbzuMovementLogic : PlayerLogic<AbzuInputState, AbzuMovementData>
+    public class AbzuMovementLogic : 
+        IPlayerLogic<IInputState, IMovementLogicData>,
+        IPlayerLogic<AbzuInputState, AbzuMovementData>
     {
-        public override AbzuMovementData RunUpdateInternal(AbzuInputState inputState)
+        public IMovementLogicData RunUpdate(IInputState inputState) 
+            => RunUpdate((AbzuInputState)inputState);
+
+        public AbzuMovementData RunUpdate(AbzuInputState inputState)
         {
-            throw new System.NotImplementedException();
+            Debug.Log("AbzuMovement RunUpdate");
+            return default;
         }
     }
 
