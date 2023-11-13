@@ -48,50 +48,57 @@ namespace MBre.Utilities
 
         private void Update()
         {
-            SetDebugPanelText("input test", DebugFlags.Input, true);
-            SetDebugPanelText("controller test", DebugFlags.CharacterController);
+            CustomDebug("Input test", DebugFlags.Input, true);
+            CustomDebug("CC test", DebugFlags.CharacterController);
         }
 #endif
 
-        public static void SetDebugPanelText(string message, DebugFlags flag, bool printConsole = false)
+        public static void CustomDebug(string message, DebugFlags flag, bool printConsole = false)
         {
     #if UNITY_EDITOR
-            if (instance == null)
-                Debug.LogError("SetDebugPanelText: DebugPanel instance cannot be null");
-            
-            if (!IsFlagValid())
-                return;
-
-            bool channelActive = instance.activeDebugFlags.HasFlag(flag);
-            message = channelActive ? 
-                $"[{Enum.GetName(typeof(DebugFlags), flag)}]: " + message : 
-                String.Empty;
-            
             int channelIndex = (int)channelIndices[flag];
-            debugChannels[channelIndex].text.text = message;
+            bool flagActive = instance.activeDebugFlags.HasFlag(flag);
+
+            if (!flagActive && debugChannels[channelIndex].active) 
+                debugChannels[channelIndex].text.text = String.Empty;
+
+            debugChannels[channelIndex].active = flagActive;
             
-            if (channelActive && printConsole)
-                Debug.Log(message);
-
-            bool IsFlagValid()
-            {
-                if (!Enum.IsDefined(typeof(DebugFlags), flag))
-                {
-                    Debug.LogError("SetDebugPanelText: flag parameter must be defined " +
-                                   "(exactly one flag must be set)");
-                    return false;
-                }
-
-                return flag != 0;
-            }
+            if (!debugChannels[channelIndex].active || !IsFlagValid(flag))
+                return;
+            
+            SetDebugText(message, debugChannels[channelIndex], flag, printConsole);
 #endif
         }
+        
+#if UNITY_EDITOR
+        private static bool IsFlagValid(DebugFlags flag)
+        {
+            if (!Enum.IsDefined(typeof(DebugFlags), flag))
+            {
+                Debug.LogError("SetDebugPanelText: flag parameter must be defined " +
+                               "(exactly one flag must be set)");
+                return false;
+            }
+
+            return flag != 0;
+        }
+
+        private static void SetDebugText(string message, DebugChannel channel, DebugFlags flag, bool print)
+        {
+            message = $"[{Enum.GetName(typeof(DebugFlags), flag)}]: " + message;
+            channel.text.text = message;
+            
+            if (print) Debug.Log(message);
+        }
+#endif
     }
 
     public struct DebugChannel
     {
         public DebugFlags flags;
         public TMP_Text text;
+        public bool active;
     }
 
     [Flags]
