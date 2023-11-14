@@ -1,3 +1,4 @@
+using MBre.Utilities;
 using UnityEngine;
 using UWBB.Interfaces;
 
@@ -33,7 +34,9 @@ namespace UWBB.CharacterController.FirstVersion
 
         FirstVersionInputState IInputLogic<FirstVersionInputState>.GetInputState()
         {
-            // TODO: debug panel call
+            DebugPanel.CustomDebug(
+                $"FirstVersion\nMovement = {inputState.characterPlaneInput}\n" +
+                $"Camera = {inputState.characterAxisInput}", DebugFlags.Input);
             return inputState;
         }
         

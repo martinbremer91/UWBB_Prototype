@@ -29,7 +29,7 @@ namespace MBre.Utilities
 
         private void Init()
         {
-            int channelCount = Enum.GetNames(typeof(DebugFlags)).Length - 2;
+            int channelCount = Enum.GetNames(typeof(DebugFlags)).Length - 2; // -2 excludes 'None' and 'All'
             debugChannels = new DebugChannel[channelCount];
             channelIndices.Clear();
 
@@ -45,15 +45,9 @@ namespace MBre.Utilities
                 channelIndices.Add(debugChannels[i].flags, i);
             }
         }
-
-        private void Update()
-        {
-            CustomDebug("Input test", DebugFlags.Input, true);
-            CustomDebug("CC test", DebugFlags.CharacterController);
-        }
 #endif
 
-        public static void CustomDebug(string message, DebugFlags flag, bool printConsole = false)
+        public static void CustomDebug(string message, DebugFlags flag = DebugFlags.Default, bool printConsole = false)
         {
     #if UNITY_EDITOR
             int channelIndex = (int)channelIndices[flag];
@@ -105,8 +99,9 @@ namespace MBre.Utilities
     public enum DebugFlags
     {
         None = 0,
-        Input = 1 << 0,
-        CharacterController = 1 << 1,
+        Default = 1 << 0,
+        Input = 1 << 1,
+        CharacterController = 1 << 2,
         All = ~0
     }
 }
