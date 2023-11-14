@@ -8,53 +8,60 @@ namespace UWBB.CharacterController.FirstVersion
         IPlayerLogic<FirstVersionInputState, FirstVersionMovementData>
     {
         private FirstVersionInputLogic inputController;
-        private FirstVersionCameraLogic camLogic;
-        private FirstVersionLockOnLogic lockOnLogic;
-        public Transform playerModel;
+        // private FirstVersionLockOnLogic lockOnLogic;
+        private Transform player;
+        private Transform playerModel;
 
         private CharacterControllerConfigs configs;
-        private DefaultCharacterControllerData controllerData => configs.defaultControllerData;
+        private FirstVersionControllerSettings controllerSettings => configs.firstVersionControllerSettings;
 
-        // private Vector3 horizonPlaneForward => transform.forward;
+        private Vector3 horizonPlaneForward => player.forward;
         private Vector3 characterPlaneForward => playerModel.forward;
-        
-        private void Start() => lockOnLogic.onLockOn += OnLockOn;
+
+        public void Init(Player p)
+        {
+            player = p.transform;
+            playerModel = p.playerModel;
+        }
         
         public IMovementLogicData RunUpdate(IInputState inputState)
             => RunUpdate((FirstVersionInputState)inputState);
         
         public FirstVersionMovementData RunUpdate(FirstVersionInputState inputState)
         {
-            Debug.Log("FirstVersionMovement RunUpdate");
-            return default;
+            return new(GetVectorInRelationToCamRotation(inputState.characterPlaneInput));
         }
         
-        private void Update()
+        private FirstVersionMovementData GetMovementDirection(FirstVersionInputState inputState)
         {
-            // FirstVersionInputState firstVersionInputState = inputController.FirstVersionInputState;
-            // HandleCharacterPlaneMovement(firstVersionInputState.characterPlaneInput);
+            HandleCharacterPlaneMovement(inputState.characterPlaneInput);
             // HandleYLockedOnMovement(firstVersionInputState.characterAxisInput);
-            //
+            
             // if (lockOnLogic.lockedOn)
             //     SetModelLookAtTarget(lockOnLogic.target.position);
+            return default;
         }
 
         private void HandleCharacterPlaneMovement(Vector2 input)
         {
-            // Vector3 movementVector = camController.GetVectorInRelationToCamRotation(input);
-            // transform.Translate(movementVector * (controllerData.speed * Time.deltaTime), Space.World);
-            //
+            Vector3 movementVector = GetVectorInRelationToCamRotation(input);
+            
+            // controller logic
+            player.Translate(movementVector * (controllerSettings.speed * Time.deltaTime), Space.World);
             // if (!lockOnController.lockedOn)
-            //     SetModelLookAtTarget(transform.position + movementVector);
+                SetModelLookAtTarget(player.position + movementVector);
         }
         
-        private void HandleYLockedOnMovement(Vector2 input)
-        {
-            // if (Mathf.Abs(GetAngleToHorizonPlane() - Mathf.Sign(input.y) * controllerData.minAngleToYRotationDeadZone) < controllerData.yRotationDeadZoneAngle)
-            //     transform.RotateAround(lockOnController.target.position, camController.transform.right, input.y * GetLockOnRotationSpeed() * Time.deltaTime);
-            // else
-            //     HandleCharacterPlaneMovement(new Vector2(input.y, 0));
-        }
+        private Vector3 GetVectorInRelationToCamRotation(Vector2 vector) 
+            => player.right * vector.x + player.forward * vector.y;
+
+        // private void HandleYLockedOnMovement(Vector2 input)
+        // {
+        //     if (Mathf.Abs(GetAngleToHorizonPlane() - Mathf.Sign(input.y) * controllerData.minAngleToYRotationDeadZone) < controllerData.yRotationDeadZoneAngle)
+        //         player.RotateAround(lockOnController.target.position, camController.transform.right, input.y * GetLockOnRotationSpeed() * Time.deltaTime);
+        //     else
+        //         HandleCharacterPlaneMovement(new Vector2(input.y, 0));
+        // }
         
         private void SetModelLookAtTarget(Vector3 target) => playerModel.LookAt(target);
         
@@ -65,24 +72,15 @@ namespace UWBB.CharacterController.FirstVersion
             float angleToHorizonPlane = Vector3.Angle(playerModel.forward, new Vector3(characterPlaneForward.x, 0, characterPlaneForward.z));
             return characterPlaneForward.y < 0 ? -angleToHorizonPlane : angleToHorizonPlane;
         }
-        
-        private float GetLockOnRotationSpeed()
-        {
-            // Vector3 center = lockOnController.target.position;
-            // float circumference = (center - transform.position).magnitude * Mathf.PI * 2;
-            //
-            // return (controllerData.speed / circumference) * 360;
-            return default;
-        }
-
-        private void OnLockOn()
-        {
-            // SnapPlayerToHorizonPlane();
-            playerModel.LookAt(lockOnLogic.target.position);
-        }
-
-        private void OnDestroy() => lockOnLogic.onLockOn -= OnLockOn;
     }
-    
-    public struct FirstVersionMovementData : IMovementLogicData {}
+
+    public struct FirstVersionMovementData : IMovementLogicData
+    {
+        public Vector3 movementVector { get; set; }
+
+        public FirstVersionMovementData(Vector3 movementVector)
+        {
+            this.movementVector = movementVector;
+        }
+    }
 }

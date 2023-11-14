@@ -7,6 +7,11 @@ namespace UWBB.CharacterController.Abzu
         IPlayerLogic<IInputState, IMovementLogicData>,
         IPlayerLogic<AbzuInputState, AbzuMovementData>
     {
+        public void Init(Player player)
+        {
+            
+        }
+        
         public IMovementLogicData RunUpdate(IInputState inputState) 
             => RunUpdate((AbzuInputState)inputState);
 
@@ -19,6 +24,6 @@ namespace UWBB.CharacterController.Abzu
 
     public struct AbzuMovementData : IMovementLogicData
     {
-        
+        public Vector3 movementVector { get; set; }
     }
 }

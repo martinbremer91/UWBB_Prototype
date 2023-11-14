@@ -15,6 +15,9 @@ namespace UWBB.CharacterController
         private readonly CameraController cameraController = new();
         private readonly LockOnController lockOnController = new();
 
+        public Transform playerModel;
+        public Transform camTransform;
+
         public void Init() => playerLogicManager.Init(this);
 
         private void Update()

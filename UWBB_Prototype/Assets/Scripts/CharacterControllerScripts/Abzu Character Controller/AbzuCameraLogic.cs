@@ -7,6 +7,11 @@ namespace UWBB.CharacterController.Abzu
         IPlayerLogic<IInputState, ICameraLogicData>,
         IPlayerLogic<AbzuInputState, AbzuCameraData>
     {
+        public void Init(Player player)
+        {
+            
+        }
+        
         public ICameraLogicData RunUpdate(IInputState inputState) 
             => RunUpdate((AbzuInputState)inputState);
         

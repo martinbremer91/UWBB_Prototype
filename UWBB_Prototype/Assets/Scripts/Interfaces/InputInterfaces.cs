@@ -1,12 +1,7 @@
 ﻿namespace UWBB.Interfaces
 {
-    public interface IInputLogic<T> where T : IInputState
+    public interface IInputLogic<T> : IInitializable, IDeinitializable where T : IInputState
     {
-        
-        
-        public void Init();
-        public void Deinit();
-        
         public T GetInputState();
     }
     

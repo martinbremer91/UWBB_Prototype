@@ -1,9 +1,4 @@
-﻿CURRENT:
-- Removed player logic refs from Player class
-- Need to find another way to instantiate and run the player logic classes according to active movement and lock on types (RunLogicCommand event in Player?)
-
-
-CHARACTER CONTROLLER SYSTEM
+﻿CHARACTER CONTROLLER SYSTEM
 - Create a CharacterController mono-behavior, a CameraController mono-behavior, and a LockOnController mono-behavior
     - all three mono-behaviors have references to the scene components they need...
     - ... and to the CharacterControllerConfigs asset

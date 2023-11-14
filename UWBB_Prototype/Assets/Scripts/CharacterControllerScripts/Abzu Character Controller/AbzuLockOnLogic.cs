@@ -7,6 +7,11 @@ namespace UWBB.CharacterController.Abzu
         IPlayerLogic<IInputState, ILockOnLogicData>,
         IPlayerLogic<AbzuInputState, AbzuLockOnData>
     {
+        public void Init(Player player)
+        {
+            
+        }
+        
         public ILockOnLogicData RunUpdate(IInputState inputState) 
             => RunUpdate((AbzuInputState) inputState);
 

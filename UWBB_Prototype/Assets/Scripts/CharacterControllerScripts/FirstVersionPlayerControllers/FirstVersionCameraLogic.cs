@@ -10,12 +10,17 @@ namespace UWBB.CharacterController.FirstVersion
         private FirstVersionInputLogic inputController;
         private FirstVersionLockOnLogic lockOnLogic;
         private FirstVersionMovementLogic firstVersionMovementLogic;
-        private Transform player;
+        // private Transform player;
 
         // private float rotationSpeed = 180;
 
         private void Awake() => lockOnLogic.onLockOn += OnLockOn;
 
+        public void Init(Player player)
+        {
+            
+        }
+        
         public ICameraLogicData RunUpdate(IInputState inputState) 
             => RunUpdate((FirstVersionInputState)inputState);
 

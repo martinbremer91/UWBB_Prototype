@@ -1,4 +1,5 @@
 ﻿using System;
+using MBre.Utilities;
 using UWBB.CharacterController.Abzu;
 using UWBB.CharacterController.FirstVersion;
 using UWBB.GameFramework;
@@ -6,7 +7,7 @@ using UWBB.Interfaces;
 
 namespace UWBB.CharacterController
 {
-    public class PlayerLogicManager
+    public class PlayerLogicManager : IInitializable<Player>
     {
         private Player player;
         private CharacterControllerConfigs ccConfigsBf;
@@ -43,8 +44,9 @@ namespace UWBB.CharacterController
             
             IInputState inputState = inputLogic.GetInputState();
             player.movementData = movementLogic.RunUpdate(inputState);
-            player.cameraData = cameraLogic.RunUpdate(inputState);
-            player.lockOnData = lockOnLogic.RunUpdate(inputState);
+            DebugPanel.CustomDebug($"Movement: " + player.movementData.movementVector);
+            // player.cameraData = cameraLogic.RunUpdate(inputState);
+            // player.lockOnData = lockOnLogic.RunUpdate(inputState);
         }
         
         private void ValidatePlayerLogicRefs(bool updateMovementType = true, bool updateLockOnType = true)
@@ -87,6 +89,8 @@ namespace UWBB.CharacterController
                 MovementLogicType.Abzu => new AbzuMovementLogic(),
                 _ => throw new ArgumentOutOfRangeException(),
             };
+            
+            movementLogic.Init(player);
         }
         
         private void SetCameraLogicRef(MovementLogicType movement)
@@ -97,6 +101,8 @@ namespace UWBB.CharacterController
                 MovementLogicType.Abzu => new AbzuCameraLogic(),
                 _ => throw new ArgumentOutOfRangeException(),
             };
+            
+            cameraLogic.Init(player);
         }
 
         private void SetLockOnLogicRef(LockOnLogicType lockOn)
@@ -107,6 +113,8 @@ namespace UWBB.CharacterController
                 LockOnLogicType.Abzu => new AbzuLockOnLogic(),
                 _ => throw new ArgumentOutOfRangeException(),
             };
+            
+            lockOnLogic.Init(player);
         }
     }
 }

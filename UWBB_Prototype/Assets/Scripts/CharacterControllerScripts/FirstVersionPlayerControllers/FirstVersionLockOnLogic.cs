@@ -22,6 +22,11 @@ namespace UWBB.CharacterController.FirstVersion
         public Action onLockOn;
         
         private float maxLockOnDotProduct => 1 - lockOnAngleTolerance;
+
+        public void Init(Player player)
+        {
+            
+        }
         
         public ILockOnLogicData RunUpdate(IInputState inputState)
             => RunUpdate((FirstVersionInputState)inputState);

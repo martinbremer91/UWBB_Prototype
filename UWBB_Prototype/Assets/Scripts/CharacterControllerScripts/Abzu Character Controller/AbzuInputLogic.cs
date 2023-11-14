@@ -1,3 +1,4 @@
+using MBre.Utilities;
 using UnityEngine;
 using UWBB.Interfaces;
 
@@ -8,6 +9,7 @@ namespace UWBB.CharacterController.Abzu
         IInputLogic<AbzuInputState>
     {
         private readonly AbzuControls controls = new();
+        private AbzuInputState inputState;
 
         public void Init() => controls.Enable();
         public void Deinit() => controls.Disable();
@@ -17,8 +19,10 @@ namespace UWBB.CharacterController.Abzu
 
         AbzuInputState IInputLogic<AbzuInputState>.GetInputState()
         {
-            Debug.Log("AbzuInput GetInputState");
-            return default;
+            // DebugPanel.CustomDebug(
+            //     $"Abzu\nMovement = {inputState.characterPlaneInput}\n" +
+            //     $"Camera = {inputState.characterAxisInput}", DebugFlags.Input);
+            return inputState;
         }
     }
 
