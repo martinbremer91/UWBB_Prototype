@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 using UWBB.Interfaces;
 
 namespace UWBB.CharacterController
@@ -16,9 +17,13 @@ namespace UWBB.CharacterController
         private readonly LockOnController lockOnController = new();
 
         public Transform playerModel;
-        public Transform camTransform;
+        public Transform cameraTransform;
 
-        public void Init() => playerLogicManager.Init(this);
+        public void Init()
+        {
+            playerLogicManager.Init(this);
+            cameraController.Init(this);
+        }
 
         private void Update()
         {

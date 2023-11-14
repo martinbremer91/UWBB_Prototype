@@ -18,7 +18,7 @@ namespace UWBB.CharacterController.FirstVersion
         public void Init(Player p)
         {
             player = p.transform;
-            camera = p.camTransform;
+            camera = p.cameraTransform;
         }
         
         public ICameraLogicData RunUpdate(IInputState inputState) 
@@ -41,17 +41,21 @@ namespace UWBB.CharacterController.FirstVersion
 
         private FirstVersionCameraData GetCameraLogicData(Vector2 input)
         {
-            FirstVersionCameraData data = new();
-            data.pivotPoint = player.position;
-            
-            data.rotationXAxis = Vector3.up;
-            data.angleX = input.x * (rotationSpeed * Time.deltaTime);
             // camera.RotateAround(player.position, Vector3.up, input.x * (rotationSpeed * Time.deltaTime));
 
-            data.rotationYAxis = camera.right;
-            data.angleY = input.y * (rotationSpeed * Time.deltaTime);
             // if (Mathf.Abs(input.y) >= .75f && Mathf.Abs(GetAngleToHorizonPlane() - Mathf.Sign(input.y) * 10) < 88)
             //     camera.RotateAround(player.position, camera.right, input.y * (rotationSpeed * Time.deltaTime));
+            bool camAngleLimitReached =
+                Mathf.Abs(input.y) >= .75f && Mathf.Abs(GetAngleToHorizonPlane() - Mathf.Sign(input.y) * 10) < 88;
+            
+            FirstVersionCameraData data = new()
+            {
+                pivotPoint = player.position,
+                rotationXAxis = Vector3.up,
+                angleX = input.x * (rotationSpeed * Time.deltaTime),
+                rotationYAxis = camera.right,
+                angleY = camAngleLimitReached ? input.y * (rotationSpeed * Time.deltaTime) : 0
+            };
             return data;
         }
 
@@ -64,9 +68,9 @@ namespace UWBB.CharacterController.FirstVersion
         
         private float GetAngleToHorizonPlane()
         {
-            // float angleToHorizonPlane = Vector3.Angle(transform.forward, new Vector3(transform.forward.x, 0, transform.forward.z));
-            // return transform.forward.y < 0 ? -angleToHorizonPlane : angleToHorizonPlane;
-            return default;
+            var forward = camera.forward;
+            float angleToHorizonPlane = Vector3.Angle(forward, new Vector3(forward.x, 0, forward.z));
+            return forward.y < 0 ? -angleToHorizonPlane : angleToHorizonPlane;
         }
 
         private void OnLockOn()

@@ -353,7 +353,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerModel: {fileID: 4643536070864511772}
-  camTransform: {fileID: 4833632723154473178}
+  cameraTransform: {fileID: 4833632723154473178}
 --- !u!1 &7543988475402479382
 GameObject:
   m_ObjectHideFlags: 0

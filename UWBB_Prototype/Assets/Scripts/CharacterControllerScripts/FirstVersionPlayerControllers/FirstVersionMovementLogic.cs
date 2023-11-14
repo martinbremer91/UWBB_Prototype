@@ -22,7 +22,7 @@ namespace UWBB.CharacterController.FirstVersion
         public void Init(Player p)
         {
             player = p.transform;
-            camera = p.camTransform;
+            camera = p.cameraTransform;
             playerModel = p.playerModel;
         }
         
