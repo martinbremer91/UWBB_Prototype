@@ -8,7 +8,7 @@ namespace UWBB.CharacterController
         private Transform camera;
         
         public void Init(Player p) => camera = p.cameraTransform;
-
+        
         public void ProcessCameraData(ICameraLogicData cameraData)
         {
             camera.RotateAround(cameraData.pivotPoint, cameraData.rotationXAxis, cameraData.angleX);

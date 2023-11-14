@@ -1,3 +1,5 @@
+using System.Globalization;
+using MBre.Utilities;
 using UnityEngine;
 using UWBB.Interfaces;
 
@@ -14,6 +16,12 @@ namespace UWBB.CharacterController.FirstVersion
         private Transform camera;
 
         private readonly float rotationSpeed = 180;
+
+        private bool smoothingToHorizon;
+        private float horizonSmoothingTarget;
+        private float smoothingVelocity;
+        private float smoothTimer;
+        private readonly float smoothDuration = .1f;
 
         public void Init(Player p)
         {
@@ -37,6 +45,16 @@ namespace UWBB.CharacterController.FirstVersion
 
         private FirstVersionCameraData GetCameraLogicData(FirstVersionInputState inputState)
         {
+            if (inputState.snapCommand)
+            {
+                smoothingToHorizon = true;
+                smoothTimer = 0;
+                horizonSmoothingTarget = GetAngleToHorizonPlane();
+            }
+
+            if (smoothingToHorizon)
+                return GetHorizonSmoothingCameraData();
+
             Vector2 input = inputState.characterAxisInput;
             bool camAngleLimitReached =
                 Mathf.Abs(input.y) >= .75f && Mathf.Abs(GetAngleToHorizonPlane() - Mathf.Sign(input.y) * 10) < 88;
@@ -47,7 +65,7 @@ namespace UWBB.CharacterController.FirstVersion
                 rotationXAxis = Vector3.up,
                 angleX = input.x * (rotationSpeed * Time.deltaTime),
                 rotationYAxis = camera.right,
-                angleY = GetYRotationAngle(inputState, camAngleLimitReached, input)
+                angleY = GetYRotationAngle(camAngleLimitReached, input)
             };
             
             return data;
@@ -60,12 +78,27 @@ namespace UWBB.CharacterController.FirstVersion
             return forward.y < 0 ? -angleToHorizonPlane : angleToHorizonPlane;
         }
 
-        private float GetYRotationAngle(FirstVersionInputState inputState, bool camAngleLimitReached, Vector2 input)
-        {
-            return inputState.snapCommand ? GetAngleToHorizonPlane() :
-                camAngleLimitReached ? input.y * (rotationSpeed * Time.deltaTime) : 0;
-        }
+        private float GetYRotationAngle(bool camAngleLimitReached, Vector2 input) 
+            => camAngleLimitReached ? input.y * (rotationSpeed * Time.deltaTime) : 0;
 
+        private FirstVersionCameraData GetHorizonSmoothingCameraData()
+        {
+            bool finishedSmoothing = smoothTimer >= smoothDuration;
+            smoothTimer += Time.deltaTime;
+            smoothingToHorizon = !finishedSmoothing;
+            
+            float value = finishedSmoothing ? 0 : (horizonSmoothingTarget / smoothDuration) * Time.deltaTime;
+            
+            return new()
+            {
+                pivotPoint = player.position,
+                rotationXAxis = Vector3.up,
+                angleX = 0,
+                rotationYAxis = camera.right,
+                angleY = value
+            };
+        }
+        
         private void OnLockOn()
         {
             // Vector3 targetPlayerDirection = (player.position - lockOnController.target.position).normalized;

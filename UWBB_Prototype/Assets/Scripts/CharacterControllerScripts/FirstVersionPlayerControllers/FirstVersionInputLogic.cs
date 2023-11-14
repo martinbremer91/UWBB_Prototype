@@ -1,8 +1,5 @@
-using System;
 using MBre.Utilities;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Interactions;
 using UWBB.Interfaces;
 
 namespace UWBB.CharacterController.FirstVersion
