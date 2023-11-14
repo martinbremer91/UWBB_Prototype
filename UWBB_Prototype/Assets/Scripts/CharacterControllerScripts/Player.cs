@@ -33,9 +33,6 @@ namespace UWBB.CharacterController
             lockOnController.ProcessLockOnData(lockOnData);
         }
 
-        private void LateUpdate()
-        {
-            cameraController.ProcessCameraData(cameraData);
-        }
+        private void LateUpdate() => cameraController.ProcessCameraData(cameraData);
     }
 }

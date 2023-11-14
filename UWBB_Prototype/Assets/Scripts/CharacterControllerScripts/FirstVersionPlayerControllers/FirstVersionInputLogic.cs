@@ -1,5 +1,8 @@
+using System;
 using MBre.Utilities;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Interactions;
 using UWBB.Interfaces;
 
 namespace UWBB.CharacterController.FirstVersion
@@ -23,7 +26,10 @@ namespace UWBB.CharacterController.FirstVersion
             freeMovement.YMovementandRotation.performed += context => HandleYInput(context.ReadValue<Vector2>());
             freeMovement.YMovementandRotation.canceled += context => HandleYInput(context.ReadValue<Vector2>());
 
-            freeMovement.SnapToHorizon.performed += _ => SnapToHorizon();
+            freeMovement.SnapToHorizon.started += _ => SnapToHorizon();
+            freeMovement.SnapToHorizon.performed += _ => ReleaseSnapToHorizon();
+            freeMovement.SnapToHorizon.canceled += _ => ReleaseSnapToHorizon();
+            
             freeMovement.LockOnToggle.performed += _ => ToggleLockOn();
         }
 
@@ -36,13 +42,15 @@ namespace UWBB.CharacterController.FirstVersion
         {
             DebugPanel.CustomDebug(
                 $"FirstVersion\nMovement = {inputState.characterPlaneInput}\n" +
-                $"Camera = {inputState.characterAxisInput}", DebugFlags.Input);
+                $"Camera = {inputState.characterAxisInput}\nSnap: " + inputState.snapCommand, DebugFlags.Input);
             return inputState;
         }
         
         private void HandleXZInput(Vector2 input) => inputState.characterPlaneInput = input;
         private void HandleYInput(Vector2 input) => inputState.characterAxisInput = input;
         private void SnapToHorizon() => inputState.snapCommand = true;
+        private void ReleaseSnapToHorizon() => inputState.snapCommand = false;
+
         private void ToggleLockOn() => inputState.lockOnToggleCommand = true;
     }
 

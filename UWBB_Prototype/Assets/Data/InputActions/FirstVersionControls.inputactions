@@ -1,5 +1,5 @@
 {
-    "name": "DefaultMovement",
+    "name": "FirstVersionControls",
     "maps": [
         {
             "name": "FreeMovement",
@@ -29,7 +29,7 @@
                     "id": "a4dcadb0-e04f-46f1-a764-3fa0cc17174c",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Hold(duration=0.05)",
                     "initialStateCheck": false
                 },
                 {

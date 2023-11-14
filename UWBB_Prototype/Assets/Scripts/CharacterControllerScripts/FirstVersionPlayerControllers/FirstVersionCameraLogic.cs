@@ -25,26 +25,19 @@ namespace UWBB.CharacterController.FirstVersion
             => RunUpdate((FirstVersionInputState)inputState);
 
         public FirstVersionCameraData RunUpdate(FirstVersionInputState inputState) 
-            => GetCameraLogicData(inputState.characterAxisInput);
+            => GetCameraLogicData(inputState);
 
         private void LateUpdate(FirstVersionInputState inputState)
         {
-            // if (inputController.FirstVersionInputState.snapCommand)
-            // {
-            //     SnapCamToHorizonPlane();
-            //     inputController.FirstVersionInputState.snapCommand = false;
             // } else if (!lockOnLogic.lockedOn)
             //    GetCameraLogicData(inputState.characterAxisInput);
             // else
             //     OnLockOn();
         }
 
-        private FirstVersionCameraData GetCameraLogicData(Vector2 input)
+        private FirstVersionCameraData GetCameraLogicData(FirstVersionInputState inputState)
         {
-            // camera.RotateAround(player.position, Vector3.up, input.x * (rotationSpeed * Time.deltaTime));
-
-            // if (Mathf.Abs(input.y) >= .75f && Mathf.Abs(GetAngleToHorizonPlane() - Mathf.Sign(input.y) * 10) < 88)
-            //     camera.RotateAround(player.position, camera.right, input.y * (rotationSpeed * Time.deltaTime));
+            Vector2 input = inputState.characterAxisInput;
             bool camAngleLimitReached =
                 Mathf.Abs(input.y) >= .75f && Mathf.Abs(GetAngleToHorizonPlane() - Mathf.Sign(input.y) * 10) < 88;
             
@@ -54,23 +47,23 @@ namespace UWBB.CharacterController.FirstVersion
                 rotationXAxis = Vector3.up,
                 angleX = input.x * (rotationSpeed * Time.deltaTime),
                 rotationYAxis = camera.right,
-                angleY = camAngleLimitReached ? input.y * (rotationSpeed * Time.deltaTime) : 0
+                angleY = GetYRotationAngle(inputState, camAngleLimitReached, input)
             };
+            
             return data;
         }
 
-        private void SnapCamToHorizonPlane()
-        {
-            // float angleToHorizonPlane = GetAngleToHorizonPlane();
-            // transform.RotateAround(player.position, transform.right, angleToHorizonPlane);
-            // firstVersionMovement.SnapPlayerToHorizonPlane();
-        }
-        
         private float GetAngleToHorizonPlane()
         {
             var forward = camera.forward;
             float angleToHorizonPlane = Vector3.Angle(forward, new Vector3(forward.x, 0, forward.z));
             return forward.y < 0 ? -angleToHorizonPlane : angleToHorizonPlane;
+        }
+
+        private float GetYRotationAngle(FirstVersionInputState inputState, bool camAngleLimitReached, Vector2 input)
+        {
+            return inputState.snapCommand ? GetAngleToHorizonPlane() :
+                camAngleLimitReached ? input.y * (rotationSpeed * Time.deltaTime) : 0;
         }
 
         private void OnLockOn()
