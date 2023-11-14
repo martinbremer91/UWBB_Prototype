@@ -102,6 +102,8 @@ namespace MBre.Utilities
         Default = 1 << 0,
         Input = 1 << 1,
         CharacterController = 1 << 2,
+        Movement = 1 << 3,
+        Camera = 1 << 4,
         All = ~0
     }
 }

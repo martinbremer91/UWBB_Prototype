@@ -1,5 +1,6 @@
 ﻿using System;
 using MBre.Utilities;
+using UnityEngine;
 using UWBB.CharacterController.Abzu;
 using UWBB.CharacterController.FirstVersion;
 using UWBB.GameFramework;
@@ -44,8 +45,11 @@ namespace UWBB.CharacterController
             
             IInputState inputState = inputLogic.GetInputState();
             player.movementData = movementLogic.RunUpdate(inputState);
-            DebugPanel.CustomDebug($"Movement: " + player.movementData.movementVector);
-            // player.cameraData = cameraLogic.RunUpdate(inputState);
+            DebugPanel.CustomDebug("Movement: " + player.movementData.movementVector, DebugFlags.Movement);
+            player.cameraData = cameraLogic.RunUpdate(inputState);
+            DebugPanel.CustomDebug("Camera - Pivot: " + player.cameraData.pivotPoint + "\n" +
+                "Axes XY: " + player.cameraData.rotationXAxis + " / " + player.cameraData.rotationYAxis + "\n" +
+                "Angles XY: " + new Vector2(player.cameraData.angleX, player.cameraData.angleY), DebugFlags.Camera);
             // player.lockOnData = lockOnLogic.RunUpdate(inputState);
         }
         

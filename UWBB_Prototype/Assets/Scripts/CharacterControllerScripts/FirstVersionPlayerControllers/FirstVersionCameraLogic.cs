@@ -10,51 +10,49 @@ namespace UWBB.CharacterController.FirstVersion
         private FirstVersionInputLogic inputController;
         private FirstVersionLockOnLogic lockOnLogic;
         private FirstVersionMovementLogic firstVersionMovementLogic;
-        // private Transform player;
+        private Transform player;
+        private Transform camera;
 
-        // private float rotationSpeed = 180;
+        private readonly float rotationSpeed = 180;
 
-        private void Awake() => lockOnLogic.onLockOn += OnLockOn;
-
-        public void Init(Player player)
+        public void Init(Player p)
         {
-            
+            player = p.transform;
+            camera = p.camTransform;
         }
         
         public ICameraLogicData RunUpdate(IInputState inputState) 
             => RunUpdate((FirstVersionInputState)inputState);
 
-        public FirstVersionCameraData RunUpdate(FirstVersionInputState inputState)
-        {
-            Debug.Log("FirstVersionCamera RunUpdate");
-            return default;
-        }
-        
-        private void LateUpdate()
+        public FirstVersionCameraData RunUpdate(FirstVersionInputState inputState) 
+            => GetCameraLogicData(inputState.characterAxisInput);
+
+        private void LateUpdate(FirstVersionInputState inputState)
         {
             // if (inputController.FirstVersionInputState.snapCommand)
             // {
             //     SnapCamToHorizonPlane();
             //     inputController.FirstVersionInputState.snapCommand = false;
             // } else if (!lockOnLogic.lockedOn)
-            //     HandleCamInput(inputController.FirstVersionInputState.characterAxisInput);
+            //    GetCameraLogicData(inputState.characterAxisInput);
             // else
             //     OnLockOn();
         }
 
-        private void HandleCamInput(Vector2 input)
+        private FirstVersionCameraData GetCameraLogicData(Vector2 input)
         {
-            // transform.RotateAround(player.position, Vector3.up, input.x * (rotationSpeed * Time.deltaTime));
-            //
-            // if (Mathf.Abs(input.y) >= .75f && Mathf.Abs(GetAngleToHorizonPlane() - Mathf.Sign(input.y) * 10) < 88)
-            //     transform.RotateAround(player.position, transform.right, input.y * (rotationSpeed * Time.deltaTime));
-        }
+            FirstVersionCameraData data = new();
+            data.pivotPoint = player.position;
+            
+            data.rotationXAxis = Vector3.up;
+            data.angleX = input.x * (rotationSpeed * Time.deltaTime);
+            // camera.RotateAround(player.position, Vector3.up, input.x * (rotationSpeed * Time.deltaTime));
 
-        public Vector3 GetVectorInRelationToCamRotation(Vector2 vector)
-        {
-            // var tf = transform;
-            // return tf.right * vector.x + tf.forward * vector.y;
-            return default;
+            data.rotationYAxis = camera.right;
+            data.angleY = input.y * (rotationSpeed * Time.deltaTime);
+            // if (Mathf.Abs(input.y) >= .75f && Mathf.Abs(GetAngleToHorizonPlane() - Mathf.Sign(input.y) * 10) < 88)
+            //     camera.RotateAround(player.position, camera.right, input.y * (rotationSpeed * Time.deltaTime));
+            return data;
         }
 
         private void SnapCamToHorizonPlane()
@@ -78,12 +76,14 @@ namespace UWBB.CharacterController.FirstVersion
             // transform.position = player.position + targetPlayerDirection * distanceToPlayer;
             // transform.LookAt(lockOnController.target.position);
         }
-
-        private void OnDestroy()
-        {
-            lockOnLogic.onLockOn -= OnLockOn;
-        }
     }
-    
-    public struct FirstVersionCameraData : ICameraLogicData {}
+
+    public struct FirstVersionCameraData : ICameraLogicData
+    {
+        public Vector3 pivotPoint { get; set; }
+        public Vector3 rotationXAxis { get; set; }
+        public float angleX { get; set; }
+        public Vector3 rotationYAxis { get; set; }
+        public float angleY { get; set; }
+    }
 }

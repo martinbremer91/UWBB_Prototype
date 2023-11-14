@@ -22,5 +22,12 @@ namespace UWBB.CharacterController.Abzu
         }
     }
     
-    public struct AbzuCameraData : ICameraLogicData {}
+    public struct AbzuCameraData : ICameraLogicData
+    {
+        public Vector3 pivotPoint { get; set; }
+        public Vector3 rotationXAxis { get; set; }
+        public float angleX { get; set; }
+        public Vector3 rotationYAxis { get; set; }
+        public float angleY { get; set; }
+    }
 }

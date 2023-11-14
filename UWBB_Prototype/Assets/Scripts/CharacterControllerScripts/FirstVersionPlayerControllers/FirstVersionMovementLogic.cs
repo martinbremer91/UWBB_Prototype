@@ -9,6 +9,7 @@ namespace UWBB.CharacterController.FirstVersion
     {
         private FirstVersionInputLogic inputController;
         // private FirstVersionLockOnLogic lockOnLogic;
+        private Transform camera;
         private Transform player;
         private Transform playerModel;
 
@@ -21,6 +22,7 @@ namespace UWBB.CharacterController.FirstVersion
         public void Init(Player p)
         {
             player = p.transform;
+            camera = p.camTransform;
             playerModel = p.playerModel;
         }
         
@@ -53,7 +55,7 @@ namespace UWBB.CharacterController.FirstVersion
         }
         
         private Vector3 GetVectorInRelationToCamRotation(Vector2 vector) 
-            => player.right * vector.x + player.forward * vector.y;
+            => camera.right * vector.x + camera.forward * vector.y;
 
         // private void HandleYLockedOnMovement(Vector2 input)
         // {
