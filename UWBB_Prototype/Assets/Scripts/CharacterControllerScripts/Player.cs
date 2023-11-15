@@ -22,6 +22,7 @@ namespace UWBB.CharacterController
         public void Init()
         {
             playerLogicManager.Init(this);
+            movementController.Init(this);
             cameraController.Init(this);
         }
 

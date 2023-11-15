@@ -1,4 +1,5 @@
 using UnityEngine;
+using UWBB.GameFramework;
 using UWBB.Interfaces;
 
 namespace UWBB.CharacterController.FirstVersion
@@ -14,13 +15,14 @@ namespace UWBB.CharacterController.FirstVersion
         private Transform playerModel;
 
         private CharacterControllerConfigs configs;
-        private FirstVersionControllerSettings controllerSettings => configs.firstVersionControllerSettings;
+        private FirstVersionControllerSettings settings => configs.firstVersionControllerSettings;
 
         private Vector3 horizonPlaneForward => player.forward;
         private Vector3 characterPlaneForward => playerModel.forward;
 
         public void Init(Player p)
         {
+            configs = Main.instance.configs.ccConfigs;
             player = p.transform;
             camera = p.cameraTransform;
             playerModel = p.playerModel;
@@ -29,27 +31,28 @@ namespace UWBB.CharacterController.FirstVersion
         public IMovementLogicData RunUpdate(IInputState inputState)
             => RunUpdate((FirstVersionInputState)inputState);
         
-        public FirstVersionMovementData RunUpdate(FirstVersionInputState inputState)
+        public FirstVersionMovementData RunUpdate(FirstVersionInputState inputState) 
+            => new(GetMovementVector(inputState));
+
+        private Vector3 GetMovementVector(FirstVersionInputState inputState)
         {
-            return new(GetVectorInRelationToCamRotation(inputState.characterPlaneInput));
-        }
-        
-        private FirstVersionMovementData GetMovementDirection(FirstVersionInputState inputState)
-        {
-            HandleCharacterPlaneMovement(inputState.characterPlaneInput);
             // HandleYLockedOnMovement(firstVersionInputState.characterAxisInput);
             
             // if (lockOnLogic.lockedOn)
             //     SetModelLookAtTarget(lockOnLogic.target.position);
-            return default;
+            
+            // HandleCharacterPlaneMovement(inputState.characterPlaneInput);
+            
+            return GetVectorInRelationToCamRotation(inputState.characterPlaneInput) 
+                   * (settings.speed * Time.deltaTime);
         }
 
         private void HandleCharacterPlaneMovement(Vector2 input)
         {
-            Vector3 movementVector = GetVectorInRelationToCamRotation(input);
+            Vector3 movementVector = GetVectorInRelationToCamRotation(input) * (settings.speed * Time.deltaTime);
             
             // controller logic
-            player.Translate(movementVector * (controllerSettings.speed * Time.deltaTime), Space.World);
+            player.Translate(movementVector * (settings.speed * Time.deltaTime), Space.World);
             // if (!lockOnController.lockedOn)
                 SetModelLookAtTarget(player.position + movementVector);
         }
