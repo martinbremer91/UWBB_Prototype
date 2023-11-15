@@ -6,7 +6,7 @@ namespace UWBB.CharacterController
 {
     public class Player : MonoBehaviour
     {
-        private PlayerLogicManager playerLogicManager = new();
+        private readonly PlayerLogicManager playerLogicManager = new();
         
         public IMovementLogicData movementData;
         public ICameraLogicData cameraData;

@@ -11,8 +11,8 @@ namespace UWBB.CharacterController
         
         public void ProcessCameraData(ICameraLogicData cameraData)
         {
-            camera.RotateAround(cameraData.pivotPoint, cameraData.rotationXAxis, cameraData.angleX);
             camera.RotateAround(cameraData.pivotPoint, cameraData.rotationYAxis, cameraData.angleY);
+            camera.RotateAround(cameraData.pivotPoint, cameraData.rotationXAxis, cameraData.angleX);
         }
     }
 }
