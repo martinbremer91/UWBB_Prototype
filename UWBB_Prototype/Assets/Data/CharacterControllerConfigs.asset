@@ -14,7 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activeMovementType: 1
   activeLockOnType: 1
-  defaultControllerData:
+  firstVersionControllerSettings:
+    speed: 10
+    lockOnAngleTolerance: 1
+    lockOnRange: 100
+    yRotationDeadZoneAngle: 89
+    minAngleToYRotationDeadZone: 0.5
+  abzuControllerSettings:
     speed: 10
     yRotationDeadZoneAngle: 89
     minAngleToYRotationDeadZone: 0.5

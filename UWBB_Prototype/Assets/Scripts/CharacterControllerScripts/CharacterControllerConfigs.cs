@@ -35,6 +35,12 @@ namespace UWBB.CharacterController
     {
         [Header("Movement parameters")]
         public float speed = 10;
+        [Header("Lock-on parameters")]
+        [Tooltip(
+            "Tolerance of the angle between camera and target for lock on to work. Higher value => more tolerant. \n \n" +
+            "A value of 0 corresponds to a tolerance of 0°. \nA value of 1 corresponds to a tolerance of 180°.")]
+        public float lockOnAngleTolerance;
+        public float lockOnRange;
         [Header("Miscellaneous")]
         public float yRotationDeadZoneAngle = 89f;
         public float minAngleToYRotationDeadZone = .5f;

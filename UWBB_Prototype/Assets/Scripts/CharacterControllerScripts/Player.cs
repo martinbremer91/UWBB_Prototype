@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Serialization;
 using UWBB.Interfaces;
 
 namespace UWBB.CharacterController
@@ -10,11 +9,10 @@ namespace UWBB.CharacterController
         
         public IMovementLogicData movementData;
         public ICameraLogicData cameraData;
-        public ILockOnLogicData lockOnData;
         
         private readonly MovementController movementController = new();
         private readonly CameraController cameraController = new();
-        private readonly LockOnController lockOnController = new();
+        public readonly LockOnController lockOnController = new();
 
         public Transform playerModel;
         public Transform cameraTransform;
@@ -24,14 +22,14 @@ namespace UWBB.CharacterController
             playerLogicManager.Init(this);
             movementController.Init(this);
             cameraController.Init(this);
+            lockOnController.Init(this);
         }
 
         private void Update()
         {
+            lockOnController.ValidateTargets();
             playerLogicManager.RunLogicUpdate();
-            
             movementController.ProcessMovementData(movementData);
-            lockOnController.ProcessLockOnData(lockOnData);
         }
 
         private void LateUpdate() => cameraController.ProcessCameraData(cameraData);

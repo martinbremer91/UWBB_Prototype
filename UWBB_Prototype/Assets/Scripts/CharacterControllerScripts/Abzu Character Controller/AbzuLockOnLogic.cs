@@ -22,5 +22,9 @@ namespace UWBB.CharacterController.Abzu
         }
     }
     
-    public struct AbzuLockOnData : ILockOnLogicData {}
+    public struct AbzuLockOnData : ILockOnLogicData
+    {
+        public bool lockedOn { get; set; }
+        public ILockOnTarget target { get; set; }
+    }
 }

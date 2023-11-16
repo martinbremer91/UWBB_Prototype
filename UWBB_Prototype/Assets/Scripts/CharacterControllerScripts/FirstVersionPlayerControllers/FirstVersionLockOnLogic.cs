@@ -1,5 +1,6 @@
-using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UWBB.GameFramework;
 using UWBB.Interfaces;
 
 namespace UWBB.CharacterController.FirstVersion
@@ -8,66 +9,108 @@ namespace UWBB.CharacterController.FirstVersion
         IPlayerLogic<IInputState, ILockOnLogicData>,
         IPlayerLogic<FirstVersionInputState, FirstVersionLockOnData>
     {
-        private FirstVersionInputLogic inputController;
-        
-        public Transform target;
+        private CharacterControllerConfigs configs;
+        private float maxLockOnDotProduct 
+            => 1 - configs.firstVersionControllerSettings.lockOnAngleTolerance;
+        private float range => configs.firstVersionControllerSettings.lockOnRange;
+
+        private Transform playerTransform;
         private Transform cameraTransform;
+        private LockOnController lockOnController;
 
-        public bool lockedOn;
-
-        [Tooltip("Tolerance of the angle between camera and target for lock on to work. Higher value => more tolerant. \n \n" +
-                 "A value of 0 corresponds to a tolerance of 0°. \nA value of 1 corresponds to a tolerance of 180°.")]
-        private float lockOnAngleTolerance;
-
-        public Action onLockOn;
-        
-        private float maxLockOnDotProduct => 1 - lockOnAngleTolerance;
-
-        public void Init(Player player)
+        public void Init(Player p)
         {
-            
+            playerTransform = p.transform;
+            cameraTransform = p.cameraTransform;
+            lockOnController = p.lockOnController;
+            configs = Main.instance.configs.ccConfigs;
         }
         
         public ILockOnLogicData RunUpdate(IInputState inputState)
             => RunUpdate((FirstVersionInputState)inputState);
 
-        public FirstVersionLockOnData RunUpdate(FirstVersionInputState inputState)
-        {
-            Debug.Log("FirstVersionLockOn RunUpdate");
-            return default;
-        }
-        
-        private void Update()
-        {
-            // if (inputController.FirstVersionInputState.lockOnToggleCommand)
-            // {
-            //     if (lockedOn)
-            //         ReleaseLockOn();
-            //     else
-            //         TryLockOn();
-            //     
-            //     inputController.FirstVersionInputState.lockOnToggleCommand = false;
-            // }
-        }
+        public FirstVersionLockOnData RunUpdate(FirstVersionInputState inputState) 
+            => ProcessLockOn(inputState);
 
-        private void ReleaseLockOn()
+        private FirstVersionLockOnData ProcessLockOn(FirstVersionInputState inputState)
         {
-            lockedOn = false;
-        }
+            bool lockedOn = lockOnController.lockedOn;
+            if (lockedOn && inputState.lockOnCommand)
+                return default;
 
-        private void TryLockOn()
-        {
-            if (target == null)
-                return;
-
-            Vector3 directionToTarget = (target.position - cameraTransform.position).normalized;
-            float camTargetDotProduct = Vector3.Dot(cameraTransform.forward, directionToTarget);
-            lockedOn = camTargetDotProduct >= maxLockOnDotProduct;
+            ILockOnTarget activeTarget = GetActiveTarget(lockedOn);
+            if (activeTarget == null)
+                return default;
             
+            return new() { lockedOn = true, target = activeTarget };
+        }
+
+        private ILockOnTarget GetActiveTarget(bool lockedOn)
+        {
             if (lockedOn)
-                onLockOn?.Invoke();
+            {
+                bool targetIsValid = IsTargetValid(lockOnController.activeTarget);
+                return targetIsValid ? lockOnController.activeTarget : null;
+            }
+            
+            ILockOnTarget[] validTargets = GetValidTargets();
+            if (validTargets.Length == 0)
+                return null;
+            return SelectActiveTarget(validTargets);
+        }
+
+        private bool IsTargetValid(float distance, float dotProduct)
+        {
+            // TODO: check target visibility
+            return distance <= range && dotProduct >= maxLockOnDotProduct;
+        }
+
+        private bool IsTargetValid(ILockOnTarget lockOnTarget)
+        {
+            float distance = Vector3.Distance(lockOnTarget.position, playerTransform.position);
+            Vector3 directionToTarget = (lockOnTarget.position - cameraTransform.position).normalized;
+            float dotProduct = Vector3.Dot(directionToTarget, cameraTransform.forward);
+            return IsTargetValid(distance, dotProduct);
+        }
+
+        private ILockOnTarget[] GetValidTargets()
+        {
+            List<ILockOnTarget> validTargets = new();
+            
+            for (int i = 0; i < lockOnController.lockOnTargets.Count; i++)
+            {
+                float distance = lockOnController.distancesToPlayer[i][0];
+                float dotProduct = lockOnController.dotProductsToCamera[i][0];
+                
+                if (IsTargetValid(distance, dotProduct))
+                    validTargets.Add(lockOnController.lockOnTargets[i]);
+            }
+
+            return validTargets.ToArray();
+        }
+
+        private ILockOnTarget SelectActiveTarget(ILockOnTarget[] validTargets)
+        {
+            ILockOnTarget closestTarget = null;
+            float shortestDistance = Mathf.Infinity;
+            
+            foreach (var target in validTargets)
+            {
+                float distance = Vector3.Distance(target.position, playerTransform.position);
+                if (shortestDistance > distance)
+                {
+                    closestTarget = target;
+                    shortestDistance = distance;
+                }
+            }
+            
+            return closestTarget;
         }
     }
-    
-    public struct FirstVersionLockOnData : ILockOnLogicData {}
+
+    public struct FirstVersionLockOnData : ILockOnLogicData
+    {
+        public bool lockedOn { get; set; }
+        public ILockOnTarget target { get; set; }
+    }
 }

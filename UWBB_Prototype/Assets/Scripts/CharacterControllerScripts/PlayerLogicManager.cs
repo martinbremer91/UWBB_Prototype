@@ -1,5 +1,4 @@
 ﻿using System;
-using MBre.Utilities;
 using UnityEngine;
 using UWBB.CharacterController.Abzu;
 using UWBB.CharacterController.FirstVersion;
@@ -11,6 +10,7 @@ namespace UWBB.CharacterController
     public class PlayerLogicManager : IInitializable<Player>
     {
         private Player player;
+        private LockOnController lockOnController;
         private CharacterControllerConfigs ccConfigsBf;
         private CharacterControllerConfigs ccConfigs
         {
@@ -36,23 +36,28 @@ namespace UWBB.CharacterController
         public void Init(Player p)
         {
             player = p;
+            lockOnController = p.lockOnController;
             ValidatePlayerLogicRefs();
         }
         
         public void RunLogicUpdate()
         {
             ValidatePlayerLogicRefs(invalidMovementLogic, invalidLockOnLogic);
-            
             IInputState inputState = inputLogic.GetInputState();
+            
+            lockOnController.CompleteValidationJobs();
+            ILockOnLogicData lockOnData = lockOnLogic.RunUpdate(inputState);
+            lockOnController.ApplyLockOnLogicData(lockOnData);
+            MBre.Utilities.DebugPanel.CustomDebug("LockedOn: " + lockOnController.lockedOn + 
+                                                  " // Target: " + lockOnController.activeTarget?.go.name);
+            lockOnController.DisposeNativeArrays();
+            
             player.movementData = movementLogic.RunUpdate(inputState);
-            DebugPanel.CustomDebug("Movement: " + player.movementData.movementVector, DebugFlags.Movement);
             player.cameraData = cameraLogic.RunUpdate(inputState);
-            DebugPanel.CustomDebug("Camera - Pivot: " + player.cameraData.pivotPoint + "\n" +
-                "Axes XY: " + player.cameraData.rotationXAxis + " / " + player.cameraData.rotationYAxis + "\n" +
-                "Angles XY: " + new Vector2(player.cameraData.angleX, player.cameraData.angleY), DebugFlags.Camera);
-            // player.lockOnData = lockOnLogic.RunUpdate(inputState);
         }
-        
+
+        #region PLAYER LOGIC REFERENCE VALIDATION
+
         private void ValidatePlayerLogicRefs(bool updateMovementType = true, bool updateLockOnType = true)
         {
             if (updateMovementType)
@@ -120,5 +125,6 @@ namespace UWBB.CharacterController
             
             lockOnLogic.Init(player);
         }
+        #endregion
     }
 }

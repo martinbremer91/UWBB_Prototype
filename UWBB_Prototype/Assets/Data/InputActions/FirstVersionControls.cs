@@ -60,7 +60,7 @@ public partial class @FirstVersionControls: IInputActionCollection2, IDisposable
                     ""id"": ""543e3563-54da-414a-bf80-8599f4202354"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Hold(duration=0.05)"",
                     ""initialStateCheck"": false
                 }
             ],

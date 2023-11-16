@@ -1,14 +1,12 @@
-﻿CHARACTER CONTROLLER SYSTEM
-- Create a CharacterController mono-behavior, a CameraController mono-behavior, and a LockOnController mono-behavior
-    - all three mono-behaviors have references to the scene components they need...
-    - ... and to the CharacterControllerConfigs asset
-
-    - every frame they read the active controllers from the configs asset... 
-    - ... and run the required logic on the appropriate (pure) c# classes (IMovementController, etc)
-        - NOTE: the c# classes only return values to the mono-behaviors and have no side effects
-    - the mono-behaviors then get the necessary values from the c# classes...
-    - ... and pass them on to further systems that apply the appropriate changes to the scene
-        - these further systems must remain flexible enough to take in values from NPC AI
+﻿NPC AI SYSTEM
+- Should be compatible and use (renamed) player movement logic and controller class
 
 PHYSICS SYSTEM
 - Look into Rigidbody.AddForce() and the difference between ForceModes
+
+LOCK ON TARGETING SYSTEM
+- Target validation happens on the ILockTarget side
+    - some validation conditions get recorded (distance, angle to camera, LOS)
+    - if valid, target is added to a list
+- PlayerLockOnLogic takes list and determines current target based on recorded validation conditions
+- Eventually this could be re-implemented with ECS without needing to re-do the whole character controller

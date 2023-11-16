@@ -27,7 +27,9 @@ namespace UWBB.CharacterController.FirstVersion
             freeMovement.SnapToHorizon.performed += _ => ReleaseSnapToHorizon();
             freeMovement.SnapToHorizon.canceled += _ => ReleaseSnapToHorizon();
             
-            freeMovement.LockOnToggle.performed += _ => ToggleLockOn();
+            freeMovement.LockOnToggle.started += _ => LockOnCommand();
+            freeMovement.LockOnToggle.performed += _ => ReleaseLockOnCommand();
+            freeMovement.LockOnToggle.canceled += _ => ReleaseLockOnCommand();
         }
 
         public void Deinit() => controls.Disable();
@@ -48,7 +50,8 @@ namespace UWBB.CharacterController.FirstVersion
         private void SnapToHorizon() => inputState.snapCommand = true;
         private void ReleaseSnapToHorizon() => inputState.snapCommand = false;
 
-        private void ToggleLockOn() => inputState.lockOnToggleCommand = true;
+        private void LockOnCommand() => inputState.lockOnCommand = true;
+        private void ReleaseLockOnCommand() => inputState.lockOnCommand = false;
     }
 
     public struct FirstVersionInputState : IInputState
@@ -57,6 +60,6 @@ namespace UWBB.CharacterController.FirstVersion
         public Vector2 characterAxisInput;
 
         public bool snapCommand;
-        public bool lockOnToggleCommand;
+        public bool lockOnCommand;
     }
 }
