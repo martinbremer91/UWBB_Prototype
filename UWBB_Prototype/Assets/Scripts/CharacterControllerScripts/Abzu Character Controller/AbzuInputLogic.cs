@@ -1,5 +1,3 @@
-using MBre.Utilities;
-using UnityEngine;
 using UWBB.Interfaces;
 
 namespace UWBB.CharacterController.Abzu
@@ -11,7 +9,13 @@ namespace UWBB.CharacterController.Abzu
         private readonly AbzuControls controls = new();
         private AbzuInputState inputState;
 
-        public void Init() => controls.Enable();
+        public void Init()
+        {
+            controls.Enable();
+            
+            AbzuControls.FreeMovementActions freeMovement = controls.FreeMovement;
+        }
+
         public void Deinit() => controls.Disable();
 
         IInputState IInputLogic<IInputState>.GetInputState()

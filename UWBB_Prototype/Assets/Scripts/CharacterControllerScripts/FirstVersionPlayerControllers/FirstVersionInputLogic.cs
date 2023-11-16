@@ -23,13 +23,15 @@ namespace UWBB.CharacterController.FirstVersion
             freeMovement.YMovementandRotation.performed += context => HandleYInput(context.ReadValue<Vector2>());
             freeMovement.YMovementandRotation.canceled += context => HandleYInput(context.ReadValue<Vector2>());
 
-            freeMovement.SnapToHorizon.started += _ => SnapToHorizon();
-            freeMovement.SnapToHorizon.performed += _ => ReleaseSnapToHorizon();
-            freeMovement.SnapToHorizon.canceled += _ => ReleaseSnapToHorizon();
+            // freeMovement.SnapToHorizon.started += _ => SnapToHorizon();
+            // freeMovement.SnapToHorizon.performed += _ => ReleaseSnapToHorizon();
+            // freeMovement.SnapToHorizon.canceled += _ => ReleaseSnapToHorizon();
             
-            freeMovement.LockOnToggle.started += _ => LockOnCommand();
-            freeMovement.LockOnToggle.performed += _ => ReleaseLockOnCommand();
-            freeMovement.LockOnToggle.canceled += _ => ReleaseLockOnCommand();
+            // freeMovement.LockOnToggle.started += _ => LockOnCommand();
+            // freeMovement.LockOnToggle.performed += _ => ReleaseLockOnCommand();
+            // freeMovement.LockOnToggle.canceled += _ => ReleaseLockOnCommand();
+
+            inputState.actions = freeMovement;
         }
 
         public void Deinit() => controls.Disable();
@@ -47,19 +49,19 @@ namespace UWBB.CharacterController.FirstVersion
         
         private void HandleXZInput(Vector2 input) => inputState.characterPlaneInput = input;
         private void HandleYInput(Vector2 input) => inputState.characterAxisInput = input;
-        private void SnapToHorizon() => inputState.snapCommand = true;
-        private void ReleaseSnapToHorizon() => inputState.snapCommand = false;
-
-        private void LockOnCommand() => inputState.lockOnCommand = true;
-        private void ReleaseLockOnCommand() => inputState.lockOnCommand = false;
     }
 
     public struct FirstVersionInputState : IInputState
     {
+        public FirstVersionControls.FreeMovementActions actions;
+        
         public Vector2 characterPlaneInput;
         public Vector2 characterAxisInput;
 
-        public bool snapCommand;
-        public bool lockOnCommand;
+        // public bool snapCommand;
+        // public bool lockOnCommand;
+
+        public bool snapCommand => actions.SnapToHorizon.WasPressedThisFrame();
+        public bool lockOnCommand => actions.LockOnCommand.WasPressedThisFrame();
     }
 }

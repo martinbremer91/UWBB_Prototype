@@ -34,20 +34,19 @@ namespace UWBB.CharacterController.FirstVersion
 
         private FirstVersionLockOnData ProcessLockOn(FirstVersionInputState inputState)
         {
-            bool lockedOn = lockOnController.lockedOn;
-            if (lockedOn && inputState.lockOnCommand)
+            if (lockOnController.lockedOn == inputState.lockOnCommand)
                 return default;
-
-            ILockOnTarget activeTarget = GetActiveTarget(lockedOn);
+            
+            ILockOnTarget activeTarget = GetActiveTarget(lockOnController.activeTarget != null);
             if (activeTarget == null)
                 return default;
             
             return new() { lockedOn = true, target = activeTarget };
         }
 
-        private ILockOnTarget GetActiveTarget(bool lockedOn)
+        private ILockOnTarget GetActiveTarget(bool hasTarget)
         {
-            if (lockedOn)
+            if (hasTarget)
             {
                 bool targetIsValid = IsTargetValid(lockOnController.activeTarget);
                 return targetIsValid ? lockOnController.activeTarget : null;

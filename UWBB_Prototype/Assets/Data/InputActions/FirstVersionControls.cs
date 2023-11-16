@@ -51,16 +51,16 @@ public partial class @FirstVersionControls: IInputActionCollection2, IDisposable
                     ""id"": ""a4dcadb0-e04f-46f1-a764-3fa0cc17174c"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold(duration=0.05)"",
+                    ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""LockOnToggle"",
+                    ""name"": ""LockOnCommand"",
                     ""type"": ""Button"",
                     ""id"": ""543e3563-54da-414a-bf80-8599f4202354"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold(duration=0.05)"",
+                    ""interactions"": """",
                     ""initialStateCheck"": false
                 }
             ],
@@ -105,7 +105,7 @@ public partial class @FirstVersionControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""LockOnToggle"",
+                    ""action"": ""LockOnCommand"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -119,7 +119,7 @@ public partial class @FirstVersionControls: IInputActionCollection2, IDisposable
         m_FreeMovement_XZMovement = m_FreeMovement.FindAction("XZ Movement", throwIfNotFound: true);
         m_FreeMovement_YMovementandRotation = m_FreeMovement.FindAction("Y Movement and Rotation", throwIfNotFound: true);
         m_FreeMovement_SnapToHorizon = m_FreeMovement.FindAction("SnapToHorizon", throwIfNotFound: true);
-        m_FreeMovement_LockOnToggle = m_FreeMovement.FindAction("LockOnToggle", throwIfNotFound: true);
+        m_FreeMovement_LockOnCommand = m_FreeMovement.FindAction("LockOnCommand", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -184,7 +184,7 @@ public partial class @FirstVersionControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_FreeMovement_XZMovement;
     private readonly InputAction m_FreeMovement_YMovementandRotation;
     private readonly InputAction m_FreeMovement_SnapToHorizon;
-    private readonly InputAction m_FreeMovement_LockOnToggle;
+    private readonly InputAction m_FreeMovement_LockOnCommand;
     public struct FreeMovementActions
     {
         private @FirstVersionControls m_Wrapper;
@@ -192,7 +192,7 @@ public partial class @FirstVersionControls: IInputActionCollection2, IDisposable
         public InputAction @XZMovement => m_Wrapper.m_FreeMovement_XZMovement;
         public InputAction @YMovementandRotation => m_Wrapper.m_FreeMovement_YMovementandRotation;
         public InputAction @SnapToHorizon => m_Wrapper.m_FreeMovement_SnapToHorizon;
-        public InputAction @LockOnToggle => m_Wrapper.m_FreeMovement_LockOnToggle;
+        public InputAction @LockOnCommand => m_Wrapper.m_FreeMovement_LockOnCommand;
         public InputActionMap Get() { return m_Wrapper.m_FreeMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -211,9 +211,9 @@ public partial class @FirstVersionControls: IInputActionCollection2, IDisposable
             @SnapToHorizon.started += instance.OnSnapToHorizon;
             @SnapToHorizon.performed += instance.OnSnapToHorizon;
             @SnapToHorizon.canceled += instance.OnSnapToHorizon;
-            @LockOnToggle.started += instance.OnLockOnToggle;
-            @LockOnToggle.performed += instance.OnLockOnToggle;
-            @LockOnToggle.canceled += instance.OnLockOnToggle;
+            @LockOnCommand.started += instance.OnLockOnCommand;
+            @LockOnCommand.performed += instance.OnLockOnCommand;
+            @LockOnCommand.canceled += instance.OnLockOnCommand;
         }
 
         private void UnregisterCallbacks(IFreeMovementActions instance)
@@ -227,9 +227,9 @@ public partial class @FirstVersionControls: IInputActionCollection2, IDisposable
             @SnapToHorizon.started -= instance.OnSnapToHorizon;
             @SnapToHorizon.performed -= instance.OnSnapToHorizon;
             @SnapToHorizon.canceled -= instance.OnSnapToHorizon;
-            @LockOnToggle.started -= instance.OnLockOnToggle;
-            @LockOnToggle.performed -= instance.OnLockOnToggle;
-            @LockOnToggle.canceled -= instance.OnLockOnToggle;
+            @LockOnCommand.started -= instance.OnLockOnCommand;
+            @LockOnCommand.performed -= instance.OnLockOnCommand;
+            @LockOnCommand.canceled -= instance.OnLockOnCommand;
         }
 
         public void RemoveCallbacks(IFreeMovementActions instance)
@@ -252,6 +252,6 @@ public partial class @FirstVersionControls: IInputActionCollection2, IDisposable
         void OnXZMovement(InputAction.CallbackContext context);
         void OnYMovementandRotation(InputAction.CallbackContext context);
         void OnSnapToHorizon(InputAction.CallbackContext context);
-        void OnLockOnToggle(InputAction.CallbackContext context);
+        void OnLockOnCommand(InputAction.CallbackContext context);
     }
 }

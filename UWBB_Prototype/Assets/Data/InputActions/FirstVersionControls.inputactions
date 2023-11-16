@@ -29,16 +29,16 @@
                     "id": "a4dcadb0-e04f-46f1-a764-3fa0cc17174c",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Hold(duration=0.05)",
+                    "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "LockOnToggle",
+                    "name": "LockOnCommand",
                     "type": "Button",
                     "id": "543e3563-54da-414a-bf80-8599f4202354",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Hold(duration=0.05)",
+                    "interactions": "",
                     "initialStateCheck": false
                 }
             ],
@@ -83,7 +83,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "LockOnToggle",
+                    "action": "LockOnCommand",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
