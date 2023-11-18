@@ -35,6 +35,7 @@ namespace UWBB.CharacterController
     {
         [Header("Movement parameters")]
         public float speed = 10;
+        public float cameraRotationSpeed = 180;
         [Header("Lock-on parameters")]
         [Tooltip(
             "Tolerance of the angle between camera and target for lock on to work. Higher value => more tolerant. \n \n" +

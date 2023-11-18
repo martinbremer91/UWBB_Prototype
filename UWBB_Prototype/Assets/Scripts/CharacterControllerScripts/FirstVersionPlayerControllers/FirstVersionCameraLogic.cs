@@ -1,6 +1,5 @@
-using System.Globalization;
-using MBre.Utilities;
 using UnityEngine;
+using UWBB.GameFramework;
 using UWBB.Interfaces;
 
 namespace UWBB.CharacterController.FirstVersion
@@ -15,7 +14,8 @@ namespace UWBB.CharacterController.FirstVersion
         private Transform player;
         private Transform camera;
 
-        private readonly float rotationSpeed = 180;
+        private CharacterControllerConfigs configs;
+        private float rotationSpeed => configs.firstVersionControllerSettings.cameraRotationSpeed;
 
         private bool smoothingToHorizon;
         private float horizonSmoothingTarget;
@@ -27,6 +27,7 @@ namespace UWBB.CharacterController.FirstVersion
         {
             player = p.transform;
             camera = p.cameraTransform;
+            configs = Main.instance.configs.ccConfigs;
         }
         
         public ICameraLogicData RunUpdate(IInputState inputState) 
@@ -34,14 +35,6 @@ namespace UWBB.CharacterController.FirstVersion
 
         public FirstVersionCameraData RunUpdate(FirstVersionInputState inputState) 
             => GetCameraLogicData(inputState);
-
-        private void LateUpdate(FirstVersionInputState inputState)
-        {
-            // } else if (!lockOnLogic.lockedOn)
-            //    GetCameraLogicData(inputState.characterAxisInput);
-            // else
-            //     OnLockOn();
-        }
 
         private FirstVersionCameraData GetCameraLogicData(FirstVersionInputState inputState)
         {
