@@ -1,4 +1,3 @@
-using MBre.Utilities;
 using UnityEngine;
 using UWBB.Interfaces;
 
@@ -23,14 +22,6 @@ namespace UWBB.CharacterController.FirstVersion
             freeMovement.YMovementandRotation.performed += context => HandleYInput(context.ReadValue<Vector2>());
             freeMovement.YMovementandRotation.canceled += context => HandleYInput(context.ReadValue<Vector2>());
 
-            // freeMovement.SnapToHorizon.started += _ => SnapToHorizon();
-            // freeMovement.SnapToHorizon.performed += _ => ReleaseSnapToHorizon();
-            // freeMovement.SnapToHorizon.canceled += _ => ReleaseSnapToHorizon();
-            
-            // freeMovement.LockOnToggle.started += _ => LockOnCommand();
-            // freeMovement.LockOnToggle.performed += _ => ReleaseLockOnCommand();
-            // freeMovement.LockOnToggle.canceled += _ => ReleaseLockOnCommand();
-
             inputState.actions = freeMovement;
         }
 
@@ -39,14 +30,8 @@ namespace UWBB.CharacterController.FirstVersion
         IInputState IInputLogic<IInputState>.GetInputState() 
             => (this as IInputLogic<FirstVersionInputState>).GetInputState();
 
-        FirstVersionInputState IInputLogic<FirstVersionInputState>.GetInputState()
-        {
-            DebugPanel.CustomDebug(
-                $"FirstVersion\nMovement = {inputState.characterPlaneInput}\n" +
-                $"Camera = {inputState.characterAxisInput}\nSnap: " + inputState.snapCommand, DebugFlags.Input);
-            return inputState;
-        }
-        
+        FirstVersionInputState IInputLogic<FirstVersionInputState>.GetInputState() => inputState;
+
         private void HandleXZInput(Vector2 input) => inputState.characterPlaneInput = input;
         private void HandleYInput(Vector2 input) => inputState.characterAxisInput = input;
     }
@@ -57,9 +42,6 @@ namespace UWBB.CharacterController.FirstVersion
         
         public Vector2 characterPlaneInput;
         public Vector2 characterAxisInput;
-
-        // public bool snapCommand;
-        // public bool lockOnCommand;
 
         public bool snapCommand => actions.SnapToHorizon.WasPressedThisFrame();
         public bool lockOnCommand => actions.LockOnCommand.WasPressedThisFrame();
