@@ -37,7 +37,16 @@ public partial class @FirstVersionControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Y Movement and Rotation"",
+                    ""name"": ""Y Movement"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""83b3335e-a3f9-48cb-9285-0b566caf0d16"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Camera Stick"",
                     ""type"": ""Value"",
                     ""id"": ""d995fb88-d497-447b-b3ef-f71dbc626228"",
                     ""expectedControlType"": ""Vector2"",
@@ -58,6 +67,15 @@ public partial class @FirstVersionControls: IInputActionCollection2, IDisposable
                     ""name"": ""LockOnCommand"",
                     ""type"": ""Button"",
                     ""id"": ""543e3563-54da-414a-bf80-8599f4202354"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Dash"",
+                    ""type"": ""Button"",
+                    ""id"": ""c028584e-3237-47e4-94cb-887e6697a443"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -83,7 +101,7 @@ public partial class @FirstVersionControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Y Movement and Rotation"",
+                    ""action"": ""Camera Stick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -108,6 +126,50 @@ public partial class @FirstVersionControls: IInputActionCollection2, IDisposable
                     ""action"": ""LockOnCommand"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""8db73cc8-2607-42e6-a897-6393a5c226f0"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Y Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""d34877c0-22a8-42b6-90ef-d65f5fc44cf7"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Y Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""5d3b591a-790b-48e7-8890-1bf97b4db916"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Y Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3ee71fb1-3b9a-473e-8201-0db1ae9e5a6e"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -117,9 +179,11 @@ public partial class @FirstVersionControls: IInputActionCollection2, IDisposable
         // FreeMovement
         m_FreeMovement = asset.FindActionMap("FreeMovement", throwIfNotFound: true);
         m_FreeMovement_XZMovement = m_FreeMovement.FindAction("XZ Movement", throwIfNotFound: true);
-        m_FreeMovement_YMovementandRotation = m_FreeMovement.FindAction("Y Movement and Rotation", throwIfNotFound: true);
+        m_FreeMovement_YMovement = m_FreeMovement.FindAction("Y Movement", throwIfNotFound: true);
+        m_FreeMovement_CameraStick = m_FreeMovement.FindAction("Camera Stick", throwIfNotFound: true);
         m_FreeMovement_SnapToHorizon = m_FreeMovement.FindAction("SnapToHorizon", throwIfNotFound: true);
         m_FreeMovement_LockOnCommand = m_FreeMovement.FindAction("LockOnCommand", throwIfNotFound: true);
+        m_FreeMovement_Dash = m_FreeMovement.FindAction("Dash", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -182,17 +246,21 @@ public partial class @FirstVersionControls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_FreeMovement;
     private List<IFreeMovementActions> m_FreeMovementActionsCallbackInterfaces = new List<IFreeMovementActions>();
     private readonly InputAction m_FreeMovement_XZMovement;
-    private readonly InputAction m_FreeMovement_YMovementandRotation;
+    private readonly InputAction m_FreeMovement_YMovement;
+    private readonly InputAction m_FreeMovement_CameraStick;
     private readonly InputAction m_FreeMovement_SnapToHorizon;
     private readonly InputAction m_FreeMovement_LockOnCommand;
+    private readonly InputAction m_FreeMovement_Dash;
     public struct FreeMovementActions
     {
         private @FirstVersionControls m_Wrapper;
         public FreeMovementActions(@FirstVersionControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @XZMovement => m_Wrapper.m_FreeMovement_XZMovement;
-        public InputAction @YMovementandRotation => m_Wrapper.m_FreeMovement_YMovementandRotation;
+        public InputAction @YMovement => m_Wrapper.m_FreeMovement_YMovement;
+        public InputAction @CameraStick => m_Wrapper.m_FreeMovement_CameraStick;
         public InputAction @SnapToHorizon => m_Wrapper.m_FreeMovement_SnapToHorizon;
         public InputAction @LockOnCommand => m_Wrapper.m_FreeMovement_LockOnCommand;
+        public InputAction @Dash => m_Wrapper.m_FreeMovement_Dash;
         public InputActionMap Get() { return m_Wrapper.m_FreeMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -205,15 +273,21 @@ public partial class @FirstVersionControls: IInputActionCollection2, IDisposable
             @XZMovement.started += instance.OnXZMovement;
             @XZMovement.performed += instance.OnXZMovement;
             @XZMovement.canceled += instance.OnXZMovement;
-            @YMovementandRotation.started += instance.OnYMovementandRotation;
-            @YMovementandRotation.performed += instance.OnYMovementandRotation;
-            @YMovementandRotation.canceled += instance.OnYMovementandRotation;
+            @YMovement.started += instance.OnYMovement;
+            @YMovement.performed += instance.OnYMovement;
+            @YMovement.canceled += instance.OnYMovement;
+            @CameraStick.started += instance.OnCameraStick;
+            @CameraStick.performed += instance.OnCameraStick;
+            @CameraStick.canceled += instance.OnCameraStick;
             @SnapToHorizon.started += instance.OnSnapToHorizon;
             @SnapToHorizon.performed += instance.OnSnapToHorizon;
             @SnapToHorizon.canceled += instance.OnSnapToHorizon;
             @LockOnCommand.started += instance.OnLockOnCommand;
             @LockOnCommand.performed += instance.OnLockOnCommand;
             @LockOnCommand.canceled += instance.OnLockOnCommand;
+            @Dash.started += instance.OnDash;
+            @Dash.performed += instance.OnDash;
+            @Dash.canceled += instance.OnDash;
         }
 
         private void UnregisterCallbacks(IFreeMovementActions instance)
@@ -221,15 +295,21 @@ public partial class @FirstVersionControls: IInputActionCollection2, IDisposable
             @XZMovement.started -= instance.OnXZMovement;
             @XZMovement.performed -= instance.OnXZMovement;
             @XZMovement.canceled -= instance.OnXZMovement;
-            @YMovementandRotation.started -= instance.OnYMovementandRotation;
-            @YMovementandRotation.performed -= instance.OnYMovementandRotation;
-            @YMovementandRotation.canceled -= instance.OnYMovementandRotation;
+            @YMovement.started -= instance.OnYMovement;
+            @YMovement.performed -= instance.OnYMovement;
+            @YMovement.canceled -= instance.OnYMovement;
+            @CameraStick.started -= instance.OnCameraStick;
+            @CameraStick.performed -= instance.OnCameraStick;
+            @CameraStick.canceled -= instance.OnCameraStick;
             @SnapToHorizon.started -= instance.OnSnapToHorizon;
             @SnapToHorizon.performed -= instance.OnSnapToHorizon;
             @SnapToHorizon.canceled -= instance.OnSnapToHorizon;
             @LockOnCommand.started -= instance.OnLockOnCommand;
             @LockOnCommand.performed -= instance.OnLockOnCommand;
             @LockOnCommand.canceled -= instance.OnLockOnCommand;
+            @Dash.started -= instance.OnDash;
+            @Dash.performed -= instance.OnDash;
+            @Dash.canceled -= instance.OnDash;
         }
 
         public void RemoveCallbacks(IFreeMovementActions instance)
@@ -250,8 +330,10 @@ public partial class @FirstVersionControls: IInputActionCollection2, IDisposable
     public interface IFreeMovementActions
     {
         void OnXZMovement(InputAction.CallbackContext context);
-        void OnYMovementandRotation(InputAction.CallbackContext context);
+        void OnYMovement(InputAction.CallbackContext context);
+        void OnCameraStick(InputAction.CallbackContext context);
         void OnSnapToHorizon(InputAction.CallbackContext context);
         void OnLockOnCommand(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
     }
 }

@@ -15,7 +15,16 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Y Movement and Rotation",
+                    "name": "Y Movement",
+                    "type": "PassThrough",
+                    "id": "83b3335e-a3f9-48cb-9285-0b566caf0d16",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Camera Stick",
                     "type": "Value",
                     "id": "d995fb88-d497-447b-b3ef-f71dbc626228",
                     "expectedControlType": "Vector2",
@@ -36,6 +45,15 @@
                     "name": "LockOnCommand",
                     "type": "Button",
                     "id": "543e3563-54da-414a-bf80-8599f4202354",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Dash",
+                    "type": "Button",
+                    "id": "c028584e-3237-47e4-94cb-887e6697a443",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -61,7 +79,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Y Movement and Rotation",
+                    "action": "Camera Stick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -84,6 +102,50 @@
                     "processors": "",
                     "groups": "",
                     "action": "LockOnCommand",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "8db73cc8-2607-42e6-a897-6393a5c226f0",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Y Movement",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "d34877c0-22a8-42b6-90ef-d65f5fc44cf7",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Y Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "5d3b591a-790b-48e7-8890-1bf97b4db916",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Y Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "3ee71fb1-3b9a-473e-8201-0db1ae9e5a6e",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

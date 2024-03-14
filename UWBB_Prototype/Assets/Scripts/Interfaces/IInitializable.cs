@@ -1,4 +1,6 @@
-﻿namespace UWBB.Interfaces
+﻿using UWBB.CharacterController;
+
+namespace UWBB.Interfaces
 {
     public interface IInitializable
     {

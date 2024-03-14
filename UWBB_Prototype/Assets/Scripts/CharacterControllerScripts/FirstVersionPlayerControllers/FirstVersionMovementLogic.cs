@@ -32,8 +32,8 @@ namespace UWBB.CharacterController.FirstVersion
             => RunUpdate((FirstVersionInputState)inputState);
         
         public FirstVersionMovementData RunUpdate(FirstVersionInputState inputState) 
-            => new(GetMovementVector(inputState));
-
+            => new(GetMovementVector(inputState), inputState.dashCommand);
+        
         private Vector3 GetMovementVector(FirstVersionInputState inputState)
         {
             // HandleYLockedOnMovement(firstVersionInputState.characterAxisInput);
@@ -42,9 +42,11 @@ namespace UWBB.CharacterController.FirstVersion
             //     SetModelLookAtTarget(lockOnLogic.target.position);
             
             // HandleCharacterPlaneMovement(inputState.characterPlaneInput);
-            
-            return GetVectorInRelationToCamRotation(inputState.characterPlaneInput) 
-                   * (settings.speed * Time.deltaTime);
+
+            Vector3 cameraPlaneMovementVector = GetVectorInRelationToCamRotation(inputState.characterPlaneInput);
+            Vector3 finalMovementVector =
+                AddWorldYInputVectorToCameraPlaneMovementVector(inputState, cameraPlaneMovementVector);
+            return finalMovementVector;
         }
 
         private void HandleCharacterPlaneMovement(Vector2 input)
@@ -59,6 +61,9 @@ namespace UWBB.CharacterController.FirstVersion
         
         private Vector3 GetVectorInRelationToCamRotation(Vector2 vector) 
             => camera.right * vector.x + camera.forward * vector.y;
+
+        private Vector3 AddWorldYInputVectorToCameraPlaneMovementVector(FirstVersionInputState inputState, Vector3 camPlaneMove)
+            => inputState.worldYInput == 0 ? camPlaneMove : Vector3.up * inputState.worldYInput;
 
         // private void HandleYLockedOnMovement(Vector2 input)
         // {
@@ -82,10 +87,12 @@ namespace UWBB.CharacterController.FirstVersion
     public struct FirstVersionMovementData : IMovementLogicData
     {
         public Vector3 movementVector { get; set; }
+        public bool dashCommand { get; set; }
 
-        public FirstVersionMovementData(Vector3 movementVector)
+        public FirstVersionMovementData(Vector3 movementVector, bool dashCommand)
         {
             this.movementVector = movementVector;
+            this.dashCommand = dashCommand;
         }
     }
 }

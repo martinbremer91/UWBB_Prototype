@@ -25,5 +25,6 @@ namespace UWBB.CharacterController.Abzu
     public struct AbzuMovementData : IMovementLogicData
     {
         public Vector3 movementVector { get; set; }
+        public bool dashCommand { get; set; }
     }
 }
