@@ -7,6 +7,6 @@ namespace UWBB.Interfaces
         public Vector3 position { get; }
         
         // temp
-        public GameObject go { get; }
+        public GameObject lockTarget { get; }
     }
 }

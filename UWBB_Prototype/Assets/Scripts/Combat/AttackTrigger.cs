@@ -1,5 +1,4 @@
 using UnityEngine;
-using UWBB.Interfaces;
 
 namespace UWBB.Combat
 {
@@ -10,13 +9,7 @@ namespace UWBB.Combat
 
         private void OnTriggerEnter(Collider other)
         {
-            IAttackable attackable = other.GetComponent<IAttackable>();
             
-            if (attackable != null)
-            {
-                attackable.damageable.TakeDamage(damage);
-                attackable.knockbackable.TakeKnockback(Vector3.forward, knockback);
-            }
         }
     }
 }

@@ -1,13 +1,11 @@
-﻿using UWBB.CharacterController;
-
-namespace UWBB.Interfaces
+﻿namespace UWBB.Interfaces
 {
     public interface IInitializable
     {
         public void Init();
     }
     
-    public interface IInitializable<T>
+    public interface IInitializable<in T>
     {
         public void Init(T init);
     }

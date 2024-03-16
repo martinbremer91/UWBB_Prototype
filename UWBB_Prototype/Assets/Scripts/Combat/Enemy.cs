@@ -4,26 +4,25 @@ using UWBB.Interfaces;
 
 namespace UWBB.Combat
 {
-    public class Enemy : MonoBehaviour, IAttackable, IDamageable, IKnockbackable, ILockOnTarget
+    public class Enemy : MonoBehaviour, IDamageable, IKnockbackable, ILockOnTarget
     {
         public static Player player;
         
-        // temp
-        public GameObject go => gameObject;
-        
         public Vector3 position => transform.position;
+        public GameObject lockTarget => gameObject;
         public IDamageable damageable => this;
         public IKnockbackable knockbackable => this;
 
-        private int healthPoints = 100;
+        public int currentHealthPoints { get; set; }
+        public int totalHealthPoints => 500;
 
         private void Start() 
             => player.lockOnController.lockOnTargets.Add(this);
 
         public void TakeDamage(int value)
         {
-            healthPoints -= value;
-            Debug.Log(healthPoints);
+            currentHealthPoints -= value;
+            Debug.Log(currentHealthPoints);
         }
 
         public void TakeKnockback(Vector3 direction, float value)

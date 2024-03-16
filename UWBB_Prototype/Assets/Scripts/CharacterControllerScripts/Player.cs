@@ -3,7 +3,7 @@ using UWBB.Interfaces;
 
 namespace UWBB.CharacterController
 {
-    public class Player : MonoBehaviour
+    public class Player : MonoBehaviour, IDamageable
     {
         private readonly PlayerLogicManager playerLogicManager = new();
         
@@ -16,6 +16,9 @@ namespace UWBB.CharacterController
 
         public Transform playerModel;
         public Transform cameraTransform;
+
+        public int totalHealthPoints => 500;
+        public int currentHealthPoints { get; set; }
 
         public void Init()
         {

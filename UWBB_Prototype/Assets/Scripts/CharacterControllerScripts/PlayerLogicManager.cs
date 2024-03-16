@@ -48,7 +48,7 @@ namespace UWBB.CharacterController
             ILockOnLogicData lockOnData = lockOnLogic.RunUpdate(inputState);
             lockOnController.ApplyLockOnLogicData(lockOnData);
             MBre.Utilities.DebugPanel.CustomDebug("LockedOn: " + lockOnController.lockedOn + 
-                                                  " // Target: " + lockOnController.activeTarget?.go.name);
+                                                  " // Target: " + lockOnController.activeTarget?.lockTarget.name);
             lockOnController.DisposeNativeArrays();
             
             player.movementData = movementLogic.RunUpdate(inputState);

@@ -2,6 +2,9 @@
 {
     public interface IDamageable
     {
-        void TakeDamage(int value);
+        int totalHealthPoints { get; }
+        int currentHealthPoints { get; set; }
+
+        void TakeDamage(int value) => currentHealthPoints -= value;
     }
 }
