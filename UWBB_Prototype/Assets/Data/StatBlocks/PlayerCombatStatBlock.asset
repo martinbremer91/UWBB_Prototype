@@ -9,8 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d41a62ee34ee4de9b3364225f839bc94, type: 3}
-  m_Name: MainConfigs
+  m_Script: {fileID: 11500000, guid: 357bb80000204679bc08ec08b7a6d685, type: 3}
+  m_Name: PlayerCombatStatBlock
   m_EditorClassIdentifier: 
-  ccConfigs: {fileID: 11400000, guid: 19b1c12421c367545b02ace35188130e, type: 2}
-  playerCombatStats: {fileID: 11400000, guid: b592feed0fff2fa43992fa7e1c120ace, type: 2}
+  invulnerabilityDuration: 1

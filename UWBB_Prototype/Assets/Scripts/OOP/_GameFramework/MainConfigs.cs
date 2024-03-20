@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UWBB.CharacterController;
+using UWBB.Combat;
 
 namespace UWBB.GameFramework
 {
@@ -7,5 +8,6 @@ namespace UWBB.GameFramework
     public class MainConfigs : ScriptableObject
     {
         public CharacterControllerConfigs ccConfigs;
+        public CombatStatBlock playerCombatStats;
     }
 }
