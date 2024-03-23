@@ -15,10 +15,9 @@ namespace ECS
                 if (!Application.isPlaying)
                     return;
                 
-                var entity = GetEntity(TransformUsageFlags.Dynamic);
+                Entity entity = GetEntity(TransformUsageFlags.Dynamic);
                 
                 AddComponent(entity, new PlayerTagComponent());
-                
                 AddComponent(entity, new PlayerInputComponent()
                 {
                     characterAxisInput = float2.zero,
@@ -27,12 +26,10 @@ namespace ECS
                     snapCommand = false,
                     lockOnCommand = false,
                 });
-                
                 AddComponent(entity, new FactionComponent()
                 {
                     faction = Faction.Player,
                 });
-                
                 AddComponent(entity, new InvulnerableComponent()
                 {
                     invulnerable = false,
