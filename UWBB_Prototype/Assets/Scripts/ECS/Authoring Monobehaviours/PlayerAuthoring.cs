@@ -1,4 +1,5 @@
 ﻿using Unity.Entities;
+using Unity.Mathematics;
 using UnityEngine;
 using UWBB.Components;
 using UWBB.GameFramework;
@@ -15,6 +16,18 @@ namespace ECS
                     return;
                 
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
+                
+                AddComponent(entity, new PlayerTagComponent());
+                
+                AddComponent(entity, new PlayerInputComponent()
+                {
+                    characterAxisInput = float2.zero,
+                    characterPlaneInput = float2.zero,
+                    dashCommand = false,
+                    snapCommand = false,
+                    lockOnCommand = false,
+                });
+                
                 AddComponent(entity, new FactionComponent()
                 {
                     faction = Faction.Player,
