@@ -9,7 +9,7 @@ namespace UWBB.Systems
 {
     public partial class PlayerCameraTransformSyncSystem : SystemBase
     {
-        private Transform camTransform;
+        private Transform mbCamTransform;
         
         protected override void OnCreate()
         {
@@ -18,9 +18,9 @@ namespace UWBB.Systems
 
         protected override void OnStartRunning()
         {
-            camTransform = PlayerCamera.instance.transform;
+            mbCamTransform = PlayerCamera.instance.transform;
 
-            if (camTransform == null)
+            if (mbCamTransform == null)
                 throw new NullReferenceException("Camera Transform cannot be null");
         }
 
@@ -29,8 +29,8 @@ namespace UWBB.Systems
             RefRO<LocalToWorld> cameraEntityLocalToWorld =
                 SystemAPI.GetComponentRO<LocalToWorld>(SystemAPI.GetSingletonEntity<PlayerCameraTagComponent>());
 
-            camTransform.position = cameraEntityLocalToWorld.ValueRO.Position;
-            camTransform.rotation = cameraEntityLocalToWorld.ValueRO.Rotation;
+            mbCamTransform.position = cameraEntityLocalToWorld.ValueRO.Position;
+            mbCamTransform.rotation = cameraEntityLocalToWorld.ValueRO.Rotation;
         }
     }
 }

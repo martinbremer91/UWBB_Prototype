@@ -5,7 +5,7 @@ using UWBB.Components;
 
 namespace UWBB.Systems
 {
-    [UpdateInGroup(typeof(InitializationSystemGroup), OrderLast = true)]
+    [UpdateInGroup(typeof(InitializationSystemGroup))]
     public partial class PlayerInputSystem : SystemBase
     {
         private FirstVersionControls controls;
