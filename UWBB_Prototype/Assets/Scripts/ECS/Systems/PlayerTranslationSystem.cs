@@ -1,6 +1,5 @@
 ﻿using ECS;
 using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
@@ -22,40 +21,26 @@ namespace UWBB.Systems
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            RefRO<LocalTransform> cameraTransform =
-                SystemAPI.GetComponentRO<LocalTransform>(SystemAPI.GetSingletonEntity<PlayerCameraTagComponent>());
             Entity playerEntity = SystemAPI.GetSingletonEntity<PlayerTagComponent>();
+            RefRW<LocalTransform> playerTransform = SystemAPI.GetComponentRW<LocalTransform>(playerEntity);
+            RefRO<PlayerInputComponent> inputState = SystemAPI.GetComponentRO<PlayerInputComponent>(playerEntity);
 
             CharacterControllerConfigsComponent ccConfigs =
                 SystemAPI.GetSingleton<CharacterControllerConfigsComponent>();
-
-            float3 finalMovementVector = new float3();
             
-            foreach (RefRO<PlayerInputComponent> inputState in SystemAPI.Query<RefRO<PlayerInputComponent>>())
-            {
-                float3 cameraPlaneMovementVector = 
-                    GetVectorInRelationToCamRotation(cameraTransform, inputState.ValueRO.characterPlaneInput);
-                finalMovementVector =
-                    AddWorldYInputVectorToCameraPlaneMovementVector(inputState, cameraPlaneMovementVector);
-            }
-
-            EntityCommandBuffer ecb = new EntityCommandBuffer(Allocator.Temp);
+            RefRO<LocalToWorld> cameraLocalToWorld =
+                SystemAPI.GetComponentRO<LocalToWorld>(SystemAPI.GetSingletonEntity<PlayerCameraTagComponent>());
             
-            foreach (RefRW<LocalTransform> playerTransform in SystemAPI.Query<RefRW<LocalTransform>>().WithAll<PlayerTagComponent>())
-            {
-                ecb.SetComponent(playerEntity, playerTransform.ValueRW.Translate(finalMovementVector *
-                    (ccConfigs.speed * SystemAPI.Time.DeltaTime)));
-            }
+            float inputX = inputState.ValueRO.characterPlaneInput.x;
+            float inputY = inputState.ValueRO.characterPlaneInput.y;
 
-            ecb.Playback(state.EntityManager);
-            ecb.Dispose();
+            float3 camForwardWorld = cameraLocalToWorld.ValueRO.Value.TransformDirection(new float3(0, 0, 1));
+            float3 camRightWorld = cameraLocalToWorld.ValueRO.Value.TransformDirection(new float3(1, 0, 0));
+
+            float3 finalMovementVector = math.normalizesafe(camForwardWorld * inputY + camRightWorld * inputX);
+            
+            playerTransform.ValueRW.Position = 
+                playerTransform.ValueRW.Translate(finalMovementVector * (ccConfigs.speed * SystemAPI.Time.DeltaTime)).Position;
         }
-        
-        private float3 GetVectorInRelationToCamRotation(RefRO<LocalTransform> cameraTransform, float2 vector)
-            => math.mul(cameraTransform.ValueRO.Rotation, math.right()) * vector.x +
-               math.mul(cameraTransform.ValueRO.Rotation, math.forward()) * vector.y;
-        
-        private float3 AddWorldYInputVectorToCameraPlaneMovementVector(RefRO<PlayerInputComponent> inputState, float3 camPlaneMove)
-            => inputState.ValueRO.worldYInput == 0 ? camPlaneMove : math.up() * inputState.ValueRO.worldYInput;
     }
 }
