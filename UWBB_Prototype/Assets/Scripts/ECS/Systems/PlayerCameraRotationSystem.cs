@@ -1,4 +1,5 @@
-﻿using Unity.Burst;
+﻿using ECS;
+using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
@@ -14,6 +15,7 @@ namespace UWBB.Systems
             state.RequireForUpdate<PlayerTagComponent>();
             state.RequireForUpdate<PlayerCameraTagComponent>();
             state.RequireForUpdate<PlayerCameraTargetTagComponent>();
+            state.RequireForUpdate<CharacterControllerConfigsComponent>();
         }
 
         [BurstCompile]
@@ -27,15 +29,19 @@ namespace UWBB.Systems
             Entity playerEntity = SystemAPI.GetSingletonEntity<PlayerTagComponent>();
             RefRO<PlayerInputComponent> inputState = SystemAPI.GetComponentRO<PlayerInputComponent>(playerEntity);
 
-            float deltaTime = SystemAPI.Time.DeltaTime;
-            float angleX = inputState.ValueRO.characterAxisInput.y * deltaTime;
-            float angleY = inputState.ValueRO.characterAxisInput.x * deltaTime;
+            CharacterControllerConfigsComponent ccConfigs =
+                SystemAPI.GetSingleton<CharacterControllerConfigsComponent>();
+            
+            float multipliers = SystemAPI.Time.DeltaTime * ccConfigs.cameraRotationSpeed;
+            float angleVertical = inputState.ValueRO.characterAxisInput.y * multipliers;
+            float angleHorizontal = inputState.ValueRO.characterAxisInput.x * multipliers;
             
             float3 worldUpInLocal = camLocalToWorld.ValueRO.Value.InverseTransformDirection(new float3(0, 1, 0));
             
             quaternion currentRotation = cameraTargetTransform.ValueRW.Rotation;
-            quaternion targetYRotation = math.mul(math.normalizesafe(currentRotation), quaternion.AxisAngle(worldUpInLocal, angleY));
-            quaternion finalRotation = math.mul(targetYRotation, quaternion.AxisAngle(math.right(), angleX));
+            quaternion targetYRotation = math.mul(math.normalizesafe(currentRotation),
+                quaternion.AxisAngle(worldUpInLocal, angleHorizontal));
+            quaternion finalRotation = math.mul(targetYRotation, quaternion.AxisAngle(math.right(), angleVertical));
 
             cameraTargetTransform.ValueRW.Rotation = finalRotation;
         }

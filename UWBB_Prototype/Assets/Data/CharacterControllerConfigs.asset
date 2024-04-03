@@ -12,15 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5639fbd27f84f9792cc60cf3378539c, type: 3}
   m_Name: CharacterControllerConfigs
   m_EditorClassIdentifier: 
-  activeMovementType: 1
-  activeLockOnType: 1
-  firstVersionControllerSettings:
-    speed: 10
-    lockOnAngleTolerance: 1
-    lockOnRange: 100
-    yRotationDeadZoneAngle: 89
-    minAngleToYRotationDeadZone: 0.5
-  abzuControllerSettings:
-    speed: 10
-    yRotationDeadZoneAngle: 89
-    minAngleToYRotationDeadZone: 0.5
+  speed: 7
+  cameraRotationSpeed: 2
+  lockOnAngleTolerance: 0
+  lockOnRange: 0

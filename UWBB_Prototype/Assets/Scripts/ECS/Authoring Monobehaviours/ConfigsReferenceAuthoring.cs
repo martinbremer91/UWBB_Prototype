@@ -1,5 +1,6 @@
 ﻿using Unity.Entities;
 using UnityEngine;
+using UWBB.CharacterController;
 using UWBB.GameFramework;
 
 namespace ECS
@@ -12,10 +13,13 @@ namespace ECS
         {
             public override void Bake(ConfigsReferenceAuthoring authoring)
             {
-                Entity ccConfigs = GetEntity(TransformUsageFlags.Dynamic);
-                AddComponent(ccConfigs, new CharacterControllerConfigsComponent()
+                Entity ccConfigsEntity = GetEntity(TransformUsageFlags.Dynamic);
+
+                CharacterControllerConfigs ccConfigs = authoring.configs.ccConfigs;
+                AddComponent(ccConfigsEntity, new CharacterControllerConfigsComponent()
                 {
-                    speed = authoring.configs.ccConfigs.firstVersionControllerSettings.speed,
+                    speed = ccConfigs.speed,
+                    cameraRotationSpeed = ccConfigs.cameraRotationSpeed,
                 });
             }
         }
@@ -24,7 +28,7 @@ namespace ECS
     public struct CharacterControllerConfigsComponent : IComponentData
     {
         public float speed;
-        // public float cameraRotationSpeed;
+        public float cameraRotationSpeed;
         // public float lockOnAngleTolerance;
         // public float lockOnRange;
         // public float yRotationDeadZoneAngle;
