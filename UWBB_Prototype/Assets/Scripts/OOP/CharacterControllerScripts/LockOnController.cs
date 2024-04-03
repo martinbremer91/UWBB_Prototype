@@ -8,7 +8,7 @@ using UWBB.Interfaces;
 
 namespace UWBB.CharacterController
 {
-    public class LockOnController : IInitializable<Player>
+    public class LockOnController
     {
         private Transform playerTransform;
         private Transform cameraTransform;
@@ -76,7 +76,7 @@ namespace UWBB.CharacterController
             pendingCompleteJobs = false;
         }
 
-        public void ApplyLockOnLogicData(ILockOnLogicData lockOnData)
+        public void ApplyLockOnLogicData(PlayerLockOnData lockOnData)
         {
             lockedOn = lockOnData.lockedOn;
             activeTarget = lockOnData.target;

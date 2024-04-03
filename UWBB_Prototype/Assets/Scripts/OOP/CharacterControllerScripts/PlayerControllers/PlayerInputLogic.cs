@@ -1,15 +1,11 @@
-using MBre.Utilities;
 using UnityEngine;
-using UWBB.Interfaces;
 
-namespace UWBB.CharacterController.FirstVersion
+namespace UWBB.CharacterController
 {
-    public class FirstVersionInputLogic : 
-        IInputLogic<IInputState>, 
-        IInputLogic<FirstVersionInputState>
+    public class PlayerInputLogic
     {
         private readonly FirstVersionControls controls = new();
-        private FirstVersionInputState inputState;
+        public InputState inputState;
         
         public void Init()
         {
@@ -31,17 +27,12 @@ namespace UWBB.CharacterController.FirstVersion
 
         public void Deinit() => controls.Disable();
 
-        IInputState IInputLogic<IInputState>.GetInputState() 
-            => (this as IInputLogic<FirstVersionInputState>).GetInputState();
-
-        FirstVersionInputState IInputLogic<FirstVersionInputState>.GetInputState() => inputState;
-
         private void HandleXZInput(Vector2 input) => inputState.characterPlaneInput = input;
         private void HandleYInput(float input) => inputState.worldYInput = Mathf.RoundToInt(input);
         private void HandleCameraStick(Vector2 input) => inputState.characterAxisInput = input;
     }
 
-    public struct FirstVersionInputState : IInputState
+    public struct InputState
     {
         public FirstVersionControls.FreeMovementActions actions;
         

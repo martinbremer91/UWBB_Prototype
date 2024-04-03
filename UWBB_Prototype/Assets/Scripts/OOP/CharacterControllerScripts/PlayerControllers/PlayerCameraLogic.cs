@@ -1,21 +1,18 @@
 using UnityEngine;
 using UWBB.GameFramework;
-using UWBB.Interfaces;
 
-namespace UWBB.CharacterController.FirstVersion
+namespace UWBB.CharacterController
 {
-    public class FirstVersionCameraLogic : 
-        IPlayerLogic<IInputState, ICameraLogicData>,
-        IPlayerLogic<FirstVersionInputState, FirstVersionCameraData>
+    public class PlayerCameraLogic
     {
-        private FirstVersionInputLogic inputController;
-        private FirstVersionLockOnLogic lockOnLogic;
-        private FirstVersionMovementLogic firstVersionMovementLogic;
+        private PlayerInputLogic inputController;
+        private PlayerLockOnLogic lockOnLogic;
+        private PlayerMovementLogic playerMovementLogic;
         private Transform player;
         private Transform camera;
 
         private CharacterControllerConfigs configs;
-        private float rotationSpeed => configs.firstVersionControllerSettings.cameraRotationSpeed;
+        private float rotationSpeed => configs.cameraRotationSpeed;
 
         private bool smoothingToHorizon;
         private float horizonSmoothingTarget;
@@ -30,13 +27,10 @@ namespace UWBB.CharacterController.FirstVersion
             configs = Main.instance.configs.ccConfigs;
         }
         
-        public ICameraLogicData RunUpdate(IInputState inputState) 
-            => RunUpdate((FirstVersionInputState)inputState);
-
-        public FirstVersionCameraData RunUpdate(FirstVersionInputState inputState) 
+        public PlayerCameraData RunUpdate(InputState inputState) 
             => GetCameraLogicData(inputState);
 
-        private FirstVersionCameraData GetCameraLogicData(FirstVersionInputState inputState)
+        private PlayerCameraData GetCameraLogicData(InputState inputState)
         {
             if (inputState.snapCommand)
             {
@@ -52,7 +46,7 @@ namespace UWBB.CharacterController.FirstVersion
             bool camAngleLimitReached =
                 Mathf.Abs(input.y) >= .75f && Mathf.Abs(GetAngleToHorizonPlane() - Mathf.Sign(input.y) * 10) < 88;
             
-            FirstVersionCameraData data = new()
+            PlayerCameraData data = new()
             {
                 pivotPoint = player.position,
                 rotationXAxis = Vector3.up,
@@ -74,7 +68,7 @@ namespace UWBB.CharacterController.FirstVersion
         private float GetYRotationAngle(bool camAngleLimitReached, Vector2 input) 
             => camAngleLimitReached ? input.y * (rotationSpeed * Time.deltaTime) : 0;
 
-        private FirstVersionCameraData GetHorizonSmoothingCameraData()
+        private PlayerCameraData GetHorizonSmoothingCameraData()
         {
             bool finishedSmoothing = smoothTimer >= smoothDuration;
             smoothTimer += Time.deltaTime;
@@ -101,7 +95,7 @@ namespace UWBB.CharacterController.FirstVersion
         }
     }
 
-    public struct FirstVersionCameraData : ICameraLogicData
+    public struct PlayerCameraData
     {
         public Vector3 pivotPoint { get; set; }
         public Vector3 rotationXAxis { get; set; }

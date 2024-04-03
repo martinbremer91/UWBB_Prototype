@@ -1,21 +1,17 @@
 using UnityEngine;
 using UWBB.GameFramework;
-using UWBB.Interfaces;
 
-namespace UWBB.CharacterController.FirstVersion
+namespace UWBB.CharacterController
 {
-    public class FirstVersionMovementLogic : 
-        IPlayerLogic<IInputState, IMovementLogicData>,
-        IPlayerLogic<FirstVersionInputState, FirstVersionMovementData>
+    public class PlayerMovementLogic 
     {
-        private FirstVersionInputLogic inputController;
+        private PlayerInputLogic inputController;
         // private FirstVersionLockOnLogic lockOnLogic;
         private Transform camera;
         private Transform player;
         private Transform playerModel;
 
         private CharacterControllerConfigs configs;
-        private FirstVersionControllerSettings settings => configs.firstVersionControllerSettings;
 
         private Vector3 horizonPlaneForward => player.forward;
         private Vector3 characterPlaneForward => playerModel.forward;
@@ -28,13 +24,10 @@ namespace UWBB.CharacterController.FirstVersion
             playerModel = p.playerModel;
         }
         
-        public IMovementLogicData RunUpdate(IInputState inputState)
-            => RunUpdate((FirstVersionInputState)inputState);
-        
-        public FirstVersionMovementData RunUpdate(FirstVersionInputState inputState) 
+        public PlayerMovementData RunUpdate(InputState inputState) 
             => new(GetMovementVector(inputState), inputState.dashCommand);
         
-        private Vector3 GetMovementVector(FirstVersionInputState inputState)
+        private Vector3 GetMovementVector(InputState inputState)
         {
             // HandleYLockedOnMovement(firstVersionInputState.characterAxisInput);
             
@@ -51,10 +44,10 @@ namespace UWBB.CharacterController.FirstVersion
 
         private void HandleCharacterPlaneMovement(Vector2 input)
         {
-            Vector3 movementVector = GetVectorInRelationToCamRotation(input) * (settings.speed * Time.deltaTime);
+            Vector3 movementVector = GetVectorInRelationToCamRotation(input) * (configs.speed * Time.deltaTime);
             
             // controller logic
-            player.Translate(movementVector * (settings.speed * Time.deltaTime), Space.World);
+            player.Translate(movementVector * (configs.speed * Time.deltaTime), Space.World);
             // if (!lockOnController.lockedOn)
                 SetModelLookAtTarget(player.position + movementVector);
         }
@@ -62,7 +55,7 @@ namespace UWBB.CharacterController.FirstVersion
         private Vector3 GetVectorInRelationToCamRotation(Vector2 vector) 
             => camera.right * vector.x + camera.forward * vector.y;
 
-        private Vector3 AddWorldYInputVectorToCameraPlaneMovementVector(FirstVersionInputState inputState, Vector3 camPlaneMove)
+        private Vector3 AddWorldYInputVectorToCameraPlaneMovementVector(InputState inputState, Vector3 camPlaneMove)
             => inputState.worldYInput == 0 ? camPlaneMove : Vector3.up * inputState.worldYInput;
 
         // private void HandleYLockedOnMovement(Vector2 input)
@@ -84,12 +77,12 @@ namespace UWBB.CharacterController.FirstVersion
         }
     }
 
-    public struct FirstVersionMovementData : IMovementLogicData
+    public struct PlayerMovementData
     {
         public Vector3 movementVector { get; set; }
         public bool dashCommand { get; set; }
 
-        public FirstVersionMovementData(Vector3 movementVector, bool dashCommand)
+        public PlayerMovementData(Vector3 movementVector, bool dashCommand)
         {
             this.movementVector = movementVector;
             this.dashCommand = dashCommand;

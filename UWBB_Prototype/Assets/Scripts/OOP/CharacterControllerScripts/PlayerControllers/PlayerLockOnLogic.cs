@@ -3,16 +3,14 @@ using UnityEngine;
 using UWBB.GameFramework;
 using UWBB.Interfaces;
 
-namespace UWBB.CharacterController.FirstVersion
+namespace UWBB.CharacterController
 {
-    public class FirstVersionLockOnLogic : 
-        IPlayerLogic<IInputState, ILockOnLogicData>,
-        IPlayerLogic<FirstVersionInputState, FirstVersionLockOnData>
+    public class PlayerLockOnLogic
     {
         private CharacterControllerConfigs configs;
         private float maxLockOnDotProduct 
-            => 1 - configs.firstVersionControllerSettings.lockOnAngleTolerance;
-        private float range => configs.firstVersionControllerSettings.lockOnRange;
+            => 1 - configs.lockOnAngleTolerance;
+        private float range => configs.lockOnRange;
 
         private Transform playerTransform;
         private Transform cameraTransform;
@@ -26,13 +24,10 @@ namespace UWBB.CharacterController.FirstVersion
             configs = Main.instance.configs.ccConfigs;
         }
         
-        public ILockOnLogicData RunUpdate(IInputState inputState)
-            => RunUpdate((FirstVersionInputState)inputState);
-
-        public FirstVersionLockOnData RunUpdate(FirstVersionInputState inputState) 
+        public PlayerLockOnData RunUpdate(InputState inputState) 
             => ProcessLockOn(inputState);
 
-        private FirstVersionLockOnData ProcessLockOn(FirstVersionInputState inputState)
+        private PlayerLockOnData ProcessLockOn(InputState inputState)
         {
             if (lockOnController.lockedOn == inputState.lockOnCommand)
                 return default;
@@ -107,7 +102,7 @@ namespace UWBB.CharacterController.FirstVersion
         }
     }
 
-    public struct FirstVersionLockOnData : ILockOnLogicData
+    public struct PlayerLockOnData
     {
         public bool lockedOn { get; set; }
         public ILockOnTarget target { get; set; }

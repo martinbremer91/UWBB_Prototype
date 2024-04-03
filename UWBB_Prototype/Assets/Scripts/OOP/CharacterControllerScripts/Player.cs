@@ -7,8 +7,8 @@ namespace UWBB.CharacterController
     {
         private readonly PlayerLogicManager playerLogicManager = new();
         
-        public IMovementLogicData movementData;
-        public ICameraLogicData cameraData;
+        public PlayerMovementData movementData;
+        public PlayerCameraData cameraData;
         
         private readonly MovementController movementController = new();
         private readonly CameraController cameraController = new();

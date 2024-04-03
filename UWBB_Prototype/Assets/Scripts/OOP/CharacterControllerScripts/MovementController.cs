@@ -1,10 +1,9 @@
 using UnityEngine;
 using UWBB.GameFramework;
-using UWBB.Interfaces;
 
 namespace UWBB.CharacterController
 {
-    public class MovementController : IInitializable<Player>
+    public class MovementController
     {
         private CharacterControllerConfigs configs;
         
@@ -23,16 +22,16 @@ namespace UWBB.CharacterController
             playerModel = p.playerModel;
         }
         
-        public void ProcessMovementData(IMovementLogicData movementData)
+        public void ProcessMovementData(PlayerMovementData movementData)
         {
             // TODO: switch from translation to add force
             Vector3 movementVector = HandleDash(movementData);
             
-            player.Translate(movementVector * (configs.firstVersionControllerSettings.speed * Time.deltaTime), Space.World);
+            player.Translate(movementVector * (configs.speed * Time.deltaTime), Space.World);
             playerModel.LookAt(player.position + movementVector);
         }
 
-        private Vector3 HandleDash(IMovementLogicData movementData)
+        private Vector3 HandleDash(PlayerMovementData movementData)
         {
             Vector3 movementVector = movementData.movementVector;
             
