@@ -2,7 +2,7 @@
 
 namespace UWBB.Components
 {
-    public struct PlayerCameraTagComponent : IComponentData
+    public struct PlayerCharacterComponent : IComponentData
     {
         
     }

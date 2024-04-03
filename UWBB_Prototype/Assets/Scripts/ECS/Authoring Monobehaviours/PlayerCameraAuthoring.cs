@@ -15,7 +15,10 @@ namespace ECS
 
                 Entity entity = GetEntity(TransformUsageFlags.Dynamic);
                 
-                AddComponent(entity, new PlayerCameraTagComponent());
+                AddComponent(entity, new PlayerCameraComponent()
+                {
+                    mode = PlayerCameraMode.Free,
+                });
             }
         }
     }

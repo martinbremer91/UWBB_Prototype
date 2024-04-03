@@ -14,7 +14,7 @@ namespace UWBB.Systems
         {
             state.RequireForUpdate<PlayerTagComponent>();
             state.RequireForUpdate<PlayerInputComponent>();
-            state.RequireForUpdate<PlayerCameraTagComponent>();
+            state.RequireForUpdate<PlayerCameraComponent>();
             state.RequireForUpdate<CharacterControllerConfigsComponent>();
         }
 
@@ -29,7 +29,7 @@ namespace UWBB.Systems
                 SystemAPI.GetSingleton<CharacterControllerConfigsComponent>();
             
             RefRO<LocalToWorld> cameraLocalToWorld =
-                SystemAPI.GetComponentRO<LocalToWorld>(SystemAPI.GetSingletonEntity<PlayerCameraTagComponent>());
+                SystemAPI.GetComponentRO<LocalToWorld>(SystemAPI.GetSingletonEntity<PlayerCameraComponent>());
             
             float inputX = inputState.ValueRO.characterPlaneInput.x;
             float inputY = inputState.ValueRO.characterPlaneInput.y;

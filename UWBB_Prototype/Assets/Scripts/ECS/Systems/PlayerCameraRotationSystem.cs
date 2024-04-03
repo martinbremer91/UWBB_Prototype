@@ -1,4 +1,5 @@
-﻿using ECS;
+﻿using System;
+using ECS;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -13,15 +14,18 @@ namespace UWBB.Systems
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<PlayerTagComponent>();
-            state.RequireForUpdate<PlayerCameraTagComponent>();
-            state.RequireForUpdate<PlayerCameraTargetTagComponent>();
+            state.RequireForUpdate<PlayerCharacterComponent>();
+            state.RequireForUpdate<PlayerCameraComponent>();
+            state.RequireForUpdate<PlayerCameraTargetComponent>();
             state.RequireForUpdate<CharacterControllerConfigsComponent>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            Entity camTargetEntity = SystemAPI.GetSingletonEntity<PlayerCameraTargetTagComponent>();
+            PlayerCameraComponent camera = SystemAPI.GetSingleton<PlayerCameraComponent>();
+            
+            Entity camTargetEntity = SystemAPI.GetSingletonEntity<PlayerCameraTargetComponent>();
             RefRW<LocalTransform> cameraTargetTransform =
                 SystemAPI.GetComponentRW<LocalTransform>(camTargetEntity);
             RefRO<LocalToWorld> camLocalToWorld = SystemAPI.GetComponentRO<LocalToWorld>(camTargetEntity);
@@ -31,8 +35,29 @@ namespace UWBB.Systems
 
             CharacterControllerConfigsComponent ccConfigs =
                 SystemAPI.GetSingleton<CharacterControllerConfigsComponent>();
+
+            float multipliers = ccConfigs.cameraRotationSpeed * SystemAPI.Time.DeltaTime;
             
-            float multipliers = SystemAPI.Time.DeltaTime * ccConfigs.cameraRotationSpeed;
+            quaternion finalRotation = camera.mode switch 
+            {
+                PlayerCameraMode.Free 
+                    => GetFreeInputModeRotation(multipliers, inputState, camLocalToWorld, cameraTargetTransform),
+                PlayerCameraMode.Reset 
+                    => GetResetCameraModeRotation(ref state),
+                PlayerCameraMode.SnapToHorizon 
+                    => GetSnapCameraModeRotation(),
+                _ => throw new ArgumentOutOfRangeException()
+            };
+
+            cameraTargetTransform.ValueRW.Rotation = finalRotation;
+        }
+
+        private quaternion GetFreeInputModeRotation(
+            float multipliers,
+            RefRO<PlayerInputComponent> inputState, 
+            RefRO<LocalToWorld> camLocalToWorld, 
+            RefRW<LocalTransform> cameraTargetTransform)
+        {
             float angleVertical = inputState.ValueRO.characterAxisInput.y * multipliers;
             float angleHorizontal = inputState.ValueRO.characterAxisInput.x * multipliers;
             
@@ -41,9 +66,20 @@ namespace UWBB.Systems
             quaternion currentRotation = cameraTargetTransform.ValueRW.Rotation;
             quaternion targetYRotation = math.mul(math.normalizesafe(currentRotation),
                 quaternion.AxisAngle(worldUpInLocal, angleHorizontal));
-            quaternion finalRotation = math.mul(targetYRotation, quaternion.AxisAngle(math.right(), angleVertical));
+            
+            return math.mul(targetYRotation, quaternion.AxisAngle(math.right(), angleVertical));
+        }
 
-            cameraTargetTransform.ValueRW.Rotation = finalRotation;
+        private quaternion GetResetCameraModeRotation(ref SystemState state)
+        {
+            Entity playerCharacterEntity = SystemAPI.GetSingletonEntity<PlayerCharacterComponent>();
+            RefRO<LocalTransform> characterTransform = SystemAPI.GetComponentRO<LocalTransform>(playerCharacterEntity);
+            return characterTransform.ValueRO.Rotation;
+        }
+
+        private quaternion GetSnapCameraModeRotation()
+        {
+            return default;
         }
     }
 }

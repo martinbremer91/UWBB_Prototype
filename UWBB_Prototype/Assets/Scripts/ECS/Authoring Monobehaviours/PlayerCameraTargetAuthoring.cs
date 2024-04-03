@@ -14,7 +14,7 @@ namespace ECS
                     return;
 
                 Entity entity = GetEntity(TransformUsageFlags.Dynamic);
-                AddComponent(entity, new PlayerCameraTargetTagComponent());
+                AddComponent(entity, new PlayerCameraTargetComponent());
             }
         }
     }

@@ -13,7 +13,7 @@ namespace UWBB.Systems
         
         protected override void OnCreate()
         {
-            RequireForUpdate<PlayerCameraTagComponent>();
+            RequireForUpdate<PlayerCameraComponent>();
         }
 
         protected override void OnStartRunning()
@@ -27,7 +27,7 @@ namespace UWBB.Systems
         protected override void OnUpdate()
         {
             RefRO<LocalToWorld> cameraEntityLocalToWorld =
-                SystemAPI.GetComponentRO<LocalToWorld>(SystemAPI.GetSingletonEntity<PlayerCameraTagComponent>());
+                SystemAPI.GetComponentRO<LocalToWorld>(SystemAPI.GetSingletonEntity<PlayerCameraComponent>());
 
             mbCamTransform.position = cameraEntityLocalToWorld.ValueRO.Position;
             mbCamTransform.rotation = cameraEntityLocalToWorld.ValueRO.Rotation;

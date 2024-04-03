@@ -7,6 +7,7 @@ namespace UWBB.CharacterController
     {
         public float speed;
         public float cameraRotationSpeed;
+        public float cameraSnapSpeed;
         public float lockOnAngleTolerance;
         public float lockOnRange;
     }

@@ -20,6 +20,7 @@ namespace ECS
                 {
                     speed = ccConfigs.speed,
                     cameraRotationSpeed = ccConfigs.cameraRotationSpeed,
+                    cameraSnapSpeed = ccConfigs.cameraSnapSpeed,
                 });
             }
         }
@@ -29,6 +30,7 @@ namespace ECS
     {
         public float speed;
         public float cameraRotationSpeed;
+        public float cameraSnapSpeed;
         // public float lockOnAngleTolerance;
         // public float lockOnRange;
         // public float yRotationDeadZoneAngle;

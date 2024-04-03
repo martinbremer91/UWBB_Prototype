@@ -1,6 +1,4 @@
-﻿using UWBB.Interfaces;
-
-namespace UWBB.CharacterController
+﻿namespace UWBB.CharacterController
 {
     public class PlayerLogicManager
     {
