@@ -4,6 +4,7 @@ using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
+using UnityEngine;
 using UWBB.Components;
 
 namespace UWBB.Systems
@@ -46,8 +47,7 @@ namespace UWBB.Systems
                     => GetResetCameraModeRotation(ref state, camera, cameraTargetTransform.ValueRO.Rotation,
                         ccConfigs.cameraSmoothingSpeed),
                 PlayerCameraMode.SnapToHorizon
-                    // TEMP => GetSnapCameraModeRotation(),
-                    => GetResetCameraModeRotation(ref state, camera, cameraTargetTransform.ValueRO.Rotation,
+                    => GetSnapCameraModeRotation(ref state, camera, cameraTargetTransform.ValueRO.Rotation,
                         ccConfigs.cameraSmoothingSpeed),
                 _ => throw new ArgumentOutOfRangeException()
             };
@@ -76,6 +76,33 @@ namespace UWBB.Systems
         private quaternion GetResetCameraModeRotation(ref SystemState state, RefRW<PlayerCameraComponent> cam,
             quaternion camRotation, float smoothingSpeed)
         {
+            bool incrementTimer = !SetTargetRotation_Reset(ref state, cam, camRotation, smoothingSpeed);
+            return GetSmoothedRotation(ref state, incrementTimer, cam, camRotation);
+        }
+
+        private quaternion GetSnapCameraModeRotation(ref SystemState state, RefRW<PlayerCameraComponent> cam,
+            quaternion camRotation, float smoothingSpeed)
+        {
+            bool incrementTimer = !SetTargetRotation_Snap(cam, camRotation, smoothingSpeed);
+            return GetSmoothedRotation(ref state, incrementTimer, cam, camRotation);
+        }
+
+        private quaternion GetSmoothedRotation(ref SystemState state, bool incrementTimer,
+            RefRW<PlayerCameraComponent> cam, quaternion camRotation)
+        {
+            if (incrementTimer)
+                cam.ValueRW.smoothingTimer += SystemAPI.Time.DeltaTime;
+            
+            if (cam.ValueRO.smoothingTimer >= cam.ValueRO.smoothingDuration)
+                cam.ValueRW.mode = PlayerCameraMode.Free;
+            
+            float t = math.min(1, cam.ValueRO.smoothingTimer / cam.ValueRO.smoothingDuration);
+            return math.slerp(camRotation, cam.ValueRW.targetRotation, t);
+        }
+
+        private bool SetTargetRotation_Reset(ref SystemState state, RefRW<PlayerCameraComponent> cam,
+            quaternion camRotation, float smoothingSpeed)
+        {
             if (cam.ValueRO.smoothingDuration == 0)
             {
                 Entity playerCharacterEntity = SystemAPI.GetSingletonEntity<PlayerCharacterComponent>();
@@ -84,24 +111,31 @@ namespace UWBB.Systems
                 cam.ValueRW.smoothingDuration =
                     GetSmoothingDuration(camRotation, characterTransform.ValueRO.Rotation, smoothingSpeed);
                 cam.ValueRW.targetRotation = characterTransform.ValueRO.Rotation;
+
+                return true;
             }
-            else
-                cam.ValueRW.smoothingTimer += SystemAPI.Time.DeltaTime;
 
-            float t = math.min(1, cam.ValueRO.smoothingTimer / cam.ValueRO.smoothingDuration);
-
-            if (cam.ValueRO.smoothingTimer >= cam.ValueRO.smoothingDuration)
-                cam.ValueRW.mode = PlayerCameraMode.Free;
-
-            return math.slerp(camRotation, cam.ValueRW.targetRotation, t);
+            return false;
         }
 
-        private quaternion GetSnapCameraModeRotation()
+        private bool SetTargetRotation_Snap(RefRW<PlayerCameraComponent> cam, quaternion camRotation, float smoothingSpeed)
         {
-            return default;
+            if (cam.ValueRO.smoothingDuration == 0)
+            {
+                float3 lookDirection = math.mul(camRotation, math.forward());
+                lookDirection.y = 0;
+                quaternion lookRotation = Quaternion.LookRotation(lookDirection);
+                
+                cam.ValueRW.smoothingDuration = GetSmoothingDuration(camRotation, lookRotation, smoothingSpeed);
+                cam.ValueRW.targetRotation = lookRotation;
+
+                return true;
+            }
+
+            return false;
         }
 
-        private float GetSmoothingDuration(quaternion camRotation, quaternion characterRotation, float smoothingSpeed)
-            => camRotation.Angle(characterRotation) / smoothingSpeed;
+        private float GetSmoothingDuration(quaternion camRotation, quaternion targetRotation, float smoothingSpeed)
+            => camRotation.Angle(targetRotation) / smoothingSpeed;
     }
 }
