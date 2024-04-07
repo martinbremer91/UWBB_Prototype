@@ -12,7 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5639fbd27f84f9792cc60cf3378539c, type: 3}
   m_Name: CharacterControllerConfigs
   m_EditorClassIdentifier: 
-  speed: 7
-  cameraRotationSpeed: 2
-  lockOnAngleTolerance: 0
-  lockOnRange: 0
+  pcConfigs:
+    speed: 7
+    rotationSpeed: 10
+  pcamConfigs:
+    cameraRotationSpeed: 2
+    cameraSmoothingSpeed: 180
+    cameraSnapSpeed: 0
+    lockOnAngleTolerance: 0
+    lockOnRange: 0

@@ -19,8 +19,9 @@ namespace ECS
                 AddComponent(ccConfigsEntity, new CharacterControllerConfigsComponent()
                 {
                     speed = ccConfigs.speed,
+                    rotationSpeed = ccConfigs.rotationSpeed / 100,
                     cameraRotationSpeed = ccConfigs.cameraRotationSpeed,
-                    cameraSnapSpeed = ccConfigs.cameraSnapSpeed,
+                    cameraSmoothingSpeed = ccConfigs.cameraSmoothingSpeed,
                 });
             }
         }
@@ -29,8 +30,9 @@ namespace ECS
     public struct CharacterControllerConfigsComponent : IComponentData
     {
         public float speed;
+        public float rotationSpeed;
         public float cameraRotationSpeed;
-        public float cameraSnapSpeed;
+        public float cameraSmoothingSpeed;
         // public float lockOnAngleTolerance;
         // public float lockOnRange;
         // public float yRotationDeadZoneAngle;

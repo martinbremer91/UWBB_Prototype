@@ -1,10 +1,14 @@
 ﻿using Unity.Entities;
+using Unity.Mathematics;
 
 namespace UWBB.Components
 {
     public struct PlayerCameraComponent : IComponentData
     {
         public PlayerCameraMode mode;
+        public float smoothingDuration;
+        public float smoothingTimer;
+        public quaternion targetRotation;
     }
     
     public enum PlayerCameraMode

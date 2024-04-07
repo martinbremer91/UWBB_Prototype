@@ -1,5 +1,6 @@
 ﻿using Unity.Burst;
 using Unity.Entities;
+using Unity.Mathematics;
 using UWBB.Components;
 
 namespace UWBB.Systems
@@ -20,9 +21,17 @@ namespace UWBB.Systems
             RefRW<PlayerCameraComponent> cam = SystemAPI.GetSingletonRW<PlayerCameraComponent>();
 
             if (playerInput.lockOnCommand)
-                cam.ValueRW.mode = PlayerCameraMode.Reset;
-            else if (playerInput.snapCommand)
-                cam.ValueRW.mode = PlayerCameraMode.SnapToHorizon;
+                SetPlayerCameraMode(cam, PlayerCameraMode.Reset);
+            else if (playerInput.snapCommand) 
+                SetPlayerCameraMode(cam, PlayerCameraMode.SnapToHorizon);
+        }
+
+        private void SetPlayerCameraMode(RefRW<PlayerCameraComponent> cam, PlayerCameraMode mode)
+        {
+            cam.ValueRW.mode = mode;
+            cam.ValueRW.smoothingDuration = 0;
+            cam.ValueRW.smoothingTimer = 0;
+            cam.ValueRW.targetRotation = new quaternion();
         }
     }
 }
