@@ -14,10 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pcConfigs:
     speed: 7
-    rotationSpeed: 10
+    rotationSpeed: 90
   pcamConfigs:
     cameraRotationSpeed: 2
     cameraSmoothingSpeed: 180
-    cameraSnapSpeed: 0
     lockOnAngleTolerance: 0
     lockOnRange: 0
