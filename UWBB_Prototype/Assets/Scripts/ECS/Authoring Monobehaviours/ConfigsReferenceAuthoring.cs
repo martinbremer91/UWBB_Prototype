@@ -19,9 +19,10 @@ namespace ECS
                 AddComponent(ccConfigsEntity, new CharacterControllerConfigsComponent()
                 {
                     speed = ccConfigs.speed,
-                    rotationSpeed = ccConfigs.rotationSpeed / 100,
+                    rotationSpeed = ccConfigs.rotationSpeed,
                     cameraRotationSpeed = ccConfigs.cameraRotationSpeed,
                     cameraSmoothingSpeed = ccConfigs.cameraSmoothingSpeed,
+                    cameraClampDotProduct = ccConfigs.cameraClampDotProduct,
                 });
             }
         }
@@ -31,8 +32,11 @@ namespace ECS
     {
         public float speed;
         public float rotationSpeed;
+        
         public float cameraRotationSpeed;
         public float cameraSmoothingSpeed;
+        public float cameraClampDotProduct;
+
         // public float lockOnAngleTolerance;
         // public float lockOnRange;
         // public float yRotationDeadZoneAngle;

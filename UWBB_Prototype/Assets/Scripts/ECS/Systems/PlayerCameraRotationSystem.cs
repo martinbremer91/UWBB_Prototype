@@ -42,7 +42,8 @@ namespace UWBB.Systems
             quaternion finalRotation = camera.ValueRO.mode switch
             {
                 PlayerCameraMode.Free
-                    => GetFreeInputModeRotation(multipliers, inputState, camLocalToWorld, cameraTargetTransform),
+                    => GetFreeInputModeRotation(multipliers, ccConfigs.cameraClampDotProduct, inputState, 
+                        camLocalToWorld, cameraTargetTransform),
                 PlayerCameraMode.Reset
                     => GetResetCameraModeRotation(ref state, camera, cameraTargetTransform.ValueRO.Rotation,
                         ccConfigs.cameraSmoothingSpeed),
@@ -57,6 +58,7 @@ namespace UWBB.Systems
 
         private quaternion GetFreeInputModeRotation(
             float multipliers,
+            float clampDotProduct,
             RefRO<PlayerInputComponent> inputState,
             RefRO<LocalToWorld> camLocalToWorld,
             RefRW<LocalTransform> cameraTargetTransform)
@@ -69,8 +71,20 @@ namespace UWBB.Systems
             quaternion currentRotation = cameraTargetTransform.ValueRW.Rotation;
             quaternion targetYRotation = math.mul(math.normalizesafe(currentRotation),
                 quaternion.AxisAngle(worldUpInLocal, angleHorizontal));
+            quaternion targetRotation = math.mul(targetYRotation, quaternion.AxisAngle(math.right(), angleVertical));
+            quaternion clampedTargetRotation = ClampTargetRotation(targetYRotation, angleVertical, clampDotProduct)
+                ? targetYRotation
+                : targetRotation;
+            
+            return clampedTargetRotation;
+        }
 
-            return math.mul(targetYRotation, quaternion.AxisAngle(math.right(), angleVertical));
+        private bool ClampTargetRotation(quaternion targetRotation, float angleVertical, float clampDotProduct)
+        {
+            float3 forward = math.mul(targetRotation, new float3(0, 0, 1));
+            float dot = math.dot(forward, math.up());
+            bool clampInput = (angleVertical > 0 && dot < 0) || (angleVertical < 0 && dot > 0);
+            return math.abs(dot) > clampDotProduct && clampInput;
         }
 
         private quaternion GetResetCameraModeRotation(ref SystemState state, RefRW<PlayerCameraComponent> cam,
@@ -86,6 +100,9 @@ namespace UWBB.Systems
             bool incrementTimer = !SetTargetRotation_Snap(cam, camRotation, smoothingSpeed);
             return GetSmoothedRotation(ref state, incrementTimer, cam, camRotation);
         }
+        
+        private float GetSmoothingDuration(quaternion camRotation, quaternion targetRotation, float smoothingSpeed)
+            => camRotation.Angle(targetRotation) / smoothingSpeed;
 
         private quaternion GetSmoothedRotation(ref SystemState state, bool incrementTimer,
             RefRW<PlayerCameraComponent> cam, quaternion camRotation)
@@ -134,8 +151,5 @@ namespace UWBB.Systems
 
             return false;
         }
-
-        private float GetSmoothingDuration(quaternion camRotation, quaternion targetRotation, float smoothingSpeed)
-            => camRotation.Angle(targetRotation) / smoothingSpeed;
     }
 }

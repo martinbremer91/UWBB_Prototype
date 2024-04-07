@@ -37,7 +37,7 @@ namespace UWBB.Systems
             
             pcTransform.ValueRW.Rotation = quaternion.LookRotationSafe(lookDirection, math.up());
 
-            float maxAngle = ccConfigs.rotationSpeed;
+            float maxAngle = ccConfigs.rotationSpeed * SystemAPI.Time.DeltaTime;
             float targetAngle = modelTransform.ValueRO.Rotation.Angle(pcTransform.ValueRO.Rotation);
 
             float t = math.min(maxAngle / targetAngle, 1);
