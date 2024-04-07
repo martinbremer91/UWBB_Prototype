@@ -13,6 +13,7 @@ namespace UWBB.Systems
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<PlayerTagComponent>();
+            state.RequireForUpdate<PlayerCharacterComponent>();
             state.RequireForUpdate<PlayerInputComponent>();
             state.RequireForUpdate<PlayerCameraComponent>();
             state.RequireForUpdate<CharacterControllerConfigsComponent>();
@@ -25,6 +26,9 @@ namespace UWBB.Systems
             RefRW<LocalTransform> playerTransform = SystemAPI.GetComponentRW<LocalTransform>(playerEntity);
             RefRO<PlayerInputComponent> inputState = SystemAPI.GetComponentRO<PlayerInputComponent>(playerEntity);
 
+            Entity pcEntity = SystemAPI.GetSingletonEntity<PlayerCharacterComponent>();
+            RefRW<PlayerCharacterComponent> pc = SystemAPI.GetComponentRW<PlayerCharacterComponent>(pcEntity);
+            
             CharacterControllerConfigsComponent ccConfigs =
                 SystemAPI.GetSingleton<CharacterControllerConfigsComponent>();
             
@@ -38,6 +42,8 @@ namespace UWBB.Systems
             float3 camRightWorld = cameraLocalToWorld.ValueRO.Value.TransformDirection(new float3(1, 0, 0));
 
             float3 finalMovementVector = math.normalizesafe(camForwardWorld * inputY + camRightWorld * inputX);
+
+            pc.ValueRW.translationDirection = finalMovementVector;
             
             playerTransform.ValueRW.Position = 
                 playerTransform.ValueRW.Translate(finalMovementVector * (ccConfigs.speed * SystemAPI.Time.DeltaTime)).Position;

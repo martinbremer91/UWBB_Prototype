@@ -1,4 +1,5 @@
 ﻿using Unity.Entities;
+using Unity.Mathematics;
 using UnityEngine;
 using UWBB.Components;
 
@@ -12,7 +13,10 @@ namespace ECS
             {
                 Entity entity = GetEntity(TransformUsageFlags.Dynamic);
                 
-                AddComponent(entity, new PlayerCharacterComponent());
+                AddComponent(entity, new PlayerCharacterComponent
+                {
+                    translationDirection = float3.zero,
+                });
             }
         }
     }
