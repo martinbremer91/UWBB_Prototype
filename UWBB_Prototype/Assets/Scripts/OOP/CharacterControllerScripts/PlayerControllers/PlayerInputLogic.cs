@@ -4,14 +4,14 @@ namespace UWBB.CharacterController
 {
     public class PlayerInputLogic
     {
-        private readonly FirstVersionControls controls = new();
+        private readonly DefaultControls controls = new();
         public InputState inputState;
         
         public void Init()
         {
             controls.Enable();
             
-            FirstVersionControls.FreeMovementActions freeMovement = controls.FreeMovement;
+            DefaultControls.FreeMovementActions freeMovement = controls.FreeMovement;
 
             freeMovement.XZMovement.performed += context => HandleXZInput(context.ReadValue<Vector2>());
             freeMovement.XZMovement.canceled += context => HandleXZInput(context.ReadValue<Vector2>());
@@ -34,7 +34,7 @@ namespace UWBB.CharacterController
 
     public struct InputState
     {
-        public FirstVersionControls.FreeMovementActions actions;
+        public DefaultControls.FreeMovementActions actions;
         
         public Vector2 characterPlaneInput;
         public int worldYInput;

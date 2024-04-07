@@ -8,15 +8,15 @@ namespace UWBB.Systems
     [UpdateInGroup(typeof(InitializationSystemGroup))]
     public partial class PlayerInputSystem : SystemBase
     {
-        private FirstVersionControls controls;
-        private FirstVersionControls.FreeMovementActions freeMovement;
+        private DefaultControls controls;
+        private DefaultControls.FreeMovementActions freeMovement;
         
         protected override void OnCreate()
         {
             RequireForUpdate<PlayerTagComponent>();
             RequireForUpdate<PlayerInputComponent>();
             
-            controls = new FirstVersionControls();
+            controls = new DefaultControls();
             freeMovement = controls.FreeMovement;
         }
 
