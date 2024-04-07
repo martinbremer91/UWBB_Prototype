@@ -93,7 +93,7 @@ namespace UWBB.Systems
             if (cam.ValueRO.smoothingTimer >= cam.ValueRO.smoothingDuration)
                 cam.ValueRW.mode = PlayerCameraMode.Free;
 
-            return math.slerp(camRotation, cam.ValueRW.targetRotation, t / 10);
+            return math.slerp(camRotation, cam.ValueRW.targetRotation, t);
         }
 
         private quaternion GetSnapCameraModeRotation()

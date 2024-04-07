@@ -17,6 +17,6 @@ MonoBehaviour:
     rotationSpeed: 90
   pcamConfigs:
     cameraRotationSpeed: 2
-    cameraSmoothingSpeed: 180
+    cameraSmoothingSpeed: 90
     lockOnAngleTolerance: 0
     lockOnRange: 0
