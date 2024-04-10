@@ -2,6 +2,7 @@
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.Physics;
 using Unity.Transforms;
 using UWBB.Components;
 
@@ -14,6 +15,7 @@ namespace UWBB.Systems
         {
             state.RequireForUpdate<PlayerTagComponent>();
             state.RequireForUpdate<PlayerCharacterComponent>();
+            state.RequireForUpdate<PlayerCharacterModelComponent>();
             state.RequireForUpdate<PlayerInputComponent>();
             state.RequireForUpdate<PlayerCameraComponent>();
             state.RequireForUpdate<CharacterControllerConfigsComponent>();
@@ -23,11 +25,14 @@ namespace UWBB.Systems
         public void OnUpdate(ref SystemState state)
         {
             Entity playerEntity = SystemAPI.GetSingletonEntity<PlayerTagComponent>();
-            RefRW<LocalTransform> playerTransform = SystemAPI.GetComponentRW<LocalTransform>(playerEntity);
             RefRO<PlayerInputComponent> inputState = SystemAPI.GetComponentRO<PlayerInputComponent>(playerEntity);
+            RefRW<LocalTransform> playerTransform = SystemAPI.GetComponentRW<LocalTransform>(playerEntity);
 
             Entity pcEntity = SystemAPI.GetSingletonEntity<PlayerCharacterComponent>();
             RefRW<PlayerCharacterComponent> pc = SystemAPI.GetComponentRW<PlayerCharacterComponent>(pcEntity);
+            
+            Entity pcmEntity = SystemAPI.GetSingletonEntity<PlayerCharacterModelComponent>();
+            RefRW<PhysicsVelocity> playerVelocity = SystemAPI.GetComponentRW<PhysicsVelocity>(pcmEntity);
             
             CharacterControllerConfigsComponent ccConfigs =
                 SystemAPI.GetSingleton<CharacterControllerConfigsComponent>();
@@ -47,6 +52,7 @@ namespace UWBB.Systems
             
             playerTransform.ValueRW.Position = 
                 playerTransform.ValueRW.Translate(finalMovementVector * (ccConfigs.speed * SystemAPI.Time.DeltaTime)).Position;
+            playerVelocity.ValueRW.Linear = finalMovementVector * ccConfigs.speed;
         }
     }
 }
