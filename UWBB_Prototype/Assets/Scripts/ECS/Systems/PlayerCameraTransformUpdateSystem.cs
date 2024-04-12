@@ -9,21 +9,25 @@ using UWBB.Components;
 
 namespace UWBB.Systems
 {
-    public partial struct PlayerCameraRotationSystem : ISystem
+    [UpdateAfter(typeof(PlayerTranslationSystem))]
+    public partial struct PlayerCameraTransformUpdateSystem : ISystem
     {
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<PlayerTagComponent>();
-            state.RequireForUpdate<PlayerCharacterComponent>();
             state.RequireForUpdate<PlayerCameraComponent>();
             state.RequireForUpdate<PlayerCameraTargetComponent>();
+            state.RequireForUpdate<PlayerCharacterModelComponent>();
             state.RequireForUpdate<CharacterControllerConfigsComponent>();
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
+            Entity pcmEntity = SystemAPI.GetSingletonEntity<PlayerCharacterModelComponent>();
+            RefRW<LocalTransform> playerTransform = SystemAPI.GetComponentRW<LocalTransform>(pcmEntity);
+            
             RefRW<PlayerCameraComponent> camera = SystemAPI.GetSingletonRW<PlayerCameraComponent>();
 
             Entity camTargetEntity = SystemAPI.GetSingletonEntity<PlayerCameraTargetComponent>();
@@ -37,6 +41,8 @@ namespace UWBB.Systems
             CharacterControllerConfigsComponent ccConfigs =
                 SystemAPI.GetSingleton<CharacterControllerConfigsComponent>();
 
+            cameraTargetTransform.ValueRW.Position = playerTransform.ValueRO.Position;
+            
             float multipliers = ccConfigs.cameraRotationSpeed * SystemAPI.Time.DeltaTime;
 
             quaternion finalRotation = camera.ValueRO.mode switch
@@ -122,7 +128,7 @@ namespace UWBB.Systems
         {
             if (cam.ValueRO.smoothingDuration == 0)
             {
-                Entity playerCharacterEntity = SystemAPI.GetSingletonEntity<PlayerCharacterComponent>();
+                Entity playerCharacterEntity = SystemAPI.GetSingletonEntity<PlayerCharacterModelComponent>();
                 RefRO<LocalTransform> characterTransform = SystemAPI.GetComponentRO<LocalTransform>(playerCharacterEntity);
                 
                 cam.ValueRW.smoothingDuration =

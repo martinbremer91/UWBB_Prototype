@@ -1,4 +1,5 @@
 ﻿using Unity.Entities;
+using Unity.Mathematics;
 using UnityEngine;
 using UWBB.Components;
 
@@ -11,7 +12,10 @@ namespace ECS
             public override void Bake(PlayerCharacterModelAuthoring authoring)
             {
                 Entity entity = GetEntity(TransformUsageFlags.Dynamic);
-                AddComponent(entity, new PlayerCharacterModelComponent());
+                AddComponent(entity, new PlayerCharacterModelComponent
+                {
+                    translationDirection = float3.zero,
+                });
             }
         }
     }

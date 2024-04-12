@@ -14,7 +14,6 @@ namespace UWBB.Systems
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<PlayerTagComponent>();
-            state.RequireForUpdate<PlayerCharacterComponent>();
             state.RequireForUpdate<PlayerCharacterModelComponent>();
             state.RequireForUpdate<PlayerInputComponent>();
             state.RequireForUpdate<PlayerCameraComponent>();
@@ -26,12 +25,9 @@ namespace UWBB.Systems
         {
             Entity playerEntity = SystemAPI.GetSingletonEntity<PlayerTagComponent>();
             RefRO<PlayerInputComponent> inputState = SystemAPI.GetComponentRO<PlayerInputComponent>(playerEntity);
-            RefRW<LocalTransform> playerTransform = SystemAPI.GetComponentRW<LocalTransform>(playerEntity);
-
-            Entity pcEntity = SystemAPI.GetSingletonEntity<PlayerCharacterComponent>();
-            RefRW<PlayerCharacterComponent> pc = SystemAPI.GetComponentRW<PlayerCharacterComponent>(pcEntity);
             
             Entity pcmEntity = SystemAPI.GetSingletonEntity<PlayerCharacterModelComponent>();
+            RefRW<PlayerCharacterModelComponent> playerModel = SystemAPI.GetComponentRW<PlayerCharacterModelComponent>(pcmEntity);
             RefRW<PhysicsVelocity> playerVelocity = SystemAPI.GetComponentRW<PhysicsVelocity>(pcmEntity);
             
             CharacterControllerConfigsComponent ccConfigs =
@@ -47,11 +43,8 @@ namespace UWBB.Systems
             float3 camRightWorld = cameraLocalToWorld.ValueRO.Value.TransformDirection(new float3(1, 0, 0));
 
             float3 finalMovementVector = math.normalizesafe(camForwardWorld * inputY + camRightWorld * inputX);
-
-            pc.ValueRW.translationDirection = finalMovementVector;
+            playerModel.ValueRW.translationDirection = finalMovementVector;
             
-            playerTransform.ValueRW.Position = 
-                playerTransform.ValueRW.Translate(finalMovementVector * (ccConfigs.speed * SystemAPI.Time.DeltaTime)).Position;
             playerVelocity.ValueRW.Linear = finalMovementVector * ccConfigs.speed;
         }
     }
