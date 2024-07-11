@@ -44,6 +44,24 @@ public partial class @DefaultControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""ea29a722-372b-4952-bd76-ade0bde83e77"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Dodge"",
+                    ""type"": ""Button"",
+                    ""id"": ""ed8ed359-d0de-4827-bc31-745fe7d2ebb9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -112,6 +130,28 @@ public partial class @DefaultControls: IInputActionCollection2, IDisposable
                     ""action"": ""MovementDirection"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""020b16d2-ff74-4518-8173-d845aa5e9d0d"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""59cfbf1c-8218-4866-8b8a-a7868b31fa90"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dodge"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -122,6 +162,8 @@ public partial class @DefaultControls: IInputActionCollection2, IDisposable
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
         m_Gameplay_CameraAim = m_Gameplay.FindAction("CameraAim", throwIfNotFound: true);
         m_Gameplay_MovementDirection = m_Gameplay.FindAction("MovementDirection", throwIfNotFound: true);
+        m_Gameplay_Attack = m_Gameplay.FindAction("Attack", throwIfNotFound: true);
+        m_Gameplay_Dodge = m_Gameplay.FindAction("Dodge", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -185,12 +227,16 @@ public partial class @DefaultControls: IInputActionCollection2, IDisposable
     private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
     private readonly InputAction m_Gameplay_CameraAim;
     private readonly InputAction m_Gameplay_MovementDirection;
+    private readonly InputAction m_Gameplay_Attack;
+    private readonly InputAction m_Gameplay_Dodge;
     public struct GameplayActions
     {
         private @DefaultControls m_Wrapper;
         public GameplayActions(@DefaultControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @CameraAim => m_Wrapper.m_Gameplay_CameraAim;
         public InputAction @MovementDirection => m_Wrapper.m_Gameplay_MovementDirection;
+        public InputAction @Attack => m_Wrapper.m_Gameplay_Attack;
+        public InputAction @Dodge => m_Wrapper.m_Gameplay_Dodge;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -206,6 +252,12 @@ public partial class @DefaultControls: IInputActionCollection2, IDisposable
             @MovementDirection.started += instance.OnMovementDirection;
             @MovementDirection.performed += instance.OnMovementDirection;
             @MovementDirection.canceled += instance.OnMovementDirection;
+            @Attack.started += instance.OnAttack;
+            @Attack.performed += instance.OnAttack;
+            @Attack.canceled += instance.OnAttack;
+            @Dodge.started += instance.OnDodge;
+            @Dodge.performed += instance.OnDodge;
+            @Dodge.canceled += instance.OnDodge;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -216,6 +268,12 @@ public partial class @DefaultControls: IInputActionCollection2, IDisposable
             @MovementDirection.started -= instance.OnMovementDirection;
             @MovementDirection.performed -= instance.OnMovementDirection;
             @MovementDirection.canceled -= instance.OnMovementDirection;
+            @Attack.started -= instance.OnAttack;
+            @Attack.performed -= instance.OnAttack;
+            @Attack.canceled -= instance.OnAttack;
+            @Dodge.started -= instance.OnDodge;
+            @Dodge.performed -= instance.OnDodge;
+            @Dodge.canceled -= instance.OnDodge;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -237,5 +295,7 @@ public partial class @DefaultControls: IInputActionCollection2, IDisposable
     {
         void OnCameraAim(InputAction.CallbackContext context);
         void OnMovementDirection(InputAction.CallbackContext context);
+        void OnAttack(InputAction.CallbackContext context);
+        void OnDodge(InputAction.CallbackContext context);
     }
 }

@@ -19,6 +19,9 @@ namespace UWBB.CharacterController
         {
             inputState.cameraAim = gameplayActions.CameraAim.ReadValue<Vector2>();
             inputState.moveDirection = gameplayActions.MovementDirection.ReadValue<Vector2>();
+            inputState.attackCommand = gameplayActions.Attack.WasPerformedThisFrame();
+            inputState.runCommand = gameplayActions.Dodge.IsPressed();
+            inputState.dodgeCommand = gameplayActions.Dodge.WasReleasedThisFrame();
         }
     }
 
@@ -26,5 +29,9 @@ namespace UWBB.CharacterController
     {
         public Vector2 cameraAim;
         public Vector2 moveDirection;
+
+        public bool attackCommand;
+        public bool runCommand;
+        public bool dodgeCommand;
     }
 }

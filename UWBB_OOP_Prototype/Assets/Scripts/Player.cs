@@ -6,35 +6,60 @@ namespace UWBB.CharacterController
     {
         [SerializeField] private Transform modelTransform;
         [SerializeField] private Transform cameraTransform;
+        [SerializeField] private GameObject weaponGameObject;
+
+        private CharacterControllerState ccState = new();
         
-        private InputState inputState = new();
+        private InputState inputState => ccState.inputState;
+        private CharacterState characterState => ccState.characterState;
+        private MoveSpeedState moveSpeedState => ccState.moveSpeedState;
+        private StaminaState staminaState => ccState.staminaState;
+        
         private CharacterController_Input inputController;
-        private CharacterController_Movement movementController;
         private CharacterController_Camera characterControllerCamera;
 
         private void Awake()
         {
             inputController = new CharacterController_Input();
-            movementController = new CharacterController_Movement(transform, modelTransform, cameraTransform);
             characterControllerCamera = new CharacterController_Camera(cameraTransform, transform);
+        }
+
+        private void Start()
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
 
         private void Update()
         {
             inputController.Update(inputState);
-            movementController.Update(inputState);
         }
 
         private void LateUpdate()
         { 
             characterControllerCamera.Update(inputState);
         }
+    }
 
-        private Vector3 test;
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(transform.position, transform.position + test * 100);
-        }
+    public class CharacterControllerState
+    {
+        public InputState inputState = new();
+        public CharacterState characterState;
+        public MoveSpeedState moveSpeedState;
+        public Vector3 targetMoveDirection;
+        public StaminaState staminaState;
+        public AttackState attackState;
+    }
+
+    public enum CharacterState
+    {
+        Idle,
+        Walk,
+        Run,
+        Dodge,
+        Attack,
+        UsingItem,
+        // Stunned,
+        // StunnedActionable (cancelable getup)
     }
 }
