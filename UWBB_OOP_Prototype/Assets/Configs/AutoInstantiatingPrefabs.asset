@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08d7f6a1de4b4294e94002e0112c4dd5, type: 3}
-  m_Name: GameConfigs
+  m_Script: {fileID: 11500000, guid: acd1f5f7a8954386abf54859c75bf874, type: 3}
+  m_Name: AutoInstantiatingPrefabs
   m_EditorClassIdentifier: 
-  autoInstantiatingPrefabs: {fileID: 11400000, guid: 393ebfab005de1b4eafefa51cbd5faa8, type: 2}
-  staminaActions: {fileID: 11400000, guid: 614360328a0b6a64098235dab61faf36, type: 2}
+  prefabs:
+  - {fileID: 1309824087759112629, guid: 10a0d9c9e68e4364693ced3e109106f4, type: 3}
+  - {fileID: 5877795514814132201, guid: bb86ee3fc6f22a94bb0a121328422586, type: 3}

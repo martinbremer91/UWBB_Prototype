@@ -46,7 +46,7 @@ public partial class @DefaultControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Attack"",
+                    ""name"": ""LightAttack"",
                     ""type"": ""Button"",
                     ""id"": ""ea29a722-372b-4952-bd76-ade0bde83e77"",
                     ""expectedControlType"": ""Button"",
@@ -55,9 +55,54 @@ public partial class @DefaultControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Dodge"",
+                    ""name"": ""HeavyAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""f4fad530-e374-4351-9c5c-6fb1e11200d5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Tap,Hold(duration=0.2)"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DodgeRun"",
                     ""type"": ""Button"",
                     ""id"": ""ed8ed359-d0de-4827-bc31-745fe7d2ebb9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Tap,Hold(duration=0.2)"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""LockOnTarget"",
+                    ""type"": ""Button"",
+                    ""id"": ""b6ad0d34-361d-4b0e-9925-1a2606a4460a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""a2f839c6-ff2a-45db-8763-70034253a32d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""UseItem"",
+                    ""type"": ""Button"",
+                    ""id"": ""0ed25e6f-a8ce-4f50-93fc-1cb75b80a71e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DeflectBlock"",
+                    ""type"": ""Button"",
+                    ""id"": ""2fd05b5a-26f0-4f6e-80df-dcea5fe2ef79"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -71,6 +116,17 @@ public partial class @DefaultControls: IInputActionCollection2, IDisposable
                     ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
                     ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraAim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5bf462a5-2933-4a75-a670-1fa93a1596f8"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": ""StickDeadzone"",
                     ""groups"": """",
                     ""action"": ""CameraAim"",
                     ""isComposite"": false,
@@ -133,12 +189,12 @@ public partial class @DefaultControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""020b16d2-ff74-4518-8173-d845aa5e9d0d"",
-                    ""path"": ""<Mouse>/leftButton"",
+                    ""id"": ""de883f3a-42a2-4bcd-82c8-bf700a29ae28"",
+                    ""path"": ""<Gamepad>/leftStick"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Attack"",
+                    ""action"": ""MovementDirection"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -149,7 +205,150 @@ public partial class @DefaultControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Dodge"",
+                    ""action"": ""DodgeRun"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3061d06d-f22f-4be9-a013-a56823137191"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DodgeRun"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fa34f1c7-a640-474d-bbf7-b28ca7deecea"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HeavyAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b4ca9fb2-c2a6-477b-8f89-e271b94a07c9"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HeavyAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6968176d-bb8a-4f26-b685-f52da9b7ccd1"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LightAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bf975609-ae53-4a0a-b581-bba8d4403b6c"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LightAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b86dde20-569c-4f8d-af73-28c0249be765"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LockOnTarget"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""62176f64-db05-4231-b050-a7274d57d650"",
+                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LockOnTarget"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""698776fe-82f2-4d80-95fc-c928001bed7b"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2e99c3f0-bce2-4ad1-962c-d249037d3740"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4f85b916-62db-4a86-80ec-3d387fdee2b5"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UseItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2d44e16b-6d17-4931-96e5-2763c7dd7992"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UseItem"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c1c08213-cef8-44b6-84c2-d6890e3bda8f"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DeflectBlock"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ba9c0cf3-9d06-4a02-bc2c-b67539e07f95"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DeflectBlock"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -162,8 +361,13 @@ public partial class @DefaultControls: IInputActionCollection2, IDisposable
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
         m_Gameplay_CameraAim = m_Gameplay.FindAction("CameraAim", throwIfNotFound: true);
         m_Gameplay_MovementDirection = m_Gameplay.FindAction("MovementDirection", throwIfNotFound: true);
-        m_Gameplay_Attack = m_Gameplay.FindAction("Attack", throwIfNotFound: true);
-        m_Gameplay_Dodge = m_Gameplay.FindAction("Dodge", throwIfNotFound: true);
+        m_Gameplay_LightAttack = m_Gameplay.FindAction("LightAttack", throwIfNotFound: true);
+        m_Gameplay_HeavyAttack = m_Gameplay.FindAction("HeavyAttack", throwIfNotFound: true);
+        m_Gameplay_DodgeRun = m_Gameplay.FindAction("DodgeRun", throwIfNotFound: true);
+        m_Gameplay_LockOnTarget = m_Gameplay.FindAction("LockOnTarget", throwIfNotFound: true);
+        m_Gameplay_Interact = m_Gameplay.FindAction("Interact", throwIfNotFound: true);
+        m_Gameplay_UseItem = m_Gameplay.FindAction("UseItem", throwIfNotFound: true);
+        m_Gameplay_DeflectBlock = m_Gameplay.FindAction("DeflectBlock", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -227,16 +431,26 @@ public partial class @DefaultControls: IInputActionCollection2, IDisposable
     private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
     private readonly InputAction m_Gameplay_CameraAim;
     private readonly InputAction m_Gameplay_MovementDirection;
-    private readonly InputAction m_Gameplay_Attack;
-    private readonly InputAction m_Gameplay_Dodge;
+    private readonly InputAction m_Gameplay_LightAttack;
+    private readonly InputAction m_Gameplay_HeavyAttack;
+    private readonly InputAction m_Gameplay_DodgeRun;
+    private readonly InputAction m_Gameplay_LockOnTarget;
+    private readonly InputAction m_Gameplay_Interact;
+    private readonly InputAction m_Gameplay_UseItem;
+    private readonly InputAction m_Gameplay_DeflectBlock;
     public struct GameplayActions
     {
         private @DefaultControls m_Wrapper;
         public GameplayActions(@DefaultControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @CameraAim => m_Wrapper.m_Gameplay_CameraAim;
         public InputAction @MovementDirection => m_Wrapper.m_Gameplay_MovementDirection;
-        public InputAction @Attack => m_Wrapper.m_Gameplay_Attack;
-        public InputAction @Dodge => m_Wrapper.m_Gameplay_Dodge;
+        public InputAction @LightAttack => m_Wrapper.m_Gameplay_LightAttack;
+        public InputAction @HeavyAttack => m_Wrapper.m_Gameplay_HeavyAttack;
+        public InputAction @DodgeRun => m_Wrapper.m_Gameplay_DodgeRun;
+        public InputAction @LockOnTarget => m_Wrapper.m_Gameplay_LockOnTarget;
+        public InputAction @Interact => m_Wrapper.m_Gameplay_Interact;
+        public InputAction @UseItem => m_Wrapper.m_Gameplay_UseItem;
+        public InputAction @DeflectBlock => m_Wrapper.m_Gameplay_DeflectBlock;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -252,12 +466,27 @@ public partial class @DefaultControls: IInputActionCollection2, IDisposable
             @MovementDirection.started += instance.OnMovementDirection;
             @MovementDirection.performed += instance.OnMovementDirection;
             @MovementDirection.canceled += instance.OnMovementDirection;
-            @Attack.started += instance.OnAttack;
-            @Attack.performed += instance.OnAttack;
-            @Attack.canceled += instance.OnAttack;
-            @Dodge.started += instance.OnDodge;
-            @Dodge.performed += instance.OnDodge;
-            @Dodge.canceled += instance.OnDodge;
+            @LightAttack.started += instance.OnLightAttack;
+            @LightAttack.performed += instance.OnLightAttack;
+            @LightAttack.canceled += instance.OnLightAttack;
+            @HeavyAttack.started += instance.OnHeavyAttack;
+            @HeavyAttack.performed += instance.OnHeavyAttack;
+            @HeavyAttack.canceled += instance.OnHeavyAttack;
+            @DodgeRun.started += instance.OnDodgeRun;
+            @DodgeRun.performed += instance.OnDodgeRun;
+            @DodgeRun.canceled += instance.OnDodgeRun;
+            @LockOnTarget.started += instance.OnLockOnTarget;
+            @LockOnTarget.performed += instance.OnLockOnTarget;
+            @LockOnTarget.canceled += instance.OnLockOnTarget;
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
+            @UseItem.started += instance.OnUseItem;
+            @UseItem.performed += instance.OnUseItem;
+            @UseItem.canceled += instance.OnUseItem;
+            @DeflectBlock.started += instance.OnDeflectBlock;
+            @DeflectBlock.performed += instance.OnDeflectBlock;
+            @DeflectBlock.canceled += instance.OnDeflectBlock;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -268,12 +497,27 @@ public partial class @DefaultControls: IInputActionCollection2, IDisposable
             @MovementDirection.started -= instance.OnMovementDirection;
             @MovementDirection.performed -= instance.OnMovementDirection;
             @MovementDirection.canceled -= instance.OnMovementDirection;
-            @Attack.started -= instance.OnAttack;
-            @Attack.performed -= instance.OnAttack;
-            @Attack.canceled -= instance.OnAttack;
-            @Dodge.started -= instance.OnDodge;
-            @Dodge.performed -= instance.OnDodge;
-            @Dodge.canceled -= instance.OnDodge;
+            @LightAttack.started -= instance.OnLightAttack;
+            @LightAttack.performed -= instance.OnLightAttack;
+            @LightAttack.canceled -= instance.OnLightAttack;
+            @HeavyAttack.started -= instance.OnHeavyAttack;
+            @HeavyAttack.performed -= instance.OnHeavyAttack;
+            @HeavyAttack.canceled -= instance.OnHeavyAttack;
+            @DodgeRun.started -= instance.OnDodgeRun;
+            @DodgeRun.performed -= instance.OnDodgeRun;
+            @DodgeRun.canceled -= instance.OnDodgeRun;
+            @LockOnTarget.started -= instance.OnLockOnTarget;
+            @LockOnTarget.performed -= instance.OnLockOnTarget;
+            @LockOnTarget.canceled -= instance.OnLockOnTarget;
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
+            @UseItem.started -= instance.OnUseItem;
+            @UseItem.performed -= instance.OnUseItem;
+            @UseItem.canceled -= instance.OnUseItem;
+            @DeflectBlock.started -= instance.OnDeflectBlock;
+            @DeflectBlock.performed -= instance.OnDeflectBlock;
+            @DeflectBlock.canceled -= instance.OnDeflectBlock;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -295,7 +539,12 @@ public partial class @DefaultControls: IInputActionCollection2, IDisposable
     {
         void OnCameraAim(InputAction.CallbackContext context);
         void OnMovementDirection(InputAction.CallbackContext context);
-        void OnAttack(InputAction.CallbackContext context);
-        void OnDodge(InputAction.CallbackContext context);
+        void OnLightAttack(InputAction.CallbackContext context);
+        void OnHeavyAttack(InputAction.CallbackContext context);
+        void OnDodgeRun(InputAction.CallbackContext context);
+        void OnLockOnTarget(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
+        void OnUseItem(InputAction.CallbackContext context);
+        void OnDeflectBlock(InputAction.CallbackContext context);
     }
 }

@@ -4,15 +4,15 @@ namespace UWBB.CharacterController
 {
     public class CharacterController_Camera
     {
-        private readonly Transform pivot;
-        private readonly Transform cameraTransform;
+        private Transform pivot;
+        private Transform cameraTransform;
 
         private const float camSpeed = 10;
         
-        public CharacterController_Camera(Transform cameraTransform, Transform pivot)
+        public void Init(Transform camTf, Transform p)
         {
-            this.cameraTransform = cameraTransform;
-            this.pivot = pivot;
+            cameraTransform = camTf;
+            pivot = p;
         }
         
         public void Update(InputState input)
