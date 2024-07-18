@@ -32,13 +32,12 @@ namespace UWBB.CharacterController
         }
         
 #if UNITY_EDITOR
-        public void Init(CharacterController_StateMachine sm, CharacterController_Input cci,
-            CharacterController_Stamina ccs, CharacterController_Camera ccc)
+        public void Init(GameManager gameManager)
         {
-            stateMachine = sm;
-            input = cci;
-            stamina = ccs;
-            cameraCtrl = ccc;
+            stateMachine = gameManager.stateMachine;
+            input = gameManager.inputController;
+            stamina = gameManager.staminaController;
+            cameraCtrl = gameManager.cameraController;
         }
             
         private void Update()

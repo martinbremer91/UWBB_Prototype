@@ -1,28 +1,12 @@
 ﻿using System;
-using UnityEngine;
-using UnityEngine.InputSystem;
-using UWBB.Configs;
+using System.Collections.Generic;
 
 namespace UWBB.CharacterController
 {
-    
-    
-    
-    
-    
-    // TODO: create OnEnterState and OnExitState methods alongside ProcessState
-    
-    
-    
-    
     public class CharacterController_StateMachine
     {
-        private CharacterController_Input inputController;
-        private CharacterController_Stamina staminaController;
-
-        private InputState inputState => inputController.inputState;
-        private StaminaActions staminaActions;
-
+        private Dictionary<CharacterState, IStateMachineLogic> stateMachineLogicDict = new();
+        
         public CharacterState characterState { get; private set; }
         private CharacterSubState _characterSubState;
         public CharacterSubState characterSubState
@@ -31,122 +15,38 @@ namespace UWBB.CharacterController
             set
             {
                 _characterSubState = value;
-                characterState = GetCharacterStateFromSubState(_characterSubState);
-                ProcessCharacterState();
+                CharacterState newState = GetCharacterStateFromSubState(value);
+
+                if (characterState != newState)
+                {
+                    stateMachineLogicDict[characterState].ExitState();
+                    characterState = newState;
+                    stateMachineLogicDict[characterState].EnterState();
+                }
             }
         }
         
         // TODO: move this somewhere else
-        private float minimumRunTimerForRunningAttack;
-        private float currentRunActionTimer;
+        public float minimumRunTimerForRunningAttack;
+        public float currentRunActionTimer;
 
-        public void Init(CharacterController_Input inputCtrl, CharacterController_Stamina staminaCtrl)
+        public void Init(GameManager gameManager)
         {
-            staminaActions = GameConfigs.instance.staminaActions;
+            stateMachineLogicDict.Add(CharacterState.Idle, new StateMachine_Idle());
+            stateMachineLogicDict.Add(CharacterState.Walk, new StateMachine_Walk());
+            stateMachineLogicDict.Add(CharacterState.Run, new StateMachine_Run());
+            stateMachineLogicDict.Add(CharacterState.Dodge, new StateMachine_Dodge());
+            stateMachineLogicDict.Add(CharacterState.AttackLight, new StateMachine_LightAttack());
+            stateMachineLogicDict.Add(CharacterState.AttackHeavy, new StateMachine_HeavyAttack());
+            stateMachineLogicDict.Add(CharacterState.UsingItem, new StateMachine_UsingItem());
+            stateMachineLogicDict.Add(CharacterState.Stunned, new StateMachine_Stunned());
 
-            inputController = inputCtrl;
-            staminaController = staminaCtrl;
+            foreach (var stateMachineLogic in stateMachineLogicDict.Values)
+                stateMachineLogic.Init(gameManager);
         }
 
         public void Update() => ProcessCharacterState();
-
-        private void ProcessCharacterState()
-        {
-            switch(characterState)
-            {
-                case CharacterState.Idle : ProcessIdle(); break;
-                case CharacterState.Walk : ProcessWalk(); break;
-                case CharacterState.Run : ProcessRun(); break;
-                case CharacterState.Dodge : ProcessDodge(); break;
-                case CharacterState.AttackLight : ProcessAttackLight(); break;
-                case CharacterState.AttackHeavy : ProcessAttackHeavy(); break;
-                case CharacterState.UsingItem : ProcessUsingItem(); break;
-                default : throw new ArgumentOutOfRangeException();
-            }
-        }
-
-        private void ProcessIdle()
-        {
-            if (inputState.lightAttackCommand && staminaController.HasStaminaForAction(staminaActions.lightAttack))
-                characterSubState = CharacterSubState.AttackLightStart;
-            else if (inputState.moveDirection != Vector2.zero)
-                characterSubState = CharacterSubState.Walk;
-            else if (inputState.dodgeCommand && staminaController.HasStaminaForAction(staminaActions.dodge))
-                characterSubState = CharacterSubState.DodgeStart;
-        }
-
-        private void ProcessWalk()
-        {
-            if (inputState.lightAttackCommand && staminaController.HasStaminaForAction(staminaActions.lightAttack))
-                characterSubState = CharacterSubState.AttackLightStart;
-            else if (inputState.dodgeCommand && staminaController.HasStaminaForAction(staminaActions.dodge))
-                characterSubState = CharacterSubState.DodgeStart;
-            else if (inputState.runCommand && !staminaController.isWinded && staminaController.HasStaminaForAction(staminaActions.run))
-                characterSubState = CharacterSubState.RunStart;
-            else if (inputState.moveDirection == Vector2.zero)
-                characterSubState = CharacterSubState.Idle;
-        }
-        
-        private void ProcessRun()
-        {
-            if (inputState.lightAttackCommand && staminaController.HasStaminaForAction(staminaActions.lightAttack))
-            {
-                currentRunActionTimer = 0;
-                characterSubState = CharacterSubState.AttackLightStart;
-            }
-            else if (inputState.moveDirection == Vector2.zero)
-            {
-                currentRunActionTimer = 0;
-                characterSubState = CharacterSubState.Idle;
-            }
-            else if (!inputState.runCommand)
-            {
-                currentRunActionTimer = 0;
-                characterSubState = CharacterSubState.Walk;
-            }
-            else
-                currentRunActionTimer += Time.deltaTime;
-        }
-
-        private void ProcessDodge()
-        {
-            staminaController.isWinded = false;
-
-            if (Keyboard.current.iKey.IsPressed())
-                characterSubState = CharacterSubState.Idle;
-            // eventually: buffer dodge attack
-        }
-
-        private void ProcessAttackLight()
-        {
-            staminaController.isWinded = false;
-            
-            if (Keyboard.current.iKey.IsPressed())
-                characterSubState = CharacterSubState.Idle;
-            // set isWinded to false
-            // eventually: buffer combo attack
-        }
-
-        private void ProcessAttackHeavy()
-        {
-            staminaController.isWinded = false;
-            
-            if (Keyboard.current.iKey.IsPressed())
-                characterSubState = CharacterSubState.Idle;
-            // set isWinded to false
-            // eventually: buffer combo attack
-        }
-
-        private void ProcessUsingItem()
-        {
-            staminaController.isWinded = false;
-            
-            if (Keyboard.current.iKey.IsPressed())
-                characterSubState = CharacterSubState.Idle;
-            // set isWinded to false
-            // might be unnecessary? state can only elapse or be interrupted by external factors
-            // maybe set move speed to "slowed"
-        }
+        private void ProcessCharacterState() => stateMachineLogicDict[characterState].ProcessState();
         
         private CharacterState GetCharacterStateFromSubState(CharacterSubState subState)
         {

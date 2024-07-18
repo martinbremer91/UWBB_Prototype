@@ -61,7 +61,8 @@ namespace UWBB.CharacterController
             inputState.cameraAim = gameplayActions.CameraAim.ReadValue<Vector2>();
             inputState.moveDirection = gameplayActions.MovementDirection.ReadValue<Vector2>();
             inputState.lightAttackCommand = gameplayActions.LightAttack.WasPressedThisFrame();
-
+            inputState.useItemCommand = gameplayActions.UseItem.WasPressedThisFrame();
+            
             if (!gameplayActions.DodgeRun.WasReleasedThisFrame() && !gameplayActions.DodgeRun.IsPressed())
                 inputState.dodgeCommand = false;
             if (!gameplayActions.HeavyAttack.WasReleasedThisFrame() && !gameplayActions.HeavyAttack.IsPressed())
@@ -78,5 +79,6 @@ namespace UWBB.CharacterController
         public bool heavyAttackChargeCommand;
         public bool runCommand;
         public bool dodgeCommand;
+        public bool useItemCommand;
     }
 }

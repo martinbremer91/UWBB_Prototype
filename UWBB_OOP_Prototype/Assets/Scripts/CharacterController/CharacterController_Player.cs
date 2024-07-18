@@ -16,8 +16,8 @@ namespace UWBB.CharacterController
 
         private void OnEnable()
         {
-            if (GameManager.characterControllerPlayer == null)
-                GameManager.characterControllerPlayer = this;
+            if (GameManager.player == null)
+                GameManager.player = this;
         }
 
         private void Start()
