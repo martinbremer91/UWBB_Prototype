@@ -1,13 +1,18 @@
-﻿using UnityEngine.InputSystem;
+﻿using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace UWBB.CharacterController
 {
-    public class StateMachine_LightAttack : IThreePhaseStateMachineLogic
+    public class StateMachine_LightAttack : IMultiPhaseStateMachineLogic
     {
         public CharacterController_StateMachine stateMachine { get; set; }
         public CharacterStatePhaseController characterStatePhaseController { get; set; }
+        public CharacterController_Animation animationController { get; set; }
         private CharacterController_Stamina staminaCtrl;
+        
+        private static readonly int trigger = Animator.StringToHash("LightAttack");
 
+        public CharacterSubState startPhase => CharacterSubState.AttackLightStart;
         public CharacterSubState mainPhase => CharacterSubState.AttackLightMain;
         public CharacterSubState recoveryPhase => CharacterSubState.AttackLightRecovery;
         
@@ -16,12 +21,13 @@ namespace UWBB.CharacterController
             stateMachine = gameManager.stateMachine;
             characterStatePhaseController = gameManager.characterStatePhaseController;
             staminaCtrl = gameManager.staminaController;
+            animationController = gameManager.animationController;
         }
 
         public void EnterState()
         {
             staminaCtrl.isWinded = false;
-            characterStatePhaseController.threePhaseStateMachineLogic = this;
+            animationController.animator.SetTrigger(trigger);
         }
 
         public void ProcessState()
@@ -29,6 +35,11 @@ namespace UWBB.CharacterController
             if (Keyboard.current.iKey.wasPressedThisFrame)
                 stateMachine.characterSubState = CharacterSubState.Idle;
             // eventually: buffer combo attack
+        }
+
+        public void ProcessStateTransition()
+        {
+            stateMachine.characterSubState = CharacterSubState.Idle;
         }
 
         public void ExitState()

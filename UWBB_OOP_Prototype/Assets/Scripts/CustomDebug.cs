@@ -50,10 +50,8 @@ namespace UWBB.CharacterController
             text.text = stateMachineInfo + inputInfo + staminaInfo + cameraInfo;
         }
 
-        private string GetStateMachineDebugInfo()
-        {
-            return $"State: {stateMachine.characterState} // SubState: {stateMachine.characterSubState}\n";
-        }
+        private string GetStateMachineDebugInfo() 
+            => $"State: {stateMachine.characterState} // SubState: {stateMachine.characterSubState}\n";
 
         private float lAtkTimer, hAtkDownTimer, dodgeTimer;
         private string GetInputDebugInfo()
@@ -77,7 +75,7 @@ namespace UWBB.CharacterController
             
             string inputInfo = $"Move: {inputState.moveDirection} // Camera: {inputState.cameraAim} \n" +
                                $"L Attack: {lAtkTimer > 0} // H Attack: {hAtkDownTimer > 0} // " +
-                               $"H Attack Charge: {inputState.heavyAttackChargeCommand} // " +
+                               $"H Attack Charge: {inputState.heavyAttackHeld} // " +
                                $"Run: {inputState.runCommand} // Dodge: {dodgeTimer > 0}\n";
             
             return inputInfo;

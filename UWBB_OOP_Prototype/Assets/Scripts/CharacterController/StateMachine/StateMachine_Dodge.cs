@@ -2,14 +2,16 @@
 
 namespace UWBB.CharacterController
 {
-    public class StateMachine_Dodge : IThreePhaseStateMachineLogic
+    public class StateMachine_Dodge : IMultiPhaseStateMachineLogic
     {
         public CharacterController_StateMachine stateMachine { get; set; }
         public CharacterStatePhaseController characterStatePhaseController { get; set; }
+        public CharacterController_Animation animationController { get; set; }
         private CharacterController_Stamina staminaCtrl;
-        private CharacterController_Animation animationCtrl;
-        private static readonly int Placeholder = Animator.StringToHash("Placeholder");
+        
+        private static readonly int trigger = Animator.StringToHash("Dodge");
 
+        public CharacterSubState startPhase => CharacterSubState.DodgeStart;
         public CharacterSubState mainPhase => CharacterSubState.DodgeMain;
         public CharacterSubState recoveryPhase => CharacterSubState.DodgeRecovery;
         
@@ -18,19 +20,23 @@ namespace UWBB.CharacterController
             stateMachine = gameManager.stateMachine;
             characterStatePhaseController = gameManager.characterStatePhaseController;
             staminaCtrl = gameManager.staminaController;
-            animationCtrl = gameManager.animationController;
+            animationController = gameManager.animationController;
         }
 
         public void EnterState()
         {
             staminaCtrl.isWinded = false;
-            characterStatePhaseController.threePhaseStateMachineLogic = this;
-            animationCtrl.animator.SetTrigger(Placeholder);
+            animationController.animator.SetTrigger(trigger);
         }
 
         public void ProcessState()
         {
             // eventually: buffer dodge attack
+        }
+
+        public void ProcessStateTransition()
+        {
+            stateMachine.characterSubState = CharacterSubState.Idle;
         }
 
         public void ExitState()

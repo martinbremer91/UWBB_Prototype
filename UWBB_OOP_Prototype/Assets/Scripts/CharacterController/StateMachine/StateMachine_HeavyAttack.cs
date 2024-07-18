@@ -1,34 +1,45 @@
-﻿using UnityEngine.InputSystem;
+﻿using UnityEngine;
 
 namespace UWBB.CharacterController
 {
-    public class StateMachine_HeavyAttack : IThreePhaseStateMachineLogic
+    public class StateMachine_HeavyAttack : IChargeableStateMachineLogic
     {
         public CharacterController_StateMachine stateMachine { get; set; }
         public CharacterStatePhaseController characterStatePhaseController { get; set; }
+        public CharacterController_Animation animationController { get; set; }
         private CharacterController_Stamina staminaCtrl;
+        
+        private static readonly int trigger = Animator.StringToHash("HeavyAttack");
 
+        public CharacterSubState startPhase => CharacterSubState.AttackHeavyStart;
+        public CharacterSubState chargePhase => CharacterSubState.AttackHeavyCharge;
         public CharacterSubState mainPhase => CharacterSubState.AttackHeavyMain;
         public CharacterSubState recoveryPhase => CharacterSubState.AttackHeavyRecovery;
+
+        private bool chargedAttack;
         
         public void Init(GameManager gameManager)
         {
             stateMachine = gameManager.stateMachine;
             characterStatePhaseController = gameManager.characterStatePhaseController;
             staminaCtrl = gameManager.staminaController;
+            animationController = gameManager.animationController;
         }
 
         public void EnterState()
         {
             staminaCtrl.isWinded = false;
-            characterStatePhaseController.threePhaseStateMachineLogic = this;
+            chargedAttack = stateMachine.characterSubState is CharacterSubState.AttackHeavyCharge;
+            animationController.animator.SetTrigger(trigger);
         }
 
         public void ProcessState()
         {
-            if (Keyboard.current.iKey.wasPressedThisFrame)
-                stateMachine.characterSubState = CharacterSubState.Idle;
-            // eventually: buffer combo attack
+        }
+
+        public void ProcessStateTransition()
+        {
+            stateMachine.characterSubState = CharacterSubState.Idle;
         }
 
         public void ExitState()

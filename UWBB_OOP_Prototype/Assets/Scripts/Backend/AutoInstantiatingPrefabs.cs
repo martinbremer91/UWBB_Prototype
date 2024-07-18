@@ -7,13 +7,16 @@ namespace UWBB.Configs
     [CreateAssetMenu(fileName = "AutoInstantiatingPrefabs", menuName = "UWBB/AutoInstantiatingPrefabs")]
     public class AutoInstantiatingPrefabs : ScriptableObject
     {
-        public List<GameObject> prefabs;
+        public GameObject playerPrefab;
+        public List<GameObject> managerPrefabs;
 
-        public List<int> InstantiatePrefabs()
+        public List<int> InstantiatePrefabs(GameManager gameManager)
         {
+            BootstrapPlayer(gameManager);
+            
             List<int> prefabGuids = new();
             
-            foreach (GameObject prefab in prefabs)
+            foreach (GameObject prefab in managerPrefabs)
             {
                 int guid = prefab.gameObject.GetInstanceID();
                 
@@ -27,5 +30,8 @@ namespace UWBB.Configs
 
             return prefabGuids;
         }
+
+        private void BootstrapPlayer(GameManager gameManager)
+            => gameManager.player = Instantiate(playerPrefab).GetComponent<CharacterController_Player>();
     }
 }

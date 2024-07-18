@@ -19,7 +19,6 @@
 
         RunStart,
         RunMain,
-        RunRecovery,
         
         DodgeStart,
         DodgeMain,
@@ -34,11 +33,11 @@
         AttackHeavyMain,
         AttackHeavyRecovery,
 
-        UsingItemStart,
-        UsingItemMain,
-        UsingItemRecovery,
+        UseItemStart,
+        UseItemMain,
+        UseItemRecovery,
         
-        StunnedMain,
-        StunnedRecovery,
+        StunMain,
+        StunRecovery,
     }
 }

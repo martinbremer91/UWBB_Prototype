@@ -21,7 +21,10 @@ namespace UWBB.CharacterController
                 {
                     stateMachineLogicDict[characterState].ExitState();
                     characterState = newState;
-                    stateMachineLogicDict[characterState].EnterState();
+                    
+                    IStateMachineLogic newLogic = stateMachineLogicDict[characterState];
+                    newLogic.SetAsActiveStateMachineLogic();
+                    newLogic.EnterState();
                 }
             }
         }
@@ -39,7 +42,7 @@ namespace UWBB.CharacterController
             stateMachineLogicDict.Add(CharacterState.AttackLight, new StateMachine_LightAttack());
             stateMachineLogicDict.Add(CharacterState.AttackHeavy, new StateMachine_HeavyAttack());
             stateMachineLogicDict.Add(CharacterState.UsingItem, new StateMachine_UsingItem());
-            stateMachineLogicDict.Add(CharacterState.Stunned, new StateMachine_Stunned());
+            stateMachineLogicDict.Add(CharacterState.Stunned, new StateMachine_Stun());
 
             foreach (var stateMachineLogic in stateMachineLogicDict.Values)
                 stateMachineLogic.Init(gameManager);
@@ -56,16 +59,16 @@ namespace UWBB.CharacterController
                 case CharacterSubState.Walk : return CharacterState.Walk;
                 case CharacterSubState.DodgeStart or CharacterSubState.DodgeMain or CharacterSubState.DodgeRecovery : 
                     return CharacterState.Dodge;
-                case CharacterSubState.RunStart or CharacterSubState.RunMain or CharacterSubState.RunRecovery :
+                case CharacterSubState.RunStart or CharacterSubState.RunMain :
                     return CharacterState.Run;
                 case CharacterSubState.AttackLightStart or CharacterSubState.AttackLightMain or CharacterSubState.AttackLightRecovery:
                     return CharacterState.AttackLight;
                 case CharacterSubState.AttackHeavyStart or CharacterSubState.AttackHeavyCharge 
                     or CharacterSubState.AttackHeavyMain or CharacterSubState.AttackHeavyRecovery :
                     return CharacterState.AttackHeavy;
-                case CharacterSubState.UsingItemStart or CharacterSubState.UsingItemMain or CharacterSubState.UsingItemRecovery:
+                case CharacterSubState.UseItemStart or CharacterSubState.UseItemMain or CharacterSubState.UseItemRecovery:
                     return CharacterState.UsingItem;
-                case CharacterSubState.StunnedMain or CharacterSubState.StunnedRecovery:
+                case CharacterSubState.StunMain or CharacterSubState.StunRecovery:
                     return CharacterState.Stunned;
             }
 

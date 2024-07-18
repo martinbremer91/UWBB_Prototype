@@ -7,28 +7,20 @@ namespace UWBB.CharacterController
         public Transform cameraTransform;
         [SerializeField] private Transform modelTransform;
         [SerializeField] private GameObject weaponGameObject;
+        public CharacterStatePhaseController characterStatePhaseController;
 
-        public GameManager gameManager;
         private CharacterController_Input inputController;
         private CharacterController_Stamina staminaController;
         private CharacterController_StateMachine stateMachine;
         private CharacterController_Camera cameraController;
 
-        private void OnEnable()
-        {
-            if (GameManager.player == null)
-                GameManager.player = this;
-        }
-
         private void Start()
         {
-            Init();
-            
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
         
-        private void Init()
+        public void Init(GameManager gameManager)
         {
             inputController = gameManager.inputController;
             staminaController = gameManager.staminaController;

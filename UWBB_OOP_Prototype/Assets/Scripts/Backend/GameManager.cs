@@ -6,7 +6,7 @@ namespace UWBB.CharacterController
 {
     public class GameManager
     {
-        public static CharacterController_Player player;
+        [NonSerialized] public CharacterController_Player player;
         [NonSerialized] public CharacterStatePhaseController characterStatePhaseController;
         
         [NonSerialized] public CharacterController_Input inputController;
@@ -22,25 +22,26 @@ namespace UWBB.CharacterController
         public void Init()
         {
             InstantiatePrefabsInConfig();
-
-            player.gameManager = this;
-            characterStatePhaseController = player.GetComponent<CharacterStatePhaseController>();
+            
+            characterStatePhaseController = player.characterStatePhaseController;
             inputController = new CharacterController_Input();
             staminaController = new CharacterController_Stamina();
             stateMachine = new CharacterController_StateMachine();
             cameraController = new CharacterController_Camera();
             animationController = new CharacterController_Animation(); 
             
+            player.Init(this);
             staminaController.Init(stateMachine);
             stateMachine.Init(this);
             cameraController.Init(player.cameraTransform, player.transform);
-            animationController.Init(player);
+            animationController.Init(this);
 #if UNITY_EDITOR
             CustomDebug.instance.Init(this);
 #endif
         }
 
-        private void InstantiatePrefabsInConfig() => 
-            autoInstantiatedPrefabsGUIDs.AddRange(GameConfigs.instance.autoInstantiatingPrefabs.InstantiatePrefabs());
+        private void InstantiatePrefabsInConfig() =>
+            autoInstantiatedPrefabsGUIDs.AddRange(
+                GameConfigs.instance.autoInstantiatingPrefabs.InstantiatePrefabs(this));
     }
 }

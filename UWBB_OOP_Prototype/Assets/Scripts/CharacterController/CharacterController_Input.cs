@@ -17,7 +17,6 @@ namespace UWBB.CharacterController
             gameplayActions.Enable();
             
             InitDodgeRunAction();
-            InitHeavyAttackAction();
         }
 
         private void InitDodgeRunAction()
@@ -37,36 +36,18 @@ namespace UWBB.CharacterController
 
             dodgeRunAction.canceled += _ => { inputState.runCommand = false; };
         }
-        
-        private void InitHeavyAttackAction()
-        {
-            var heavyAttackAction = gameplayActions.HeavyAttack;
-
-            heavyAttackAction.performed += context =>
-            {
-                if (context.interaction is TapInteraction)
-                    inputState.heavyAttackCommand = true;
-                else if (context.interaction is HoldInteraction)
-                {
-                    inputState.heavyAttackCommand = false;
-                    inputState.heavyAttackChargeCommand = true;
-                }
-            };
-
-            heavyAttackAction.canceled += _ => inputState.heavyAttackChargeCommand = false;
-        }
 
         public void Update()
         {
             inputState.cameraAim = gameplayActions.CameraAim.ReadValue<Vector2>();
             inputState.moveDirection = gameplayActions.MovementDirection.ReadValue<Vector2>();
             inputState.lightAttackCommand = gameplayActions.LightAttack.WasPressedThisFrame();
+            inputState.heavyAttackCommand = gameplayActions.HeavyAttack.WasPressedThisFrame();
+            inputState.heavyAttackHeld = gameplayActions.HeavyAttack.IsPressed();
             inputState.useItemCommand = gameplayActions.UseItem.WasPressedThisFrame();
             
             if (!gameplayActions.DodgeRun.WasReleasedThisFrame() && !gameplayActions.DodgeRun.IsPressed())
                 inputState.dodgeCommand = false;
-            if (!gameplayActions.HeavyAttack.WasReleasedThisFrame() && !gameplayActions.HeavyAttack.IsPressed())
-                inputState.heavyAttackCommand = false;
         }
     }
 
@@ -76,7 +57,7 @@ namespace UWBB.CharacterController
         public Vector2 moveDirection;
         public bool lightAttackCommand;
         public bool heavyAttackCommand;
-        public bool heavyAttackChargeCommand;
+        public bool heavyAttackHeld;
         public bool runCommand;
         public bool dodgeCommand;
         public bool useItemCommand;
