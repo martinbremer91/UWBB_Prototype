@@ -1,49 +1,39 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UWBB.Configs;
 
 namespace UWBB.CharacterController
 {
-    public class StateMachine_Run : IMultiPhaseStateMachineLogic
+    public class StateMachine_Run : MultiPhaseStateMachineLogic
     {
-        public CharacterController_StateMachine stateMachine { get; set; }
-        public CharacterStatePhaseController characterStatePhaseController { get; set; }
-        public CharacterController_Animation animationController { get; set; }
         private InputState inputState;
-        private CharacterController_Stamina staminaCtrl;
         private StaminaActions staminaActions;
 
-        private float minimumRunTimerForRunningAttack;
+        protected override CharacterSubState startPhase => CharacterSubState.RunStart;
+        protected override CharacterSubState mainPhase => CharacterSubState.RunMain;
 
-        public CharacterSubState startPhase => CharacterSubState.RunStart;
-        public CharacterSubState mainPhase => CharacterSubState.RunMain;
-        public CharacterSubState recoveryPhase => throw new ArgumentException();
+        private float minimumRunTimerForRunningAttack;
         
-        public void Init(GameManager gameManager)
+        public override void Init(GameManager gameManager)
         {
+            base.Init(gameManager);
             staminaActions = GameConfigs.instance.staminaActions;
-            stateMachine = gameManager.stateMachine;
-            staminaCtrl = gameManager.staminaController;
             inputState = gameManager.inputController.inputState;
-            characterStatePhaseController = gameManager.characterStatePhaseController;
-            animationController = gameManager.animationController;
-            minimumRunTimerForRunningAttack = 
-                gameManager.player.playerConfigs.minimumRunTimerForRunningAttack;
+            minimumRunTimerForRunningAttack = gameManager.player.playerConfigs.minimumRunTimerForRunningAttack;
         }
 
-        public void EnterState()
+        public override void EnterState()
         {
             stateMachine.currentRunActionTimer = 0;
-            // animationController.animator.Play(animationStateID);
+            base.EnterState();
         }
 
-        public void ProcessState()
+        public override void ProcessState()
         {
             if (inputState.useItemCommand)
                 stateMachine.characterSubState = CharacterSubState.UseItemStart;
-            else if (inputState.lightAttackCommand && staminaCtrl.HasStaminaForAction(staminaActions.lightAttack))
+            else if (inputState.lightAttackCommand && staminaController.HasStaminaForAction(staminaActions.lightAttack))
                 stateMachine.characterSubState = CharacterSubState.AttackLightStart;
-            else if (inputState.heavyAttackCommand && staminaCtrl.HasStaminaForAction(staminaActions.heavyAttack))
+            else if (inputState.heavyAttackCommand && staminaController.HasStaminaForAction(staminaActions.heavyAttack))
                 stateMachine.characterSubState = CharacterSubState.AttackHeavyStart;
             else if (inputState.moveDirection == Vector2.zero)
                 stateMachine.characterSubState = CharacterSubState.Idle;
@@ -55,9 +45,5 @@ namespace UWBB.CharacterController
             if (stateMachine.currentRunActionTimer >= minimumRunTimerForRunningAttack)
                 stateMachine.characterSubState = CharacterSubState.RunMain;
         }
-
-        public void ProcessStateTransition() { }
-
-        public void ExitState() { }
     }
 }

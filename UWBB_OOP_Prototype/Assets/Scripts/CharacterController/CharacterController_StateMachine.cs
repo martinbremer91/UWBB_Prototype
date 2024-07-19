@@ -5,7 +5,7 @@ namespace UWBB.CharacterController
 {
     public class CharacterController_StateMachine
     {
-        private Dictionary<CharacterState, IStateMachineLogic> stateMachineLogicDict = new();
+        private Dictionary<CharacterState, StateMachineLogic> stateMachineLogicDict = new();
         
         public CharacterState characterState { get; private set; }
         private CharacterSubState _characterSubState;
@@ -22,7 +22,7 @@ namespace UWBB.CharacterController
                     stateMachineLogicDict[characterState].ExitState();
                     characterState = newState;
                     
-                    IStateMachineLogic newLogic = stateMachineLogicDict[characterState];
+                    StateMachineLogic newLogic = stateMachineLogicDict[characterState];
                     newLogic.SetAsActiveStateMachineLogic();
                     newLogic.EnterState();
                 }

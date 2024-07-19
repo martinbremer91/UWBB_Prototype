@@ -4,13 +4,13 @@ namespace UWBB.CharacterController
 {
     public class CharacterStatePhaseController : MonoBehaviour
     {
-        private IStateMachineLogic stateMachineLogic;
-        private IMultiPhaseStateMachineLogic multiPhaseStateMachineLogic;
+        private StateMachineLogic stateMachineLogic;
+        private MultiPhaseStateMachineLogic multiPhaseStateMachineLogic;
         
-        public void SetActiveStateMachineLogic(IStateMachineLogic logic)
+        public void SetActiveStateMachineLogic(StateMachineLogic logic)
         {
             stateMachineLogic = logic;
-            multiPhaseStateMachineLogic = logic as IMultiPhaseStateMachineLogic;
+            multiPhaseStateMachineLogic = logic as MultiPhaseStateMachineLogic;
         }
 
         public void BeginState() => multiPhaseStateMachineLogic.GoToStartPhase();
@@ -20,7 +20,7 @@ namespace UWBB.CharacterController
         
         public void BeginChargePhase()
         {
-            if (multiPhaseStateMachineLogic is IChargeableStateMachineLogic chargeable)
+            if (multiPhaseStateMachineLogic is ChargeableStateMachineLogic chargeable)
                 chargeable.GoToChargePhase();
             else
             {

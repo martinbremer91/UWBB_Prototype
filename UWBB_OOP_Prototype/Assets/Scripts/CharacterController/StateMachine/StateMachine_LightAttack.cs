@@ -1,47 +1,17 @@
-﻿using UnityEngine;
-using UnityEngine.InputSystem;
-
-namespace UWBB.CharacterController
+﻿namespace UWBB.CharacterController
 {
-    public class StateMachine_LightAttack : IMultiPhaseStateMachineLogic
+    public class StateMachine_LightAttack : MultiPhaseStateMachineLogic
     {
-        public CharacterController_StateMachine stateMachine { get; set; }
-        public CharacterStatePhaseController characterStatePhaseController { get; set; }
-        public CharacterController_Animation animationController { get; set; }
-        private CharacterController_Stamina staminaCtrl;
-        
-        public CharacterSubState startPhase => CharacterSubState.AttackLightStart;
-        public CharacterSubState mainPhase => CharacterSubState.AttackLightMain;
-        public CharacterSubState recoveryPhase => CharacterSubState.AttackLightRecovery;
-        
-        public void Init(GameManager gameManager)
+        protected override CharacterSubState startPhase => CharacterSubState.AttackLightStart;
+        protected override CharacterSubState mainPhase => CharacterSubState.AttackLightMain;
+        protected override CharacterSubState recoveryPhase => CharacterSubState.AttackLightRecovery;
+
+        public override void EnterState()
         {
-            stateMachine = gameManager.stateMachine;
-            characterStatePhaseController = gameManager.characterStatePhaseController;
-            staminaCtrl = gameManager.staminaController;
-            animationController = gameManager.animationController;
+            staminaController.isWinded = false;
+            base.EnterState();
         }
 
-        public void EnterState()
-        {
-            staminaCtrl.isWinded = false;
-            // animationController.animator.Play(animationStateID);
-        }
-
-        public void ProcessState()
-        {
-            if (Keyboard.current.iKey.wasPressedThisFrame)
-                stateMachine.characterSubState = CharacterSubState.Idle;
-            // eventually: buffer combo attack
-        }
-
-        public void ProcessStateTransition()
-        {
-            stateMachine.characterSubState = CharacterSubState.Idle;
-        }
-
-        public void ExitState()
-        {
-        }
+        public override void ProcessStateTransition() => stateMachine.characterSubState = CharacterSubState.Idle;
     }
 }

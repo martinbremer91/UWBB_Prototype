@@ -1,7 +1,4 @@
-﻿using System;
-using UnityEngine.InputSystem;
-
-namespace UWBB.CharacterController
+﻿namespace UWBB.CharacterController
 {
     
     
@@ -19,44 +16,17 @@ namespace UWBB.CharacterController
     
     
     
-    
-    public class StateMachine_Stun : IMultiPhaseStateMachineLogic
+    public class StateMachine_Stun : MultiPhaseStateMachineLogic
     {
-        public CharacterController_StateMachine stateMachine { get; set; }
-        public CharacterStatePhaseController characterStatePhaseController { get; set; }
-        public CharacterController_Animation animationController { get; set; }
-        private CharacterController_Stamina staminaCtrl;
+        protected override CharacterSubState startPhase => CharacterSubState.RunStart;
+        protected override CharacterSubState mainPhase => CharacterSubState.RunMain;
 
-        public CharacterSubState startPhase => CharacterSubState.RunStart;
-        public CharacterSubState mainPhase => CharacterSubState.RunMain;
-        public CharacterSubState recoveryPhase => throw new ArgumentException();
-        
-        public void Init(GameManager gameManager)
+        public override void EnterState()
         {
-            stateMachine = gameManager.stateMachine;
-            staminaCtrl = gameManager.staminaController;
-            characterStatePhaseController = gameManager.characterStatePhaseController;
-            animationController = gameManager.animationController;
+            staminaController.isWinded = false;
+            base.EnterState();
         }
 
-        public void EnterState()
-        {
-            staminaCtrl.isWinded = false;
-        }
-
-        public void ProcessState()
-        {
-            if (Keyboard.current.iKey.wasPressedThisFrame)
-                stateMachine.characterSubState = CharacterSubState.Idle;
-        }
-
-        public void ProcessStateTransition()
-        {
-            stateMachine.characterSubState = CharacterSubState.Idle;
-        }
-
-        public void ExitState()
-        {
-        }
+        public override void ProcessStateTransition() => stateMachine.characterSubState = CharacterSubState.Idle;
     }
 }

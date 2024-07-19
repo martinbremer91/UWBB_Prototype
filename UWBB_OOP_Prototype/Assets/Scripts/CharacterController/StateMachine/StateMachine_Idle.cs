@@ -3,51 +3,32 @@ using UWBB.Configs;
 
 namespace UWBB.CharacterController
 {
-    public class StateMachine_Idle : IStateMachineLogic
+    public class StateMachine_Idle : StateMachineLogic
     {
-        public CharacterController_StateMachine stateMachine { get; set; }
-        public CharacterStatePhaseController characterStatePhaseController { get; set; }
-        public CharacterController_Animation animationController { get; set; }
         private StaminaActions staminaActions;
-        private CharacterController_Stamina staminaCtrl;
         private InputState inputState;
-        
-        public void Init(GameManager gameManager)
+
+        protected override CharacterSubState startPhase => CharacterSubState.Idle;
+
+        public override void Init(GameManager gameManager)
         {
+            base.Init(gameManager);
             staminaActions = GameConfigs.instance.staminaActions;
-            stateMachine = gameManager.stateMachine;
-            staminaCtrl = gameManager.staminaController;
             inputState = gameManager.inputController.inputState;
-            characterStatePhaseController = gameManager.characterStatePhaseController;
-            animationController = gameManager.animationController;
         }
 
-        public void EnterState()
-        {
-            // animationController.animator.Play(animationStateID);
-        }
-
-        public void ProcessState()
+        public override void ProcessState()
         {
             if (inputState.useItemCommand)
                 stateMachine.characterSubState = CharacterSubState.UseItemStart;
-            else if (inputState.lightAttackCommand && staminaCtrl.HasStaminaForAction(staminaActions.lightAttack))
+            else if (inputState.lightAttackCommand && staminaController.HasStaminaForAction(staminaActions.lightAttack))
                 stateMachine.characterSubState = CharacterSubState.AttackLightStart;
-            else if (inputState.heavyAttackCommand && staminaCtrl.HasStaminaForAction(staminaActions.heavyAttack))
+            else if (inputState.heavyAttackCommand && staminaController.HasStaminaForAction(staminaActions.heavyAttack))
                 stateMachine.characterSubState = CharacterSubState.AttackHeavyStart;
             else if (inputState.moveDirection != Vector2.zero)
                 stateMachine.characterSubState = CharacterSubState.Walk;
-            else if (inputState.dodgeCommand && staminaCtrl.HasStaminaForAction(staminaActions.dodge))
+            else if (inputState.dodgeCommand && staminaController.HasStaminaForAction(staminaActions.dodge))
                 stateMachine.characterSubState = CharacterSubState.DodgeStart;
-        }
-
-        public void ProcessStateTransition()
-        {
-            
-        }
-
-        public void ExitState()
-        {
         }
     }
 }
