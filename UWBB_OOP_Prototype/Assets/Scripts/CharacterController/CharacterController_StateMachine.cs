@@ -29,8 +29,6 @@ namespace UWBB.CharacterController
             }
         }
         
-        // TODO: move this somewhere else
-        public float minimumRunTimerForRunningAttack;
         public float currentRunActionTimer;
 
         public void Init(GameManager gameManager)

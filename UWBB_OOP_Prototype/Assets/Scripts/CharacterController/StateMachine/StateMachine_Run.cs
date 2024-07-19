@@ -4,13 +4,6 @@ using UWBB.Configs;
 
 namespace UWBB.CharacterController
 {
-    
-    
-    // TODO: run start -> main phase change:
-    // single run animation state, so no animator state machine behaviours, just use animation event
-    
-    
-    
     public class StateMachine_Run : IMultiPhaseStateMachineLogic
     {
         public CharacterController_StateMachine stateMachine { get; set; }
@@ -19,6 +12,8 @@ namespace UWBB.CharacterController
         private InputState inputState;
         private CharacterController_Stamina staminaCtrl;
         private StaminaActions staminaActions;
+
+        private float minimumRunTimerForRunningAttack;
 
         public CharacterSubState startPhase => CharacterSubState.RunStart;
         public CharacterSubState mainPhase => CharacterSubState.RunMain;
@@ -32,11 +27,14 @@ namespace UWBB.CharacterController
             inputState = gameManager.inputController.inputState;
             characterStatePhaseController = gameManager.characterStatePhaseController;
             animationController = gameManager.animationController;
+            minimumRunTimerForRunningAttack = 
+                gameManager.player.playerConfigs.minimumRunTimerForRunningAttack;
         }
 
         public void EnterState()
         {
             stateMachine.currentRunActionTimer = 0;
+            // animationController.animator.Play(animationStateID);
         }
 
         public void ProcessState()
@@ -51,16 +49,15 @@ namespace UWBB.CharacterController
                 stateMachine.characterSubState = CharacterSubState.Idle;
             else if (!inputState.runCommand)
                 stateMachine.characterSubState = CharacterSubState.Walk;
-            else
+            else if (stateMachine.characterSubState is CharacterSubState.RunStart)
                 stateMachine.currentRunActionTimer += Time.deltaTime;
+
+            if (stateMachine.currentRunActionTimer >= minimumRunTimerForRunningAttack)
+                stateMachine.characterSubState = CharacterSubState.RunMain;
         }
 
-        public void ProcessStateTransition()
-        {
-        }
+        public void ProcessStateTransition() { }
 
-        public void ExitState()
-        {
-        }
+        public void ExitState() { }
     }
 }

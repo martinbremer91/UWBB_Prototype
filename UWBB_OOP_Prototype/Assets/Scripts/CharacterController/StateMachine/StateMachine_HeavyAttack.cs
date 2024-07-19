@@ -9,8 +9,6 @@ namespace UWBB.CharacterController
         public CharacterController_Animation animationController { get; set; }
         private CharacterController_Stamina staminaCtrl;
         
-        private static readonly int trigger = Animator.StringToHash("HeavyAttack");
-
         public CharacterSubState startPhase => CharacterSubState.AttackHeavyStart;
         public CharacterSubState chargePhase => CharacterSubState.AttackHeavyCharge;
         public CharacterSubState mainPhase => CharacterSubState.AttackHeavyMain;
@@ -30,7 +28,7 @@ namespace UWBB.CharacterController
         {
             staminaCtrl.isWinded = false;
             chargedAttack = stateMachine.characterSubState is CharacterSubState.AttackHeavyCharge;
-            animationController.animator.SetTrigger(trigger);
+            // animationController.animator.Play(animationStateID);
         }
 
         public void ProcessState()

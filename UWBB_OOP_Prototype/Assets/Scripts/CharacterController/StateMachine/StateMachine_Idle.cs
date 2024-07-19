@@ -11,7 +11,7 @@ namespace UWBB.CharacterController
         private StaminaActions staminaActions;
         private CharacterController_Stamina staminaCtrl;
         private InputState inputState;
-
+        
         public void Init(GameManager gameManager)
         {
             staminaActions = GameConfigs.instance.staminaActions;
@@ -24,6 +24,7 @@ namespace UWBB.CharacterController
 
         public void EnterState()
         {
+            // animationController.animator.Play(animationStateID);
         }
 
         public void ProcessState()

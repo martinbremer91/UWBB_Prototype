@@ -9,8 +9,6 @@ namespace UWBB.CharacterController
         public CharacterController_Animation animationController { get; set; }
         private CharacterController_Stamina staminaCtrl;
         
-        private static readonly int trigger = Animator.StringToHash("Dodge");
-
         public CharacterSubState startPhase => CharacterSubState.DodgeStart;
         public CharacterSubState mainPhase => CharacterSubState.DodgeMain;
         public CharacterSubState recoveryPhase => CharacterSubState.DodgeRecovery;
@@ -26,7 +24,7 @@ namespace UWBB.CharacterController
         public void EnterState()
         {
             staminaCtrl.isWinded = false;
-            animationController.animator.SetTrigger(trigger);
+            // animationController.animator.Play(animationStateID);
         }
 
         public void ProcessState()
@@ -39,9 +37,6 @@ namespace UWBB.CharacterController
             stateMachine.characterSubState = CharacterSubState.Idle;
         }
 
-        public void ExitState()
-        {
-            
-        }
+        public void ExitState() { }
     }
 }

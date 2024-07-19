@@ -22,7 +22,10 @@ namespace UWBB.CharacterController
             animationController = gameManager.animationController;
         }
 
-        public void EnterState() { }
+        public void EnterState()
+        {
+            // animationController.animator.Play(animationStateID);
+        }
 
         public void ProcessState()
         {

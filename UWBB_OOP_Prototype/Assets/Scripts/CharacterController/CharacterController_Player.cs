@@ -7,6 +7,7 @@ namespace UWBB.CharacterController
         public Transform cameraTransform;
         [SerializeField] private Transform modelTransform;
         [SerializeField] private GameObject weaponGameObject;
+        public CharacterConfigs playerConfigs;
         public CharacterStatePhaseController characterStatePhaseController;
 
         private CharacterController_Input inputController;

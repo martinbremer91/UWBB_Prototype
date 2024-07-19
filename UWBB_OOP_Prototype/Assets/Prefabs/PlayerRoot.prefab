@@ -156,6 +156,7 @@ MonoBehaviour:
   cameraTransform: {fileID: 1735076780030094674}
   modelTransform: {fileID: 2801264333521603668}
   weaponGameObject: {fileID: 978738660461537170}
+  playerConfigs: {fileID: 11400000, guid: 1aa15ab424681694582910064afb478c, type: 2}
   characterStatePhaseController: {fileID: 5067666903868590206}
 --- !u!114 &5067666903868590206
 MonoBehaviour:

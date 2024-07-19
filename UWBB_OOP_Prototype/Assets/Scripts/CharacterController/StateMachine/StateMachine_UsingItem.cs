@@ -10,8 +10,6 @@ namespace UWBB.CharacterController
         public CharacterController_Animation animationController { get; set; }
         private CharacterController_Stamina staminaCtrl;
 
-        private static readonly int trigger = Animator.StringToHash("UseItem");
-
         public CharacterSubState startPhase => CharacterSubState.UseItemStart;
         public CharacterSubState mainPhase => CharacterSubState.UseItemStart;
         public CharacterSubState recoveryPhase => CharacterSubState.UseItemRecovery;
@@ -27,7 +25,7 @@ namespace UWBB.CharacterController
         public void EnterState()
         {
             staminaCtrl.isWinded = false;
-            animationController.animator.SetTrigger(trigger);
+            // animationController.animator.Play(animationStateID);
         }
 
         public void ProcessState()

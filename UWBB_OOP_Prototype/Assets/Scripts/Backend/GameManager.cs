@@ -4,6 +4,15 @@ using UWBB.Configs;
 
 namespace UWBB.CharacterController
 {
+    
+    
+    
+    // TODO: make initialization character-agnostic and modular
+    // related: Create character-agnostic spawn point system
+    
+    
+    
+    
     public class GameManager
     {
         [NonSerialized] public CharacterController_Player player;
@@ -16,7 +25,6 @@ namespace UWBB.CharacterController
         [NonSerialized] public CharacterController_Animation animationController;
         
         public static List<int> autoInstantiatedPrefabsGUIDs;
-
         public GameManager() => autoInstantiatedPrefabsGUIDs = new List<int>();
 
         public void Init()
