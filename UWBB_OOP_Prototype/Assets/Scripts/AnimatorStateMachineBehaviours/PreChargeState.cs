@@ -1,7 +1,7 @@
 using UnityEngine;
 using UWBB.CharacterController;
 
-public class PreChargePhase : StateMachineBehaviour
+public class PreChargeState : StateMachineBehaviour
 {
     private InputState inputState;
     private bool isCharging;

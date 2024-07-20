@@ -13,16 +13,16 @@ namespace UWBB.CharacterController
             CharacterController_StateMachine stateMachine =
                 character.GetModuleController<CharacterController_StateMachine>(ControllerType.StateMachine);
             
-            foreach (var start in animator.GetBehaviours<StartSubStatePhase>())
-                start.Init(stateMachine);
-            foreach (var main in animator.GetBehaviours<MainSubStatePhase>())
+            foreach (var main in animator.GetBehaviours<MainPhaseState>())
                 main.Init(stateMachine);
-            foreach (var recovery in animator.GetBehaviours<RecoverySubStatePhase>())
+            foreach (var recovery in animator.GetBehaviours<RecoveryPhaseState>())
                 recovery.Init(stateMachine);
-
-            foreach (var preCharge in animator.GetBehaviours<PreChargePhase>())
+            foreach (var single in animator.GetBehaviours<SinglePhaseState>())
+                single.Init(stateMachine);
+            
+            foreach (var preCharge in animator.GetBehaviours<PreChargeState>())
                 preCharge.Init(character);
-            foreach (var charge in animator.GetBehaviours<ChargePhase>())
+            foreach (var charge in animator.GetBehaviours<ChargeState>())
                 charge.Init(character);
         }
 
@@ -40,7 +40,9 @@ namespace UWBB.CharacterController
                 CharacterSubState.AttackLightStart => AnimationConstants.attackLightStart,
                 CharacterSubState.AttackHeavyStart => AnimationConstants.attackHeavyStart,
                 CharacterSubState.UseItemStart => AnimationConstants.useItemStart,
-                // CharacterSubState.StunMain => AnimationConstants.,
+                CharacterSubState.StunFlinch => AnimationConstants.stunFlinch,
+                CharacterSubState.StunStagger => AnimationConstants.stunStagger,
+                CharacterSubState.StunKnockdown => AnimationConstants.stunKnockdown,
                 _ => throw new ArgumentOutOfRangeException(nameof(characterSubState), characterSubState, null)
             };
         }

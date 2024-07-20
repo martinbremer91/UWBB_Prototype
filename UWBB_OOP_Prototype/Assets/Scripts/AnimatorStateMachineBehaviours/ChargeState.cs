@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UWBB.CharacterController;
 
-public class ChargePhase : StateMachineBehaviour
+public class ChargeState : StateMachineBehaviour
 {
     private CharacterController_StateMachine stateMachineController;
     private InputState inputState;

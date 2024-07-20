@@ -1,12 +1,6 @@
 ﻿namespace UWBB.CharacterController
 {
     
-    
-    // TODO: implement levels of stun :
-    // - flinch (hit / visual reaction)
-    // - stagger (poise depleted / small interrupt)
-    // - knockdown (parried / immobile)
-    
     // TODO: poise
     // recovery timer (before regen) proportional to total poise
     // elden ring reference: 65 poise -> 5s recovery timer
@@ -16,17 +10,8 @@
     
     
     
-    public class StateMachine_Stun : MultiPhaseStateMachineLogic
+    public class StateMachine_Stun : StateMachineLogic
     {
-        protected override CharacterSubState startPhase => CharacterSubState.RunStart;
-        protected override CharacterSubState mainPhase => CharacterSubState.RunMain;
-
-        public override void EnterState()
-        {
-            staminaController.isWinded = false;
-            base.EnterState();
-        }
-
         public override void ProcessStateTransition() => stateMachineController.characterSubState = CharacterSubState.Idle;
     }
 }

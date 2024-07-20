@@ -8,8 +8,6 @@ namespace UWBB.CharacterController
         private StaminaActions staminaActions;
         private InputState inputState;
 
-        protected override CharacterSubState startPhase => CharacterSubState.Idle;
-
         public override void Init(ICharacter character)
         {
             base.Init(character);

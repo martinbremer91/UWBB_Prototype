@@ -9,7 +9,7 @@
         AttackLight,
         AttackHeavy,
         UsingItem,
-        Stunned,
+        Stun,
     }
 
     public enum CharacterSubState
@@ -37,7 +37,8 @@
         UseItemMain,
         UseItemRecovery,
         
-        StunMain,
-        StunRecovery,
+        StunFlinch,
+        StunStagger,
+        StunKnockdown,
     }
 }

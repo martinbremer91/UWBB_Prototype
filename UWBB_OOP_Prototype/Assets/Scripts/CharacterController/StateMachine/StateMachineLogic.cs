@@ -7,7 +7,6 @@ namespace UWBB.CharacterController
         protected CharacterController_StateMachine stateMachineController { get; set; }
         protected CharacterController_Animation animationController { get; set; }
         protected CharacterController_Stamina staminaController { get; set; }
-        protected abstract CharacterSubState startPhase { get; }
 
         public virtual void Init(ICharacter character)
         {
@@ -16,19 +15,22 @@ namespace UWBB.CharacterController
             animationController = character.GetModuleController<CharacterController_Animation>(ControllerType.Animation);
         }
         
-        public virtual void EnterState() => animationController.SetAnimationState(startPhase);
+        public virtual void EnterState(CharacterSubState subState) => animationController.SetAnimationState(subState);
         public virtual void ProcessState() {}
-        public virtual void ProcessStateTransition() {}
         public virtual void ExitState() {}
-        public void SetAsActiveStateMachineLogic() => stateMachineController.SetActiveStateMachineLogic(this);
+        public virtual void SetAsActiveStateMachineLogic() => stateMachineController.SetActiveStateMachineLogic(this);
+        public virtual void ProcessStateTransition() {}
     }
     
     public abstract class MultiPhaseStateMachineLogic : StateMachineLogic
     {
         protected virtual CharacterSubState mainPhase => throw new ArgumentException();
         protected virtual CharacterSubState recoveryPhase => throw new ArgumentException();
-
-        public void GoToStartPhase() => stateMachineController.characterSubState = startPhase;
+        public override void SetAsActiveStateMachineLogic()
+        {
+            base.SetAsActiveStateMachineLogic();
+            stateMachineController.SetActiveMultiStateMachineLogic(this);
+        }
         public void GoToMainPhase() => stateMachineController.characterSubState = mainPhase;
         public void GoToRecoveryPhase() => stateMachineController.characterSubState = recoveryPhase;
     }

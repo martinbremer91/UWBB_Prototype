@@ -2,15 +2,12 @@
 
 namespace UWBB.CharacterController
 {
-    public class RecoverySubStatePhase : StateMachineBehaviour
+    public class SinglePhaseState : StateMachineBehaviour
     {
         private CharacterController_StateMachine stateMachineController;
 
         public void Init(CharacterController_StateMachine stateMachine) 
             => stateMachineController = stateMachine;
-
-        public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) 
-            => stateMachineController.AdvanceToRecoveryPhase();
 
         public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) 
             => stateMachineController.FinishState();

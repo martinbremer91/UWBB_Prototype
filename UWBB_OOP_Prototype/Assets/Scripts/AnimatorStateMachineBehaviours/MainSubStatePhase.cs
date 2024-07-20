@@ -2,7 +2,7 @@
 
 namespace UWBB.CharacterController
 {
-    public class MainSubStatePhase : StateMachineBehaviour
+    public class MainPhaseState : StateMachineBehaviour
     {
         private CharacterController_StateMachine stateMachineController;
 

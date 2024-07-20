@@ -18,6 +18,7 @@ namespace UWBB.CharacterController
                 _characterSubState = value;
                 CharacterState newState = GetCharacterStateFromSubState(value);
 
+                // TODO: this check won't work for stun (can transition withing same state and even from a substate to itself) 
                 if (characterState != newState)
                 {
                     stateMachineLogicDict[characterState].ExitState();
@@ -25,7 +26,7 @@ namespace UWBB.CharacterController
                     
                     StateMachineLogic newLogic = stateMachineLogicDict[characterState];
                     newLogic.SetAsActiveStateMachineLogic();
-                    newLogic.EnterState();
+                    newLogic.EnterState(_characterSubState);
                 }
             }
         }
@@ -44,7 +45,7 @@ namespace UWBB.CharacterController
             stateMachineLogicDict.Add(CharacterState.AttackLight, new StateMachine_LightAttack());
             stateMachineLogicDict.Add(CharacterState.AttackHeavy, new StateMachine_HeavyAttack());
             stateMachineLogicDict.Add(CharacterState.UsingItem, new StateMachine_UsingItem());
-            stateMachineLogicDict.Add(CharacterState.Stunned, new StateMachine_Stun());
+            stateMachineLogicDict.Add(CharacterState.Stun, new StateMachine_Stun());
 
             foreach (var stateMachineLogic in stateMachineLogicDict.Values)
                 stateMachineLogic.Init(character);
@@ -54,12 +55,10 @@ namespace UWBB.CharacterController
         private void ProcessCharacterState() => stateMachineLogicDict[characterState].ProcessState();
         
         public void SetActiveStateMachineLogic(StateMachineLogic logic)
-        {
-            stateMachineLogic = logic;
-            multiPhaseStateMachineLogic = logic as MultiPhaseStateMachineLogic;
-        }
+            => stateMachineLogic = logic;
+        public void SetActiveMultiStateMachineLogic(MultiPhaseStateMachineLogic logic) 
+            => multiPhaseStateMachineLogic = logic;
 
-        public void BeginState() => multiPhaseStateMachineLogic.GoToStartPhase();
         public void AdvanceToMainPhase() => multiPhaseStateMachineLogic.GoToMainPhase();
         public void AdvanceToRecoveryPhase() => multiPhaseStateMachineLogic.GoToRecoveryPhase();
         public void FinishState() => stateMachineLogic.ProcessStateTransition();
@@ -92,8 +91,8 @@ namespace UWBB.CharacterController
                     return CharacterState.AttackHeavy;
                 case CharacterSubState.UseItemStart or CharacterSubState.UseItemMain or CharacterSubState.UseItemRecovery:
                     return CharacterState.UsingItem;
-                case CharacterSubState.StunMain or CharacterSubState.StunRecovery:
-                    return CharacterState.Stunned;
+                case CharacterSubState.StunFlinch or CharacterSubState.StunStagger or CharacterSubState.StunKnockdown:
+                    return CharacterState.Stun;
             }
 
             throw new ArgumentOutOfRangeException();

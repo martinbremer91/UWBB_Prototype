@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace UWBB.CharacterController
 {
@@ -53,6 +54,13 @@ namespace UWBB.CharacterController
         {
             inputController.Update();
             stateMachineController.Update();
+
+            if (Keyboard.current.iKey.wasPressedThisFrame)
+                stateMachineController.characterSubState = CharacterSubState.StunFlinch;
+            else if (Keyboard.current.oKey.wasPressedThisFrame)
+                stateMachineController.characterSubState = CharacterSubState.StunStagger;
+            else if (Keyboard.current.pKey.wasPressedThisFrame)
+                stateMachineController.characterSubState = CharacterSubState.StunKnockdown;
         }
     }
 }

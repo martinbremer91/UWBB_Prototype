@@ -8,7 +8,6 @@ namespace UWBB.CharacterController
         private InputState inputState;
         private StaminaActions staminaActions;
 
-        protected override CharacterSubState startPhase => CharacterSubState.RunStart;
         protected override CharacterSubState mainPhase => CharacterSubState.RunMain;
 
         private float minimumRunTimerForRunningAttack;
@@ -21,10 +20,10 @@ namespace UWBB.CharacterController
             minimumRunTimerForRunningAttack = character.characterConfigs.minimumRunTimerForRunningAttack;
         }
 
-        public override void EnterState()
+        public override void EnterState(CharacterSubState subState)
         {
             stateMachineController.currentRunActionTimer = 0;
-            base.EnterState();
+            base.EnterState(subState);
         }
 
         public override void ProcessState()
