@@ -20,23 +20,27 @@ namespace UWBB.CharacterController
             }
         }
         
-        // TODO: move these somewhere else
-        private const float staminaTotal = 100f;
-        private const float regenRate = 20f;
-        private const float staminaRegenBlockDuration = .5f;
+        private float staminaTotal ;
+        private float regenRate;
+        private float staminaRegenBlockDuration;
         
         private float staminaRegenBlockTimer;
         private float stamina;
         
-        // TODO: isWinded -> set when stamina reaches zero or full (while running)
         public bool isWinded;
-
         private bool regenThisFrame;
 
         public void Init(ICharacter character)
         {
             staminaActions = GameConfigs.instance.staminaActions;
             stateMachine = character.GetModuleController<CharacterController_StateMachine>(ControllerType.StateMachine);
+
+            CharacterConfigs configs = character.characterConfigs;
+
+            staminaTotal = configs.staminaTotal;
+            regenRate = configs.regenRate;
+            staminaRegenBlockDuration = configs.staminaRegenBlockDuration;
+            
             stamina = staminaTotal;
         }
         

@@ -49,13 +49,6 @@ namespace UWBB.CharacterController
             };
         }
 
-        private void Start()
-        {
-            // TODO: move this to camera controller?
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
-
         private void Update()
         {
             inputController.Update();

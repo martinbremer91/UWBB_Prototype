@@ -17,6 +17,9 @@ namespace UWBB.CharacterController
             else
                 throw new NullReferenceException("CameraController could not find object with MainCamera tag");
             
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            
             pivot = character.monoBehaviour.transform;
         }
         
