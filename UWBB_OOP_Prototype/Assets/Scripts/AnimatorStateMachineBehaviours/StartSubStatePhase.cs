@@ -4,12 +4,12 @@ namespace UWBB.CharacterController
 {
     public class StartSubStatePhase : StateMachineBehaviour
     {
-        private CharacterController_StatePhase characterControllerStatePhase;
+        private CharacterController_StateMachine stateMachineController;
 
-        public void Init(CharacterController_StatePhase controllerStatePhase) 
-            => characterControllerStatePhase = controllerStatePhase;
+        public void Init(CharacterController_StateMachine stateMachine) 
+            => stateMachineController = stateMachine;
 
         public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) 
-            => characterControllerStatePhase.BeginState();
+            => stateMachineController.BeginState();
     }
 }

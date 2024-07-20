@@ -4,7 +4,6 @@
     {
         Input,
         StateMachine,
-        StatePhase,
         Animation,
         Movement,
         Stamina,

@@ -10,16 +10,15 @@ namespace UWBB.CharacterController
         public void Init(ICharacter character)
         {
             animator = character.monoBehaviour.GetComponent<Animator>();
-
-            CharacterController_StatePhase statePhase =
-                character.GetModuleController<CharacterController_StatePhase>(ControllerType.StatePhase);
+            CharacterController_StateMachine stateMachine =
+                character.GetModuleController<CharacterController_StateMachine>(ControllerType.StateMachine);
             
             foreach (var start in animator.GetBehaviours<StartSubStatePhase>())
-                start.Init(statePhase);
+                start.Init(stateMachine);
             foreach (var main in animator.GetBehaviours<MainSubStatePhase>())
-                main.Init(statePhase);
+                main.Init(stateMachine);
             foreach (var recovery in animator.GetBehaviours<RecoverySubStatePhase>())
-                recovery.Init(statePhase);
+                recovery.Init(stateMachine);
 
             foreach (var preCharge in animator.GetBehaviours<PreChargePhase>())
                 preCharge.Init(character);

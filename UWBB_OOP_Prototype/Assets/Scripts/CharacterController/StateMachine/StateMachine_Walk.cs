@@ -20,17 +20,17 @@ namespace UWBB.CharacterController
         public override void ProcessState()
         {
             if (inputState.useItemCommand)
-                stateMachine.characterSubState = CharacterSubState.UseItemStart;
+                stateMachineController.characterSubState = CharacterSubState.UseItemStart;
             else if (inputState.lightAttackCommand && staminaController.HasStaminaForAction(staminaActions.lightAttack))
-                stateMachine.characterSubState = CharacterSubState.AttackLightStart;
+                stateMachineController.characterSubState = CharacterSubState.AttackLightStart;
             else if (inputState.heavyAttackCommand && staminaController.HasStaminaForAction(staminaActions.heavyAttack))
-                stateMachine.characterSubState = CharacterSubState.AttackHeavyStart;
+                stateMachineController.characterSubState = CharacterSubState.AttackHeavyStart;
             else if (inputState.dodgeCommand && staminaController.HasStaminaForAction(staminaActions.dodge))
-                stateMachine.characterSubState = CharacterSubState.DodgeStart;
+                stateMachineController.characterSubState = CharacterSubState.DodgeStart;
             else if (inputState.runCommand && !staminaController.isWinded && staminaController.HasStaminaForAction(staminaActions.run))
-                stateMachine.characterSubState = CharacterSubState.RunStart;
+                stateMachineController.characterSubState = CharacterSubState.RunStart;
             else if (inputState.moveDirection == Vector2.zero)
-                stateMachine.characterSubState = CharacterSubState.Idle;
+                stateMachineController.characterSubState = CharacterSubState.Idle;
         }
     }
 }

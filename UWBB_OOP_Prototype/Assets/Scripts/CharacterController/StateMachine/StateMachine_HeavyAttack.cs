@@ -13,6 +13,6 @@
             base.EnterState();
         }
 
-        public override void ProcessStateTransition() => stateMachine.characterSubState = CharacterSubState.Idle;
+        public override void ProcessStateTransition() => stateMachineController.characterSubState = CharacterSubState.Idle;
     }
 }

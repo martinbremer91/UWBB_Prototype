@@ -23,27 +23,27 @@ namespace UWBB.CharacterController
 
         public override void EnterState()
         {
-            stateMachine.currentRunActionTimer = 0;
+            stateMachineController.currentRunActionTimer = 0;
             base.EnterState();
         }
 
         public override void ProcessState()
         {
             if (inputState.useItemCommand)
-                stateMachine.characterSubState = CharacterSubState.UseItemStart;
+                stateMachineController.characterSubState = CharacterSubState.UseItemStart;
             else if (inputState.lightAttackCommand && staminaController.HasStaminaForAction(staminaActions.lightAttack))
-                stateMachine.characterSubState = CharacterSubState.AttackLightStart;
+                stateMachineController.characterSubState = CharacterSubState.AttackLightStart;
             else if (inputState.heavyAttackCommand && staminaController.HasStaminaForAction(staminaActions.heavyAttack))
-                stateMachine.characterSubState = CharacterSubState.AttackHeavyStart;
+                stateMachineController.characterSubState = CharacterSubState.AttackHeavyStart;
             else if (inputState.moveDirection == Vector2.zero)
-                stateMachine.characterSubState = CharacterSubState.Idle;
+                stateMachineController.characterSubState = CharacterSubState.Idle;
             else if (!inputState.runCommand)
-                stateMachine.characterSubState = CharacterSubState.Walk;
-            else if (stateMachine.characterSubState is CharacterSubState.RunStart)
-                stateMachine.currentRunActionTimer += Time.deltaTime;
+                stateMachineController.characterSubState = CharacterSubState.Walk;
+            else if (stateMachineController.characterSubState is CharacterSubState.RunStart)
+                stateMachineController.currentRunActionTimer += Time.deltaTime;
 
-            if (stateMachine.currentRunActionTimer >= minimumRunTimerForRunningAttack)
-                stateMachine.characterSubState = CharacterSubState.RunMain;
+            if (stateMachineController.currentRunActionTimer >= minimumRunTimerForRunningAttack)
+                stateMachineController.characterSubState = CharacterSubState.RunMain;
         }
     }
 }

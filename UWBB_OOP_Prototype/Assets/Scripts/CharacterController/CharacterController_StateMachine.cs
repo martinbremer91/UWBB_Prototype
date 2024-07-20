@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace UWBB.CharacterController
 {
@@ -29,6 +30,9 @@ namespace UWBB.CharacterController
             }
         }
         
+        private StateMachineLogic stateMachineLogic;
+        private MultiPhaseStateMachineLogic multiPhaseStateMachineLogic;
+        
         public float currentRunActionTimer;
 
         public void Init(ICharacter character)
@@ -48,6 +52,28 @@ namespace UWBB.CharacterController
 
         public void Update() => ProcessCharacterState();
         private void ProcessCharacterState() => stateMachineLogicDict[characterState].ProcessState();
+        
+        public void SetActiveStateMachineLogic(StateMachineLogic logic)
+        {
+            stateMachineLogic = logic;
+            multiPhaseStateMachineLogic = logic as MultiPhaseStateMachineLogic;
+        }
+
+        public void BeginState() => multiPhaseStateMachineLogic.GoToStartPhase();
+        public void AdvanceToMainPhase() => multiPhaseStateMachineLogic.GoToMainPhase();
+        public void AdvanceToRecoveryPhase() => multiPhaseStateMachineLogic.GoToRecoveryPhase();
+        public void FinishState() => stateMachineLogic.ProcessStateTransition();
+        
+        public void BeginChargePhase()
+        {
+            if (multiPhaseStateMachineLogic is ChargeableStateMachineLogic chargeable)
+                chargeable.GoToChargePhase();
+            else
+            {
+                Debug.LogError("CharacterStatePhaseController: current state is not chargeable");
+                multiPhaseStateMachineLogic.GoToMainPhase();
+            }
+        }
         
         private CharacterState GetCharacterStateFromSubState(CharacterSubState subState)
         {

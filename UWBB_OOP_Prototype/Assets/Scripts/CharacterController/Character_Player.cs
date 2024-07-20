@@ -16,7 +16,6 @@ namespace UWBB.CharacterController
 
         public readonly CharacterController_Input inputController = new();
         public readonly CharacterController_StateMachine stateMachineController = new();
-        public readonly CharacterController_StatePhase statePhaseController = new();
         public readonly CharacterController_Movement movementController = new();
         public readonly CharacterController_Combat combatController = new();
         public readonly CharacterController_Stamina staminaController = new();
@@ -29,7 +28,6 @@ namespace UWBB.CharacterController
             
             inputController.Init(this);
             stateMachineController.Init(this);
-            statePhaseController.Init(this);
             movementController.Init(this);
             combatController.Init(this);
             staminaController.Init(this);
@@ -43,7 +41,6 @@ namespace UWBB.CharacterController
             {
                 { ControllerType.Input, inputController },
                 { ControllerType.StateMachine, stateMachineController },
-                { ControllerType.StatePhase, statePhaseController },
                 { ControllerType.Animation, animationController },
                 { ControllerType.Movement, movementController },
                 { ControllerType.Stamina, staminaController },
