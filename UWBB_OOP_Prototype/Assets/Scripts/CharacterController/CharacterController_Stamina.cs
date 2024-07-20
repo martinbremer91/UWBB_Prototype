@@ -20,13 +20,15 @@ namespace UWBB.CharacterController
             }
         }
         
-        private float staminaTotal = 100f;
-        private float stamina;
-        private float regenRate = 20f;
+        // TODO: move these somewhere else
+        private const float staminaTotal = 100f;
+        private const float regenRate = 20f;
         private const float staminaRegenBlockDuration = .5f;
-        private float staminaRegenBlockTimer;
         
-        // isWinded -> when stamina reaches zero, set to false on dodge, full stamina, attack, or use item
+        private float staminaRegenBlockTimer;
+        private float stamina;
+        
+        // TODO: isWinded -> set when stamina reaches zero or full (while running)
         public bool isWinded;
 
         private bool regenThisFrame;
@@ -57,7 +59,7 @@ namespace UWBB.CharacterController
 
         public bool HasStaminaForAction(StaminaAction action) => stamina >= action.minToPerform;
 
-        public void ConsumeStamina(StaminaAction action)
+        private void ConsumeStamina(StaminaAction action)
         {
             staminaState = StaminaState.Consume;
             

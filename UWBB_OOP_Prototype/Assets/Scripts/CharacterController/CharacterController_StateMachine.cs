@@ -5,7 +5,7 @@ namespace UWBB.CharacterController
 {
     public class CharacterController_StateMachine
     {
-        private Dictionary<CharacterState, StateMachineLogic> stateMachineLogicDict = new();
+        private readonly Dictionary<CharacterState, StateMachineLogic> stateMachineLogicDict = new();
         
         public CharacterState characterState { get; private set; }
         private CharacterSubState _characterSubState;
@@ -31,7 +31,7 @@ namespace UWBB.CharacterController
         
         public float currentRunActionTimer;
 
-        public void Init(GameManager gameManager)
+        public void Init(Character_Player character)
         {
             stateMachineLogicDict.Add(CharacterState.Idle, new StateMachine_Idle());
             stateMachineLogicDict.Add(CharacterState.Walk, new StateMachine_Walk());
@@ -43,7 +43,7 @@ namespace UWBB.CharacterController
             stateMachineLogicDict.Add(CharacterState.Stunned, new StateMachine_Stun());
 
             foreach (var stateMachineLogic in stateMachineLogicDict.Values)
-                stateMachineLogic.Init(gameManager);
+                stateMachineLogic.Init(character);
         }
 
         public void Update() => ProcessCharacterState();

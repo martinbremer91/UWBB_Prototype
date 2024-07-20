@@ -7,21 +7,21 @@ namespace UWBB.CharacterController
     {
         public Animator animator;
 
-        public void Init(GameManager gameManager)
+        public void Init(Character_Player character)
         {
-            animator = gameManager.player.GetComponent<Animator>();
+            animator = character.GetComponent<Animator>();
 
             foreach (var start in animator.GetBehaviours<StartSubStatePhase>())
-                start.Init(gameManager.characterStatePhaseController);
+                start.Init(character.characterStatePhaseController);
             foreach (var main in animator.GetBehaviours<MainSubStatePhase>())
-                main.Init(gameManager.characterStatePhaseController);
+                main.Init(character.characterStatePhaseController);
             foreach (var recovery in animator.GetBehaviours<RecoverySubStatePhase>())
-                recovery.Init(gameManager.characterStatePhaseController);
+                recovery.Init(character.characterStatePhaseController);
 
             foreach (var preCharge in animator.GetBehaviours<PreChargePhase>())
-                preCharge.Init(gameManager);
+                preCharge.Init(character);
             foreach (var charge in animator.GetBehaviours<ChargePhase>())
-                charge.Init(gameManager);
+                charge.Init(character);
         }
 
         public void SetAnimationState(CharacterSubState characterSubState)

@@ -14,17 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lightAttack:
     cost: 1
-    costModifier: 1
     minToPerform: 1
+    isCostOverTime: 0
   heavyAttack:
     cost: 1
-    costModifier: 1
     minToPerform: 1
+    isCostOverTime: 0
   dodge:
     cost: 1
-    costModifier: 1
     minToPerform: 1
+    isCostOverTime: 0
   run:
     cost: 1
-    costModifier: 1
     minToPerform: 1
+    isCostOverTime: 1
+  block:
+    cost: 1
+    minToPerform: 1
+    isCostOverTime: 0

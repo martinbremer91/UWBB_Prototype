@@ -115,7 +115,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2194817328607944640}
   - component: {fileID: 3109997667911464663}
-  - component: {fileID: 5067666903868590206}
   - component: {fileID: 4872433723940942918}
   m_Layer: 0
   m_Name: PlayerRoot
@@ -157,19 +156,6 @@ MonoBehaviour:
   modelTransform: {fileID: 2801264333521603668}
   weaponGameObject: {fileID: 978738660461537170}
   playerConfigs: {fileID: 11400000, guid: 1aa15ab424681694582910064afb478c, type: 2}
-  characterStatePhaseController: {fileID: 5067666903868590206}
---- !u!114 &5067666903868590206
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1309824087759112629}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06934a12b9154ba4b43be744828bddb4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!95 &4872433723940942918
 Animator:
   serializedVersion: 5

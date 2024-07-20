@@ -7,7 +7,7 @@ public class PreChargePhase : StateMachineBehaviour
     private bool isCharging;
     private static readonly int Charge = Animator.StringToHash("Charge");
 
-    public void Init(GameManager gameManager) => inputState = gameManager.inputController.inputState;
+    public void Init(Character_Player character) => inputState = character.inputController.inputState;
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) 
         => isCharging = inputState.heavyAttackHeld;

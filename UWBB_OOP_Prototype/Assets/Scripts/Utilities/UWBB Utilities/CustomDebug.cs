@@ -1,12 +1,22 @@
-﻿using TMPro;
+﻿#if UNITY_EDITOR
+using TMPro;
 using UnityEngine;
 
 namespace UWBB.CharacterController
 {
     public class CustomDebug : MonoBehaviour
     {
-#if UNITY_EDITOR
-        public static CustomDebug instance;
+        private void OnEnable()
+        {
+            if (instance == null)
+            {
+                instance = this;
+                DontDestroyOnLoad(gameObject);
+            } else if (instance != this)
+                Destroy(gameObject);
+        }
+        
+        private static CustomDebug instance;
         
         [SerializeField] private TMP_Text text;
         
@@ -19,25 +29,26 @@ namespace UWBB.CharacterController
         [SerializeField] private bool debugInput;
         [SerializeField] private bool debugStamina;
         [SerializeField] private bool debugCamera;
-#endif
 
-        private void OnEnable()
+        private void Start()
         {
-#if UNITY_EDITOR
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-#else
-            Destroy(gameObject);
-#endif
+            Character_Player player = FindObjectOfType<Character_Player>();
+
+            if (player == null)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            
+            Init(player);
         }
-        
-#if UNITY_EDITOR
-        public void Init(GameManager gameManager)
+
+        private void Init(Character_Player player)
         {
-            stateMachine = gameManager.stateMachine;
-            input = gameManager.inputController;
-            stamina = gameManager.staminaController;
-            cameraCtrl = gameManager.cameraController;
+            stateMachine = player.stateMachineController;
+            input = player.inputController;
+            stamina = player.staminaController;
+            cameraCtrl = player.cameraController;
         }
             
         private void Update()
@@ -90,6 +101,6 @@ namespace UWBB.CharacterController
         {
             return "camera";
         }
-#endif
     }
 }
+#endif

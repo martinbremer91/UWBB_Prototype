@@ -10,12 +10,12 @@ namespace UWBB.CharacterController
         protected CharacterController_Stamina staminaController { get; set; }
         protected abstract CharacterSubState startPhase { get; }
 
-        public virtual void Init(GameManager gameManager)
+        public virtual void Init(Character_Player character)
         {
-            stateMachine = gameManager.stateMachine;
-            characterStatePhaseController = gameManager.characterStatePhaseController;
-            staminaController = gameManager.staminaController;
-            animationController = gameManager.animationController;
+            stateMachine = character.stateMachineController;
+            characterStatePhaseController = character.characterStatePhaseController;
+            staminaController = character.staminaController;
+            animationController = character.animationController;
         }
         
         public virtual void EnterState() => animationController.SetAnimationState(startPhase);

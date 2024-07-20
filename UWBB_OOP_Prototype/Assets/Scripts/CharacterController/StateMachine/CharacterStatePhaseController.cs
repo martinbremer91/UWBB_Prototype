@@ -2,7 +2,7 @@
 
 namespace UWBB.CharacterController
 {
-    public class CharacterStatePhaseController : MonoBehaviour
+    public class CharacterStatePhaseController
     {
         private StateMachineLogic stateMachineLogic;
         private MultiPhaseStateMachineLogic multiPhaseStateMachineLogic;
@@ -24,7 +24,7 @@ namespace UWBB.CharacterController
                 chargeable.GoToChargePhase();
             else
             {
-                Debug.LogError("CharacterStatePhaseController: current state is not chargeable", this);
+                Debug.LogError("CharacterStatePhaseController: current state is not chargeable");
                 multiPhaseStateMachineLogic.GoToMainPhase();
             }
         }

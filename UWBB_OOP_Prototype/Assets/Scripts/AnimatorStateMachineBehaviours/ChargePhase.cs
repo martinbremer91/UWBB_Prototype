@@ -7,10 +7,10 @@ public class ChargePhase : StateMachineBehaviour
     private InputState inputState;
     private static readonly int ChargeRelease = Animator.StringToHash("ChargeRelease");
 
-    public void Init(GameManager gameManager)
+    public void Init(Character_Player character)
     {
-        characterStatePhaseController = gameManager.characterStatePhaseController;
-        inputState = gameManager.inputController.inputState;
+        characterStatePhaseController = character.characterStatePhaseController;
+        inputState = character.inputController.inputState;
     }
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

@@ -1,16 +1,18 @@
-﻿using UnityEngine;
-using UWBB.CharacterController;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+// TODO: make initialization character-agnostic and modular
+// related: Create character-agnostic spawn point system
 
 namespace UWBB.Configs
 {
     public class Bootstrap : MonoBehaviour
     {
-        public static Bootstrap instance;
+        private static Bootstrap instance;
         [SerializeField] private GameConfigs gameConfigs;
 
-#if UNITY_EDITOR
-        [SerializeField] private GameObject customDebugPrefab;
-#endif
+        [NonSerialized] public readonly List<int> autoInstantiatedPrefabsGUIDs = new List<int>();
         
         private void OnEnable()
         {
@@ -19,14 +21,18 @@ namespace UWBB.Configs
                 instance = this;
                 DontDestroyOnLoad(this);
             }
-            else
+            else if (instance != this)
+            {
+                Destroy(gameObject);
                 return;
-            
-#if UNITY_EDITOR
-            Instantiate(customDebugPrefab);
-#endif      
+            }
+
             gameConfigs.Init();
-            new GameManager().Init();
+            InstantiatePrefabsInConfig();
         }
+        
+        private void InstantiatePrefabsInConfig() =>
+            autoInstantiatedPrefabsGUIDs.AddRange(
+                GameConfigs.instance.autoInstantiatingPrefabs.InstantiatePrefabs(this));
     }
 }
