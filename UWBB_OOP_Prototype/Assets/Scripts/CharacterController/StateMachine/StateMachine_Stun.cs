@@ -1,5 +1,10 @@
 ﻿namespace UWBB.CharacterController
 {
+    // TODO: implement stun levels
+    // flinch           : no interrupt, visual reaction
+    // stagger          : short interrupt, player poise depleted, lesser mob poise depleted
+    // knockdown        : long interrupt, parry / immobile, player poise break with knockback, boss and greater mob poise depleted
+    
     
     // TODO: poise
     // recovery timer (before regen) proportional to total poise
@@ -12,6 +17,7 @@
     
     public class StateMachine_Stun : StateMachineLogic
     {
-        public override void ProcessStateTransition() => stateMachineController.characterSubState = CharacterSubState.Idle;
+        public override void ProcessStateTransition() 
+            => stateMachineController.characterSubState = CharacterSubState.Idle;
     }
 }

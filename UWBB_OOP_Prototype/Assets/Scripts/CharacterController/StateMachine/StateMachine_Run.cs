@@ -44,5 +44,7 @@ namespace UWBB.CharacterController
             if (stateMachineController.currentRunActionTimer >= minimumRunTimerForRunningAttack)
                 stateMachineController.characterSubState = CharacterSubState.RunMain;
         }
+
+        public override void ExitState() => stateMachineController.currentRunActionTimer = 0;
     }
 }

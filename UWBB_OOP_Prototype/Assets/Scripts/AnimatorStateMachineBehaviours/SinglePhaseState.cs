@@ -9,7 +9,12 @@ namespace UWBB.CharacterController
         public void Init(CharacterController_StateMachine stateMachine) 
             => stateMachineController = stateMachine;
 
-        public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) 
-            => stateMachineController.FinishState();
+        public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+        {
+            if (HasReachedExitTime(stateInfo))
+                stateMachineController.FinishState();
+        }
+
+        private bool HasReachedExitTime(AnimatorStateInfo info) => info.normalizedTime >= 1;
     }
 }

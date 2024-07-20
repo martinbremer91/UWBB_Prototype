@@ -18,8 +18,7 @@ namespace UWBB.CharacterController
                 _characterSubState = value;
                 CharacterState newState = GetCharacterStateFromSubState(value);
 
-                // TODO: this check won't work for stun (can transition withing same state and even from a substate to itself) 
-                if (characterState != newState)
+                if (CheckStateTransitionLegality(newState))
                 {
                     stateMachineLogicDict[characterState].ExitState();
                     characterState = newState;
@@ -47,8 +46,8 @@ namespace UWBB.CharacterController
             stateMachineLogicDict.Add(CharacterState.UsingItem, new StateMachine_UsingItem());
             stateMachineLogicDict.Add(CharacterState.Stun, new StateMachine_Stun());
 
-            foreach (var stateMachineLogic in stateMachineLogicDict.Values)
-                stateMachineLogic.Init(character);
+            foreach (var logic in stateMachineLogicDict.Values)
+                logic.Init(character);
         }
 
         public void Update() => ProcessCharacterState();
@@ -96,6 +95,13 @@ namespace UWBB.CharacterController
             }
 
             throw new ArgumentOutOfRangeException();
+        }
+
+        private bool CheckStateTransitionLegality(CharacterState newState)
+        {
+            if (newState is CharacterState.Stun)
+                return true;
+            return characterState != newState;
         }
     }
 }
