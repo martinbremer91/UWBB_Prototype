@@ -10,11 +10,11 @@ namespace UWBB.CharacterController
 
         protected override CharacterSubState startPhase => CharacterSubState.Idle;
 
-        public override void Init(Character_Player character)
+        public override void Init(ICharacter character)
         {
             base.Init(character);
             staminaActions = GameConfigs.instance.staminaActions;
-            inputState = character.inputController.inputState;
+            inputState = character.GetModuleController<CharacterController_Input>(ControllerType.Input).inputState;
         }
 
         public override void ProcessState()

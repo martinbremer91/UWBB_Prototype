@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// TODO: make initialization character-agnostic and modular
-// related: Create character-agnostic spawn point system
-
 namespace UWBB.Configs
 {
     public class Bootstrap : MonoBehaviour

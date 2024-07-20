@@ -3,14 +3,15 @@ using UnityEngine.InputSystem.Interactions;
 
 namespace UWBB.CharacterController
 {
-    public class CharacterController_Input
+    public class CharacterController_Input : ICharacterController
     {
         public readonly InputState inputState = new();
-        private readonly DefaultControls controls = new();
+        private DefaultControls controls;
         private DefaultControls.GameplayActions gameplayActions;
 
-        public CharacterController_Input()
+        public void Init(ICharacter character)
         {
+            controls = new();
             gameplayActions = controls.Gameplay;
             
             controls.Enable();

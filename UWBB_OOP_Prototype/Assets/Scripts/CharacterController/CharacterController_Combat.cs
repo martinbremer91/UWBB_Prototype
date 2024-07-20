@@ -2,7 +2,7 @@
 
 namespace UWBB.CharacterController
 {
-    public class CharacterController_Combat
+    public class CharacterController_Combat : ICharacterController
     {
         private GameObject weapon;
         private CharacterController_Stamina staminaController;
@@ -13,13 +13,7 @@ namespace UWBB.CharacterController
 
         private float timer;
         
-        public CharacterController_Combat(GameObject weapon, CharacterController_Stamina staminaController)
-        {
-            this.weapon = weapon;
-            this.staminaController = staminaController;
-        }
-        
-        public void Update(InputState input)
+        public void Init(ICharacter character)
         {
             
         }

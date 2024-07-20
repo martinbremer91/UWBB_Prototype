@@ -3,22 +3,21 @@ using UWBB.CharacterController;
 
 public class ChargePhase : StateMachineBehaviour
 {
-    private CharacterStatePhaseController characterStatePhaseController;
+    private CharacterController_StatePhase statePhase;
     private InputState inputState;
-    private static readonly int ChargeRelease = Animator.StringToHash("ChargeRelease");
 
-    public void Init(Character_Player character)
+    public void Init(ICharacter character)
     {
-        characterStatePhaseController = character.characterStatePhaseController;
-        inputState = character.inputController.inputState;
+        statePhase = character.GetModuleController<CharacterController_StatePhase>(ControllerType.StatePhase);
+        inputState = character.GetModuleController<CharacterController_Input>(ControllerType.Input).inputState;
     }
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-        => characterStatePhaseController.BeginChargePhase();
+        => statePhase.BeginChargePhase();
 
     public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         if (!inputState.heavyAttackHeld)
-            animator.SetTrigger(ChargeRelease);
+            animator.SetTrigger(AnimationConstants.chargeRelease);
     }
 }

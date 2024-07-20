@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace UWBB.CharacterController
 {
-    public class CharacterController_StateMachine
+    public class CharacterController_StateMachine : ICharacterController
     {
         private readonly Dictionary<CharacterState, StateMachineLogic> stateMachineLogicDict = new();
         
@@ -31,7 +31,7 @@ namespace UWBB.CharacterController
         
         public float currentRunActionTimer;
 
-        public void Init(Character_Player character)
+        public void Init(ICharacter character)
         {
             stateMachineLogicDict.Add(CharacterState.Idle, new StateMachine_Idle());
             stateMachineLogicDict.Add(CharacterState.Walk, new StateMachine_Walk());

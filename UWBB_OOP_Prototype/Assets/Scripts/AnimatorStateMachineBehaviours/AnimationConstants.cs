@@ -4,6 +4,7 @@ namespace UWBB.CharacterController
 {
     public static class AnimationConstants
     {
+        // STATES
         public static readonly int idle = Animator.StringToHash("Idle");
         public static readonly int walk = Animator.StringToHash("Walk");
         public static readonly int runStart = Animator.StringToHash("Run");
@@ -12,5 +13,11 @@ namespace UWBB.CharacterController
         public static readonly int attackHeavyStart = Animator.StringToHash("HeavyAttack_Start");
         public static readonly int useItemStart = Animator.StringToHash("UseItem_Start");
         // public static readonly int stunMain = Animator.StringToHash("");
+        
+        // TRIGGERS
+        public static readonly int chargeRelease = Animator.StringToHash("ChargeRelease");
+        
+        // BOOLS
+        public static readonly int charge = Animator.StringToHash("Charge");
     }
 }

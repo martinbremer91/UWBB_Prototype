@@ -3,20 +3,23 @@ using UnityEngine;
 
 namespace UWBB.CharacterController
 {
-    public class CharacterController_Animation
+    public class CharacterController_Animation : ICharacterController
     {
-        public Animator animator;
+        private Animator animator;
 
-        public void Init(Character_Player character)
+        public void Init(ICharacter character)
         {
-            animator = character.GetComponent<Animator>();
+            animator = character.monoBehaviour.GetComponent<Animator>();
 
+            CharacterController_StatePhase statePhase =
+                character.GetModuleController<CharacterController_StatePhase>(ControllerType.StatePhase);
+            
             foreach (var start in animator.GetBehaviours<StartSubStatePhase>())
-                start.Init(character.characterStatePhaseController);
+                start.Init(statePhase);
             foreach (var main in animator.GetBehaviours<MainSubStatePhase>())
-                main.Init(character.characterStatePhaseController);
+                main.Init(statePhase);
             foreach (var recovery in animator.GetBehaviours<RecoverySubStatePhase>())
-                recovery.Init(character.characterStatePhaseController);
+                recovery.Init(statePhase);
 
             foreach (var preCharge in animator.GetBehaviours<PreChargePhase>())
                 preCharge.Init(character);

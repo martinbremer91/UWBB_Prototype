@@ -2,10 +2,17 @@
 
 namespace UWBB.CharacterController
 {
-    public class CharacterStatePhaseController
+    // TODO: consolidate this with StateMachine controller
+    
+    public class CharacterController_StatePhase : ICharacterController
     {
         private StateMachineLogic stateMachineLogic;
         private MultiPhaseStateMachineLogic multiPhaseStateMachineLogic;
+        
+        // TEMP: class will be consolidated with StateMachine controller
+        public void Init(ICharacter character)
+        {
+        }
         
         public void SetActiveStateMachineLogic(StateMachineLogic logic)
         {

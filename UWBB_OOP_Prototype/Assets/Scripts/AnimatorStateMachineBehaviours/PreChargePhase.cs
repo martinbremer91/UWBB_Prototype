@@ -5,9 +5,9 @@ public class PreChargePhase : StateMachineBehaviour
 {
     private InputState inputState;
     private bool isCharging;
-    private static readonly int Charge = Animator.StringToHash("Charge");
 
-    public void Init(Character_Player character) => inputState = character.inputController.inputState;
+    public void Init(ICharacter character) => inputState =
+        character.GetModuleController<CharacterController_Input>(ControllerType.Input).inputState;
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) 
         => isCharging = inputState.heavyAttackHeld;
@@ -17,10 +17,10 @@ public class PreChargePhase : StateMachineBehaviour
         if (isCharging)
         {
             isCharging = inputState.heavyAttackHeld;
-            animator.SetBool(Charge, true);
+            animator.SetBool(AnimationConstants.charge, true);
 
             if (!isCharging)
-                animator.SetBool(Charge, false);
+                animator.SetBool(AnimationConstants.charge, false);
         }
     }
 }

@@ -5,24 +5,25 @@ namespace UWBB.CharacterController
     public abstract class StateMachineLogic
     {
         protected CharacterController_StateMachine stateMachine { get; set; }
-        protected CharacterStatePhaseController characterStatePhaseController { get; set; }
+        protected CharacterController_StatePhase characterControllerStatePhase { get; set; }
         protected CharacterController_Animation animationController { get; set; }
         protected CharacterController_Stamina staminaController { get; set; }
         protected abstract CharacterSubState startPhase { get; }
 
-        public virtual void Init(Character_Player character)
+        public virtual void Init(ICharacter character)
         {
-            stateMachine = character.stateMachineController;
-            characterStatePhaseController = character.characterStatePhaseController;
-            staminaController = character.staminaController;
-            animationController = character.animationController;
+            stateMachine = character.GetModuleController<CharacterController_StateMachine>(ControllerType.StateMachine);
+            characterControllerStatePhase =
+                character.GetModuleController<CharacterController_StatePhase>(ControllerType.StatePhase);
+            staminaController = character.GetModuleController<CharacterController_Stamina>(ControllerType.Stamina);
+            animationController = character.GetModuleController<CharacterController_Animation>(ControllerType.Animation);
         }
         
         public virtual void EnterState() => animationController.SetAnimationState(startPhase);
         public virtual void ProcessState() {}
         public virtual void ProcessStateTransition() {}
         public virtual void ExitState() {}
-        public void SetAsActiveStateMachineLogic() => characterStatePhaseController.SetActiveStateMachineLogic(this);
+        public void SetAsActiveStateMachineLogic() => characterControllerStatePhase.SetActiveStateMachineLogic(this);
     }
     
     public abstract class MultiPhaseStateMachineLogic : StateMachineLogic

@@ -2,24 +2,18 @@
 
 namespace UWBB.CharacterController
 {
-    public class CharacterController_Movement
+    public class CharacterController_Movement : ICharacterController
     {
-        private readonly Transform character;
-        private readonly Transform model;
-        private readonly Transform cameraTransform;
+        private Transform character;
+        private Transform model;
+        private Transform cameraTransform;
 
+        // TODO: move this elsewhere
         private const float moveSpeed = 10;
         private const float runSpeed = 25;
         private const float dodgeSpeed = 50;
         
-        public CharacterController_Movement(Transform character, Transform model, Transform cameraTransform)
-        {
-            this.character = character;
-            this.model = model;
-            this.cameraTransform = cameraTransform;
-        }
-
-        public void Update(InputState input, MoveSpeedState moveSpeedState)
+        public void Init(ICharacter character)
         {
             
         }

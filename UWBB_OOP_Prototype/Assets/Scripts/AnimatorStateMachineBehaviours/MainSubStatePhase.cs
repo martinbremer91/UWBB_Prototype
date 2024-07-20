@@ -4,23 +4,23 @@ namespace UWBB.CharacterController
 {
     public class MainSubStatePhase : StateMachineBehaviour
     {
-        private CharacterStatePhaseController characterStatePhaseController;
+        private CharacterController_StatePhase characterControllerStatePhase;
 
-        public void Init(CharacterStatePhaseController statePhaseController) 
-            => characterStatePhaseController = statePhaseController;
+        public void Init(CharacterController_StatePhase controllerStatePhase) 
+            => characterControllerStatePhase = controllerStatePhase;
 
         public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) 
-            => characterStatePhaseController.AdvanceToMainPhase();
+            => characterControllerStatePhase.AdvanceToMainPhase();
     }
     
     public class ChargeStatePhase : StateMachineBehaviour
     {
-        private CharacterStatePhaseController characterStatePhaseController;
+        private CharacterController_StatePhase characterControllerStatePhase;
 
-        public void Init(CharacterStatePhaseController statePhaseController) 
-            => characterStatePhaseController = statePhaseController;
+        public void Init(CharacterController_StatePhase controllerStatePhase) 
+            => characterControllerStatePhase = controllerStatePhase;
 
         public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) 
-            => characterStatePhaseController.AdvanceToMainPhase();
+            => characterControllerStatePhase.AdvanceToMainPhase();
     }
 }

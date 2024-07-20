@@ -13,12 +13,12 @@ namespace UWBB.CharacterController
 
         private float minimumRunTimerForRunningAttack;
         
-        public override void Init(Character_Player character)
+        public override void Init(ICharacter character)
         {
             base.Init(character);
             staminaActions = GameConfigs.instance.staminaActions;
-            inputState = character.inputController.inputState;
-            minimumRunTimerForRunningAttack = character.playerConfigs.minimumRunTimerForRunningAttack;
+            inputState = character.GetModuleController<CharacterController_Input>(ControllerType.Input).inputState;
+            minimumRunTimerForRunningAttack = character.characterConfigs.minimumRunTimerForRunningAttack;
         }
 
         public override void EnterState()

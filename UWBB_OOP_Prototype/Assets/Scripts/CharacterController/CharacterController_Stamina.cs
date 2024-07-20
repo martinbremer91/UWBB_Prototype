@@ -3,7 +3,7 @@ using UWBB.Configs;
 
 namespace UWBB.CharacterController
 {
-    public class CharacterController_Stamina
+    public class CharacterController_Stamina : ICharacterController
     {
         private CharacterController_StateMachine stateMachine;
         private StaminaActions staminaActions;
@@ -33,10 +33,10 @@ namespace UWBB.CharacterController
 
         private bool regenThisFrame;
 
-        public void Init(CharacterController_StateMachine sm)
+        public void Init(ICharacter character)
         {
             staminaActions = GameConfigs.instance.staminaActions;
-            stateMachine = sm;
+            stateMachine = character.GetModuleController<CharacterController_StateMachine>(ControllerType.StateMachine);
             stamina = staminaTotal;
         }
         
